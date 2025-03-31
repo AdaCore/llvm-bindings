@@ -525,6 +525,22 @@ package body Clang.Index is
       end;
    end Get_Type_Spelling;
 
+   function Cursor_Is_Bit_Field
+     (C : Cursor_T)
+      return unsigned
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_Cursor_isBitField";
+   function Cursor_Is_Bit_Field
+     (C : Cursor_T)
+      return Boolean
+   is
+      Return_Value : unsigned;
+   begin
+      Return_Value := Cursor_Is_Bit_Field (C);
+      return Return_Value /= 0;
+   end Cursor_Is_Bit_Field;
+
    function Is_Const_Qualified_Type
      (T : Type_T)
       return unsigned
@@ -812,22 +828,6 @@ package body Clang.Index is
       Return_Value := Cursor_Is_Inline_Namespace (C);
       return Return_Value /= 0;
    end Cursor_Is_Inline_Namespace;
-
-   function Cursor_Is_Bit_Field
-     (C : Cursor_T)
-      return unsigned
-   with Import => True,
-        Convention => C,
-        External_Name => "clang_Cursor_isBitField";
-   function Cursor_Is_Bit_Field
-     (C : Cursor_T)
-      return Boolean
-   is
-      Return_Value : unsigned;
-   begin
-      Return_Value := Cursor_Is_Bit_Field (C);
-      return Return_Value /= 0;
-   end Cursor_Is_Bit_Field;
 
    function Is_Virtual_Base
      (Arg_1 : Cursor_T)
@@ -1553,6 +1553,22 @@ package body Clang.Index is
       return Return_Value /= 0;
    end CXX_Method_Is_Move_Assignment_Operator;
 
+   function CXX_Method_Is_Explicit
+     (C : Cursor_T)
+      return unsigned
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_CXXMethod_isExplicit";
+   function CXX_Method_Is_Explicit
+     (C : Cursor_T)
+      return Boolean
+   is
+      Return_Value : unsigned;
+   begin
+      Return_Value := CXX_Method_Is_Explicit (C);
+      return Return_Value /= 0;
+   end CXX_Method_Is_Explicit;
+
    function CXX_Record_Is_Abstract
      (C : Cursor_T)
       return unsigned
@@ -1982,5 +1998,43 @@ package body Clang.Index is
       Return_Value := Index_Source_File_Full_Argv (Arg_1, Client_Data, Index_Callbacks, Index_Callbacks_Size, Index_Options, Source_Filename_String, Command_Line_Args, Num_Command_Line_Args, Unsaved_Files, Num_Unsaved_Files, Out_TU, TU_Options);
       return Return_Value;
    end Index_Source_File_Full_Argv;
+
+   function Get_Binary_Operator_Kind_Spelling
+     (Kind : Binary_Operator_Kind_T)
+      return Clang.CX_String.String_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_getBinaryOperatorKindSpelling";
+   function Get_Binary_Operator_Kind_Spelling
+     (Kind : Binary_Operator_Kind_T)
+      return String
+   is
+      Return_Value : Clang.CX_String.String_T;
+   begin
+      Return_Value := Get_Binary_Operator_Kind_Spelling (Kind);
+      declare   Ada_String : String := Clang.CX_String.Get_C_String (Return_Value);
+      begin   Clang.CX_String.Dispose_String (Return_Value);
+      return Ada_String;
+      end;
+   end Get_Binary_Operator_Kind_Spelling;
+
+   function Get_Unary_Operator_Kind_Spelling
+     (Kind : Unary_Operator_Kind_T)
+      return Clang.CX_String.String_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_getUnaryOperatorKindSpelling";
+   function Get_Unary_Operator_Kind_Spelling
+     (Kind : Unary_Operator_Kind_T)
+      return String
+   is
+      Return_Value : Clang.CX_String.String_T;
+   begin
+      Return_Value := Get_Unary_Operator_Kind_Spelling (Kind);
+      declare   Ada_String : String := Clang.CX_String.Get_C_String (Return_Value);
+      begin   Clang.CX_String.Dispose_String (Return_Value);
+      return Ada_String;
+      end;
+   end Get_Unary_Operator_Kind_Spelling;
 
 end Clang.Index;

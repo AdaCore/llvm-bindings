@@ -148,6 +148,76 @@ package body LLVM.Target_Machine is
       return Return_Value /= 0;
    end Target_Has_Asm_Backend;
 
+   procedure Target_Machine_Options_Set_CPU
+     (Options : Target_Machine_Options_T;
+      CPU     : Interfaces.C.Strings.chars_ptr)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMTargetMachineOptionsSetCPU";
+   procedure Target_Machine_Options_Set_CPU
+     (Options : Target_Machine_Options_T;
+      CPU     : String)
+   is
+      CPU_Array  : aliased char_array := To_C (CPU);
+      CPU_String : constant chars_ptr := To_Chars_Ptr (CPU_Array'Unchecked_Access);
+   begin
+      Target_Machine_Options_Set_CPU (Options, CPU_String);
+   end Target_Machine_Options_Set_CPU;
+
+   procedure Target_Machine_Options_Set_Features
+     (Options  : Target_Machine_Options_T;
+      Features : Interfaces.C.Strings.chars_ptr)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMTargetMachineOptionsSetFeatures";
+   procedure Target_Machine_Options_Set_Features
+     (Options  : Target_Machine_Options_T;
+      Features : String)
+   is
+      Features_Array  : aliased char_array := To_C (Features);
+      Features_String : constant chars_ptr := To_Chars_Ptr (Features_Array'Unchecked_Access);
+   begin
+      Target_Machine_Options_Set_Features (Options, Features_String);
+   end Target_Machine_Options_Set_Features;
+
+   procedure Target_Machine_Options_Set_ABI
+     (Options : Target_Machine_Options_T;
+      ABI     : Interfaces.C.Strings.chars_ptr)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMTargetMachineOptionsSetABI";
+   procedure Target_Machine_Options_Set_ABI
+     (Options : Target_Machine_Options_T;
+      ABI     : String)
+   is
+      ABI_Array  : aliased char_array := To_C (ABI);
+      ABI_String : constant chars_ptr := To_Chars_Ptr (ABI_Array'Unchecked_Access);
+   begin
+      Target_Machine_Options_Set_ABI (Options, ABI_String);
+   end Target_Machine_Options_Set_ABI;
+
+   function Create_Target_Machine_With_Options
+     (T       : Target_T;
+      Triple  : Interfaces.C.Strings.chars_ptr;
+      Options : Target_Machine_Options_T)
+      return Target_Machine_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMCreateTargetMachineWithOptions";
+   function Create_Target_Machine_With_Options
+     (T       : Target_T;
+      Triple  : String;
+      Options : Target_Machine_Options_T)
+      return Target_Machine_T
+   is
+      Return_Value  : Target_Machine_T;
+      Triple_Array  : aliased char_array := To_C (Triple);
+      Triple_String : constant chars_ptr := To_Chars_Ptr (Triple_Array'Unchecked_Access);
+   begin
+      Return_Value := Create_Target_Machine_With_Options (T, Triple_String, Options);
+      return Return_Value;
+   end Create_Target_Machine_With_Options;
+
    function Create_Target_Machine
      (T          : Target_T;
       Triple     : Interfaces.C.Strings.chars_ptr;
@@ -181,44 +251,6 @@ package body LLVM.Target_Machine is
       Return_Value := Create_Target_Machine (T, Triple_String, CPU_String, Features_String, Level, Reloc, Code_Model);
       return Return_Value;
    end Create_Target_Machine;
-
-   function Create_Target_Machine_With_ABI
-     (T          : Target_T;
-      Triple     : Interfaces.C.Strings.chars_ptr;
-      CPU        : Interfaces.C.Strings.chars_ptr;
-      Features   : Interfaces.C.Strings.chars_ptr;
-      ABI        : Interfaces.C.Strings.chars_ptr;
-      Level      : Code_Gen_Opt_Level_T;
-      Reloc      : Reloc_Mode_T;
-      Code_Model : Code_Model_T)
-      return Target_Machine_T
-   with Import => True,
-        Convention => C,
-        External_Name => "LLVMCreateTargetMachineWithABI";
-   function Create_Target_Machine_With_ABI
-     (T          : Target_T;
-      Triple     : String;
-      CPU        : String;
-      Features   : String;
-      ABI        : String;
-      Level      : Code_Gen_Opt_Level_T;
-      Reloc      : Reloc_Mode_T;
-      Code_Model : Code_Model_T)
-      return Target_Machine_T
-   is
-      Return_Value    : Target_Machine_T;
-      Triple_Array    : aliased char_array := To_C (Triple);
-      Triple_String   : constant chars_ptr := To_Chars_Ptr (Triple_Array'Unchecked_Access);
-      CPU_Array       : aliased char_array := To_C (CPU);
-      CPU_String      : constant chars_ptr := To_Chars_Ptr (CPU_Array'Unchecked_Access);
-      Features_Array  : aliased char_array := To_C (Features);
-      Features_String : constant chars_ptr := To_Chars_Ptr (Features_Array'Unchecked_Access);
-      ABI_Array       : aliased char_array := To_C (ABI);
-      ABI_String      : constant chars_ptr := To_Chars_Ptr (ABI_Array'Unchecked_Access);
-   begin
-      Return_Value := Create_Target_Machine_With_ABI (T, Triple_String, CPU_String, Features_String, ABI_String, Level, Reloc, Code_Model);
-      return Return_Value;
-   end Create_Target_Machine_With_ABI;
 
    function Get_Target_Machine_Triple
      (T : Target_Machine_T)
@@ -294,6 +326,51 @@ package body LLVM.Target_Machine is
    begin
       Set_Target_Machine_Asm_Verbosity (T, Verbose_Asm_Bool);
    end Set_Target_Machine_Asm_Verbosity;
+
+   procedure Set_Target_Machine_Fast_I_Sel
+     (T      : Target_Machine_T;
+      Enable : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetTargetMachineFastISel";
+   procedure Set_Target_Machine_Fast_I_Sel
+     (T      : Target_Machine_T;
+      Enable : Boolean)
+   is
+      Enable_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Enable);
+   begin
+      Set_Target_Machine_Fast_I_Sel (T, Enable_Bool);
+   end Set_Target_Machine_Fast_I_Sel;
+
+   procedure Set_Target_Machine_Global_I_Sel
+     (T      : Target_Machine_T;
+      Enable : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetTargetMachineGlobalISel";
+   procedure Set_Target_Machine_Global_I_Sel
+     (T      : Target_Machine_T;
+      Enable : Boolean)
+   is
+      Enable_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Enable);
+   begin
+      Set_Target_Machine_Global_I_Sel (T, Enable_Bool);
+   end Set_Target_Machine_Global_I_Sel;
+
+   procedure Set_Target_Machine_Machine_Outliner
+     (T      : Target_Machine_T;
+      Enable : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetTargetMachineMachineOutliner";
+   procedure Set_Target_Machine_Machine_Outliner
+     (T      : Target_Machine_T;
+      Enable : Boolean)
+   is
+      Enable_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Enable);
+   begin
+      Set_Target_Machine_Machine_Outliner (T, Enable_Bool);
+   end Set_Target_Machine_Machine_Outliner;
 
    function Target_Machine_Emit_To_File
      (T             : Target_Machine_T;

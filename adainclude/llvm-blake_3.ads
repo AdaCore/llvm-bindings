@@ -11,12 +11,12 @@ with stddef_h;
 
 package LLVM.Blake_3 is
 
-   BLAKE3_VERSION_STRING : aliased constant String := "1.3.1" & ASCII.NUL;  --  install/include/llvm-c/blake3.h:27
-   LLVM_BLAKE3_KEY_LEN : constant := 32;  --  install/include/llvm-c/blake3.h:28
-   LLVM_BLAKE3_OUT_LEN : constant := 32;  --  install/include/llvm-c/blake3.h:29
-   LLVM_BLAKE3_BLOCK_LEN : constant := 64;  --  install/include/llvm-c/blake3.h:30
-   LLVM_BLAKE3_CHUNK_LEN : constant := 1024;  --  install/include/llvm-c/blake3.h:31
-   LLVM_BLAKE3_MAX_DEPTH : constant := 54;  --  install/include/llvm-c/blake3.h:32
+   BLAKE3_VERSION_STRING : aliased constant String := "1.3.1" & ASCII.NUL;  --  include/llvm-c/blake3.h:27
+   LLVM_BLAKE3_KEY_LEN : constant := 32;  --  include/llvm-c/blake3.h:28
+   LLVM_BLAKE3_OUT_LEN : constant := 32;  --  include/llvm-c/blake3.h:29
+   LLVM_BLAKE3_BLOCK_LEN : constant := 64;  --  include/llvm-c/blake3.h:30
+   LLVM_BLAKE3_CHUNK_LEN : constant := 1024;  --  include/llvm-c/blake3.h:31
+   LLVM_BLAKE3_MAX_DEPTH : constant := 54;  --  include/llvm-c/blake3.h:32
 
   --===-- llvm-c/blake3.h - BLAKE3 C Interface ----------------------*- C -*-===*|*                                                                            *|
   --|
@@ -36,26 +36,26 @@ package LLVM.Blake_3 is
 
   -- This struct is a private implementation detail. It has to be here because
   -- it's part of llvm_blake3_hasher below.
-   type anon_array982 is array (0 .. 7) of aliased stdint_h.uint32_t;
-   type anon_array985 is array (0 .. 63) of aliased stdint_h.uint8_t;
+   type anon_array1116 is array (0 .. 7) of aliased stdint_h.uint32_t;
+   type anon_array1119 is array (0 .. 63) of aliased stdint_h.uint8_t;
    type Blake_3_Chunk_State_T is record
-      cv : aliased anon_array982;  -- install/include/llvm-c/blake3.h:37
-      chunk_counter : aliased stdint_h.uint64_t;  -- install/include/llvm-c/blake3.h:38
-      buf : aliased anon_array985;  -- install/include/llvm-c/blake3.h:39
-      buf_len : aliased stdint_h.uint8_t;  -- install/include/llvm-c/blake3.h:40
-      blocks_compressed : aliased stdint_h.uint8_t;  -- install/include/llvm-c/blake3.h:41
-      flags : aliased stdint_h.uint8_t;  -- install/include/llvm-c/blake3.h:42
+      cv : aliased anon_array1116;  -- include/llvm-c/blake3.h:37
+      chunk_counter : aliased stdint_h.uint64_t;  -- include/llvm-c/blake3.h:38
+      buf : aliased anon_array1119;  -- include/llvm-c/blake3.h:39
+      buf_len : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:40
+      blocks_compressed : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:41
+      flags : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:42
    end record
-   with Convention => C_Pass_By_Copy;  -- install/include/llvm-c/blake3.h:43
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/blake3.h:43
 
-   type anon_array990 is array (0 .. 1759) of aliased stdint_h.uint8_t;
+   type anon_array1124 is array (0 .. 1759) of aliased stdint_h.uint8_t;
    type Blake_3_Hasher_T is record
-      key : aliased anon_array982;  -- install/include/llvm-c/blake3.h:46
-      chunk : aliased Blake_3_Chunk_State_T;  -- install/include/llvm-c/blake3.h:47
-      cv_stack_len : aliased stdint_h.uint8_t;  -- install/include/llvm-c/blake3.h:48
-      cv_stack : aliased anon_array990;  -- install/include/llvm-c/blake3.h:54
+      key : aliased anon_array1116;  -- include/llvm-c/blake3.h:46
+      chunk : aliased Blake_3_Chunk_State_T;  -- include/llvm-c/blake3.h:47
+      cv_stack_len : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:48
+      cv_stack : aliased anon_array1124;  -- include/llvm-c/blake3.h:54
    end record
-   with Convention => C_Pass_By_Copy;  -- install/include/llvm-c/blake3.h:55
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/blake3.h:55
 
   -- The stack size is MAX_DEPTH + 1 because we do lazy merging. For example,
   -- with 7 chunks, we have 3 entries in the stack. Adding an 8th chunk
@@ -65,12 +65,12 @@ package LLVM.Blake_3 is
 function Blake_3_Version
       return String;
 
-   procedure Blake_3_Hasher_Init (Self : access Blake_3_Hasher_T)  -- install/include/llvm-c/blake3.h:58
+   procedure Blake_3_Hasher_Init (Self : access Blake_3_Hasher_T)  -- include/llvm-c/blake3.h:58
    with Import => True, 
         Convention => C, 
         External_Name => "llvm_blake3_hasher_init";
 
-   procedure Blake_3_Hasher_Init_Keyed (Self : access Blake_3_Hasher_T; Key : access stdint_h.uint8_t)  -- install/include/llvm-c/blake3.h:59
+   procedure Blake_3_Hasher_Init_Keyed (Self : access Blake_3_Hasher_T; Key : access stdint_h.uint8_t)  -- include/llvm-c/blake3.h:59
    with Import => True, 
         Convention => C, 
         External_Name => "llvm_blake3_hasher_init_keyed";
@@ -82,7 +82,7 @@ procedure Blake_3_Hasher_Init_Derive_Key
    procedure Blake_3_Hasher_Init_Derive_Key_Raw
      (Self : access Blake_3_Hasher_T;
       Context : System.Address;
-      Context_Len : stddef_h.size_t)  -- install/include/llvm-c/blake3.h:63
+      Context_Len : stddef_h.size_t)  -- include/llvm-c/blake3.h:63
    with Import => True, 
         Convention => C, 
         External_Name => "llvm_blake3_hasher_init_derive_key_raw";
@@ -90,7 +90,7 @@ procedure Blake_3_Hasher_Init_Derive_Key
    procedure Blake_3_Hasher_Update
      (Self : access Blake_3_Hasher_T;
       Input : System.Address;
-      Input_Len : stddef_h.size_t)  -- install/include/llvm-c/blake3.h:66
+      Input_Len : stddef_h.size_t)  -- include/llvm-c/blake3.h:66
    with Import => True, 
         Convention => C, 
         External_Name => "llvm_blake3_hasher_update";
@@ -98,7 +98,7 @@ procedure Blake_3_Hasher_Init_Derive_Key
    procedure Blake_3_Hasher_Finalize
      (Self : access constant Blake_3_Hasher_T;
       C_Out : access stdint_h.uint8_t;
-      Out_Len : stddef_h.size_t)  -- install/include/llvm-c/blake3.h:68
+      Out_Len : stddef_h.size_t)  -- include/llvm-c/blake3.h:68
    with Import => True, 
         Convention => C, 
         External_Name => "llvm_blake3_hasher_finalize";
@@ -107,12 +107,12 @@ procedure Blake_3_Hasher_Init_Derive_Key
      (Self : access constant Blake_3_Hasher_T;
       Seek : stdint_h.uint64_t;
       C_Out : access stdint_h.uint8_t;
-      Out_Len : stddef_h.size_t)  -- install/include/llvm-c/blake3.h:70
+      Out_Len : stddef_h.size_t)  -- include/llvm-c/blake3.h:70
    with Import => True, 
         Convention => C, 
         External_Name => "llvm_blake3_hasher_finalize_seek";
 
-   procedure Blake_3_Hasher_Reset (Self : access Blake_3_Hasher_T)  -- install/include/llvm-c/blake3.h:73
+   procedure Blake_3_Hasher_Reset (Self : access Blake_3_Hasher_T)  -- include/llvm-c/blake3.h:73
    with Import => True, 
         Convention => C, 
         External_Name => "llvm_blake3_hasher_reset";

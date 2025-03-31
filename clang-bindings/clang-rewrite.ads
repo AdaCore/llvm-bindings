@@ -20,13 +20,13 @@ package Clang.Rewrite is
   --|*                                                                            *|
   --|*===----------------------------------------------------------------------=== 
 
-   type Rewriter_T is new System.Address;  -- install/include/clang-c/Rewrite.h:20
+   type Rewriter_T is new System.Address;  -- include/clang-c/Rewrite.h:20
 
   --*
   -- * Create CXRewriter.
   --  
 
-   function CX_Rewriter_Create (TU : Clang.Index.Translation_Unit_T) return Rewriter_T  -- install/include/clang-c/Rewrite.h:25
+   function CX_Rewriter_Create (TU : Clang.Index.Translation_Unit_T) return Rewriter_T  -- include/clang-c/Rewrite.h:25
    with Import => True, 
         Convention => C, 
         External_Name => "clang_CXRewriter_create";
@@ -54,7 +54,7 @@ procedure CX_Rewriter_Replace_Text
   -- * Remove the specified range.
   --  
 
-   procedure CX_Rewriter_Remove_Text (Rew : Rewriter_T; To_Be_Removed : Clang.CX_Source_Location.Source_Range_T)  -- install/include/clang-c/Rewrite.h:43
+   procedure CX_Rewriter_Remove_Text (Rew : Rewriter_T; To_Be_Removed : Clang.CX_Source_Location.Source_Range_T)  -- include/clang-c/Rewrite.h:43
    with Import => True, 
         Convention => C, 
         External_Name => "clang_CXRewriter_removeText";
@@ -64,7 +64,7 @@ procedure CX_Rewriter_Replace_Text
   -- * Returns 1 if any files were not saved successfully, returns 0 otherwise.
   --  
 
-   function CX_Rewriter_Overwrite_Changed_Files (Rew : Rewriter_T) return int  -- install/include/clang-c/Rewrite.h:49
+   function CX_Rewriter_Overwrite_Changed_Files (Rew : Rewriter_T) return int  -- include/clang-c/Rewrite.h:49
    with Import => True, 
         Convention => C, 
         External_Name => "clang_CXRewriter_overwriteChangedFiles";
@@ -73,7 +73,7 @@ procedure CX_Rewriter_Replace_Text
   -- * Write out rewritten version of the main file to stdout.
   --  
 
-   procedure CX_Rewriter_Write_Main_File_To_Std_Out (Rew : Rewriter_T)  -- install/include/clang-c/Rewrite.h:54
+   procedure CX_Rewriter_Write_Main_File_To_Std_Out (Rew : Rewriter_T)  -- include/clang-c/Rewrite.h:54
    with Import => True, 
         Convention => C, 
         External_Name => "clang_CXRewriter_writeMainFileToStdOut";
@@ -82,7 +82,7 @@ procedure CX_Rewriter_Replace_Text
   -- * Free the given CXRewriter.
   --  
 
-   procedure CX_Rewriter_Dispose (Rew : Rewriter_T)  -- install/include/clang-c/Rewrite.h:59
+   procedure CX_Rewriter_Dispose (Rew : Rewriter_T)  -- include/clang-c/Rewrite.h:59
    with Import => True, 
         Convention => C, 
         External_Name => "clang_CXRewriter_dispose";
