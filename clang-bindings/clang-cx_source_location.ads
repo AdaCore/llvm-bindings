@@ -43,12 +43,12 @@ package Clang.CX_Source_Location is
   -- * to map a source location to a particular file, line, and column.
   --  
 
-   type anon_array1114 is array (0 .. 1) of System.Address;
+   type anon_array1252 is array (0 .. 1) of System.Address;
    type Source_Location_T is record
-      ptr_data : anon_array1114;  -- install/include/clang-c/CXSourceLocation.h:45
-      int_data : aliased unsigned;  -- install/include/clang-c/CXSourceLocation.h:46
+      ptr_data : anon_array1252;  -- include/clang-c/CXSourceLocation.h:45
+      int_data : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:46
    end record
-   with Convention => C_Pass_By_Copy;  -- install/include/clang-c/CXSourceLocation.h:47
+   with Convention => C_Pass_By_Copy;  -- include/clang-c/CXSourceLocation.h:47
 
   --*
   -- * Identifies a half-open character range in the source code.
@@ -58,17 +58,17 @@ package Clang.CX_Source_Location is
   --  
 
    type Source_Range_T is record
-      ptr_data : anon_array1114;  -- install/include/clang-c/CXSourceLocation.h:56
-      begin_int_data : aliased unsigned;  -- install/include/clang-c/CXSourceLocation.h:57
-      end_int_data : aliased unsigned;  -- install/include/clang-c/CXSourceLocation.h:58
+      ptr_data : anon_array1252;  -- include/clang-c/CXSourceLocation.h:56
+      begin_int_data : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:57
+      end_int_data : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:58
    end record
-   with Convention => C_Pass_By_Copy;  -- install/include/clang-c/CXSourceLocation.h:59
+   with Convention => C_Pass_By_Copy;  -- include/clang-c/CXSourceLocation.h:59
 
   --*
   -- * Retrieve a NULL (invalid) source location.
   --  
 
-   function Get_Null_Location return Source_Location_T  -- install/include/clang-c/CXSourceLocation.h:64
+   function Get_Null_Location return Source_Location_T  -- include/clang-c/CXSourceLocation.h:64
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getNullLocation";
@@ -82,7 +82,7 @@ package Clang.CX_Source_Location is
   -- * if they refer to different locations.
   --  
 
-   function Equal_Locations (Loc_1 : Source_Location_T; Loc_2 : Source_Location_T) return unsigned  -- install/include/clang-c/CXSourceLocation.h:74
+   function Equal_Locations (Loc_1 : Source_Location_T; Loc_2 : Source_Location_T) return unsigned  -- include/clang-c/CXSourceLocation.h:74
    with Import => True, 
         Convention => C, 
         External_Name => "clang_equalLocations";
@@ -108,7 +108,7 @@ function Location_Is_From_Main_File
   -- * Retrieve a NULL (invalid) source range.
   --  
 
-   function Get_Null_Range return Source_Range_T  -- install/include/clang-c/CXSourceLocation.h:91
+   function Get_Null_Range return Source_Range_T  -- include/clang-c/CXSourceLocation.h:91
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getNullRange";
@@ -118,7 +118,7 @@ function Location_Is_From_Main_File
   -- * locations.
   --  
 
-   function Get_Range (C_Begin : Source_Location_T; C_End : Source_Location_T) return Source_Range_T  -- install/include/clang-c/CXSourceLocation.h:97
+   function Get_Range (C_Begin : Source_Location_T; C_End : Source_Location_T) return Source_Range_T  -- include/clang-c/CXSourceLocation.h:97
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getRange";
@@ -129,7 +129,7 @@ function Location_Is_From_Main_File
   -- * \returns non-zero if the ranges are the same, zero if they differ.
   --  
 
-   function Equal_Ranges (Range_1 : Source_Range_T; Range_2 : Source_Range_T) return unsigned  -- install/include/clang-c/CXSourceLocation.h:105
+   function Equal_Ranges (Range_1 : Source_Range_T; Range_2 : Source_Range_T) return unsigned  -- include/clang-c/CXSourceLocation.h:105
    with Import => True, 
         Convention => C, 
         External_Name => "clang_equalRanges";
@@ -170,7 +170,7 @@ function Range_Is_Null
       File : System.Address;
       Line : access unsigned;
       Column : access unsigned;
-      Offset : access unsigned)  -- install/include/clang-c/CXSourceLocation.h:135
+      Offset : access unsigned)  -- include/clang-c/CXSourceLocation.h:135
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getExpansionLocation";
@@ -220,7 +220,7 @@ function Range_Is_Null
      (Location : Source_Location_T;
       Filename : access Clang.CX_String.String_T;
       Line : access unsigned;
-      Column : access unsigned)  -- install/include/clang-c/CXSourceLocation.h:180
+      Column : access unsigned)  -- include/clang-c/CXSourceLocation.h:180
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getPresumedLocation";
@@ -239,7 +239,7 @@ function Range_Is_Null
       File : System.Address;
       Line : access unsigned;
       Column : access unsigned;
-      Offset : access unsigned)  -- install/include/clang-c/CXSourceLocation.h:192
+      Offset : access unsigned)  -- include/clang-c/CXSourceLocation.h:192
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getInstantiationLocation";
@@ -272,7 +272,7 @@ function Range_Is_Null
       File : System.Address;
       Line : access unsigned;
       Column : access unsigned;
-      Offset : access unsigned)  -- install/include/clang-c/CXSourceLocation.h:219
+      Offset : access unsigned)  -- include/clang-c/CXSourceLocation.h:219
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getSpellingLocation";
@@ -306,7 +306,7 @@ function Range_Is_Null
       File : System.Address;
       Line : access unsigned;
       Column : access unsigned;
-      Offset : access unsigned)  -- install/include/clang-c/CXSourceLocation.h:247
+      Offset : access unsigned)  -- include/clang-c/CXSourceLocation.h:247
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getFileLocation";
@@ -316,7 +316,7 @@ function Range_Is_Null
   -- * source range.
   --  
 
-   function Get_Range_Start (C_Range : Source_Range_T) return Source_Location_T  -- install/include/clang-c/CXSourceLocation.h:255
+   function Get_Range_Start (C_Range : Source_Range_T) return Source_Location_T  -- include/clang-c/CXSourceLocation.h:255
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getRangeStart";
@@ -326,7 +326,7 @@ function Range_Is_Null
   -- * source range.
   --  
 
-   function Get_Range_End (C_Range : Source_Range_T) return Source_Location_T  -- install/include/clang-c/CXSourceLocation.h:261
+   function Get_Range_End (C_Range : Source_Range_T) return Source_Location_T  -- include/clang-c/CXSourceLocation.h:261
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getRangeEnd";
@@ -337,10 +337,10 @@ function Range_Is_Null
 
   --* The number of ranges in the \c ranges array.  
    type Source_Range_List_T is record
-      count : aliased unsigned;  -- install/include/clang-c/CXSourceLocation.h:268
-      ranges : access Source_Range_T;  -- install/include/clang-c/CXSourceLocation.h:272
+      count : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:268
+      ranges : access Source_Range_T;  -- include/clang-c/CXSourceLocation.h:272
    end record
-   with Convention => C_Pass_By_Copy;  -- install/include/clang-c/CXSourceLocation.h:273
+   with Convention => C_Pass_By_Copy;  -- include/clang-c/CXSourceLocation.h:273
 
   --*
   --   * An array of \c CXSourceRanges.
@@ -350,7 +350,7 @@ function Range_Is_Null
   -- * Destroy the given \c CXSourceRangeList.
   --  
 
-   procedure Dispose_Source_Range_List (Ranges : access Source_Range_List_T)  -- install/include/clang-c/CXSourceLocation.h:278
+   procedure Dispose_Source_Range_List (Ranges : access Source_Range_List_T)  -- include/clang-c/CXSourceLocation.h:278
    with Import => True, 
         Convention => C, 
         External_Name => "clang_disposeSourceRangeList";

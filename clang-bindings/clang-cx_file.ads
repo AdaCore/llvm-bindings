@@ -34,7 +34,7 @@ package Clang.CX_File is
   -- * A particular source file that is part of a translation unit.
   --  
 
-   type File_T is new System.Address;  -- install/include/clang-c/CXFile.h:34
+   type File_T is new System.Address;  -- include/clang-c/CXFile.h:34
 
   --*
   -- * Retrieve the complete file and path name of the given file.
@@ -48,7 +48,7 @@ function Get_File_Name
   -- * Retrieve the last modification time of the given file.
   --  
 
-   function Get_File_Time (S_File : File_T) return time_h.time_t  -- install/include/clang-c/CXFile.h:44
+   function Get_File_Time (S_File : File_T) return time_h.time_t  -- include/clang-c/CXFile.h:44
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getFileTime";
@@ -58,11 +58,11 @@ function Get_File_Name
   -- * across an indexing session.
   --  
 
-   type anon_array1106 is array (0 .. 2) of aliased Extensions.unsigned_long_long;
+   type anon_array1244 is array (0 .. 2) of aliased Extensions.unsigned_long_long;
    type File_Unique_ID_T is record
-      data : aliased anon_array1106;  -- install/include/clang-c/CXFile.h:51
+      data : aliased anon_array1244;  -- include/clang-c/CXFile.h:51
    end record
-   with Convention => C_Pass_By_Copy;  -- install/include/clang-c/CXFile.h:52
+   with Convention => C_Pass_By_Copy;  -- include/clang-c/CXFile.h:52
 
   --*
   -- * Retrieve the unique ID for the given \c file.
@@ -73,7 +73,7 @@ function Get_File_Name
   -- * otherwise returns 0.
   --  
 
-   function Get_File_Unique_ID (File : File_T; Out_ID : access File_Unique_ID_T) return int  -- install/include/clang-c/CXFile.h:62
+   function Get_File_Unique_ID (File : File_T; Out_ID : access File_Unique_ID_T) return int  -- include/clang-c/CXFile.h:62
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getFileUniqueID";

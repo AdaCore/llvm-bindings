@@ -35,10 +35,10 @@ package LLVM.Orc_EE is
   --\*===----------------------------------------------------------------------=== 
 
    type Memory_Manager_Create_Context_Callback_T is access function (Arg_1 : System.Address) return System.Address
-   with Convention => C;  -- install/include/llvm-c/OrcEE.h:35
+   with Convention => C;  -- include/llvm-c/OrcEE.h:35
 
    type Memory_Manager_Notify_Terminating_Callback_T is access procedure (Arg_1 : System.Address)
-   with Convention => C;  -- install/include/llvm-c/OrcEE.h:36
+   with Convention => C;  -- include/llvm-c/OrcEE.h:36
 
   --*
   -- * @defgroup LLVMCExecutionEngineORCEE ExecutionEngine-based ORC Utils
@@ -52,7 +52,7 @@ package LLVM.Orc_EE is
   -- * SectionMemoryManager for memory management.
   --  
 
-   function Orc_Create_RT_Dyld_Object_Linking_Layer_With_Section_Memory_Manager (ES : LLVM.Orc.Orc_Execution_Session_T) return LLVM.Orc.Orc_Object_Layer_T  -- install/include/llvm-c/OrcEE.h:50
+   function Orc_Create_RT_Dyld_Object_Linking_Layer_With_Section_Memory_Manager (ES : LLVM.Orc.Orc_Execution_Session_T) return LLVM.Orc.Orc_Object_Layer_T  -- include/llvm-c/OrcEE.h:50
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager";
@@ -90,7 +90,7 @@ package LLVM.Orc_EE is
       Allocate_Code_Section : LLVM.Execution_Engine.Memory_Manager_Allocate_Code_Section_Callback_T;
       Allocate_Data_Section : LLVM.Execution_Engine.Memory_Manager_Allocate_Data_Section_Callback_T;
       Finalize_Memory : LLVM.Execution_Engine.Memory_Manager_Finalize_Memory_Callback_T;
-      Destroy : LLVM.Execution_Engine.Memory_Manager_Destroy_Callback_T) return LLVM.Orc.Orc_Object_Layer_T  -- install/include/llvm-c/OrcEE.h:78
+      Destroy : LLVM.Execution_Engine.Memory_Manager_Destroy_Callback_T) return LLVM.Orc.Orc_Object_Layer_T  -- include/llvm-c/OrcEE.h:78
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks";
@@ -102,7 +102,7 @@ package LLVM.Orc_EE is
   -- * behavior is undefined.
   --  
 
-   procedure Orc_RT_Dyld_Object_Linking_Layer_Register_JIT_Event_Listener (RT_Dyld_Obj_Linking_Layer : LLVM.Orc.Orc_Object_Layer_T; Listener : LLVM.Types.JIT_Event_Listener_T)  -- install/include/llvm-c/OrcEE.h:93
+   procedure Orc_RT_Dyld_Object_Linking_Layer_Register_JIT_Event_Listener (RT_Dyld_Obj_Linking_Layer : LLVM.Orc.Orc_Object_Layer_T; Listener : LLVM.Types.JIT_Event_Listener_T)  -- include/llvm-c/OrcEE.h:93
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcRTDyldObjectLinkingLayerRegisterJITEventListener";

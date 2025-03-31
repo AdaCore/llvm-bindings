@@ -75,21 +75,6 @@ package body LLVM.Core is
       Context_Set_Discard_Value_Names (C, Discard_Bool);
    end Context_Set_Discard_Value_Names;
 
-   procedure Context_Set_Opaque_Pointers
-     (C               : LLVM.Types.Context_T;
-      Opaque_Pointers : LLVM.Types.Bool_T)
-   with Import => True,
-        Convention => C,
-        External_Name => "LLVMContextSetOpaquePointers";
-   procedure Context_Set_Opaque_Pointers
-     (C               : LLVM.Types.Context_T;
-      Opaque_Pointers : Boolean)
-   is
-      Opaque_Pointers_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Opaque_Pointers);
-   begin
-      Context_Set_Opaque_Pointers (C, Opaque_Pointers_Bool);
-   end Context_Set_Opaque_Pointers;
-
    function Get_Diag_Info_Description
      (DI : LLVM.Types.Diagnostic_Info_T)
       return Interfaces.C.Strings.chars_ptr
@@ -349,6 +334,37 @@ package body LLVM.Core is
       Return_Value := Module_Create_With_Name_In_Context (Module_ID_String, C);
       return Return_Value;
    end Module_Create_With_Name_In_Context;
+
+   function Is_New_Dbg_Info_Format
+     (M : LLVM.Types.Module_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMIsNewDbgInfoFormat";
+   function Is_New_Dbg_Info_Format
+     (M : LLVM.Types.Module_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Is_New_Dbg_Info_Format (M);
+      return Return_Value /= 0;
+   end Is_New_Dbg_Info_Format;
+
+   procedure Set_Is_New_Dbg_Info_Format
+     (M              : LLVM.Types.Module_T;
+      Use_New_Format : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetIsNewDbgInfoFormat";
+   procedure Set_Is_New_Dbg_Info_Format
+     (M              : LLVM.Types.Module_T;
+      Use_New_Format : Boolean)
+   is
+      Use_New_Format_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Use_New_Format);
+   begin
+      Set_Is_New_Dbg_Info_Format (M, Use_New_Format_Bool);
+   end Set_Is_New_Dbg_Info_Format;
 
    function Get_Module_Identifier
      (M   : LLVM.Types.Module_T;
@@ -758,6 +774,98 @@ package body LLVM.Core is
       Return_Value := Get_Inline_Asm (Ty, Asm_String, Asm_String_Size, Constraints, Constraints_Size, Has_Side_Effects_Bool, Is_Align_Stack_Bool, Dialect, Can_Throw_Bool);
       return Return_Value;
    end Get_Inline_Asm;
+
+   function Get_Inline_Asm_Asm_String
+     (Inline_Asm_Val : LLVM.Types.Value_T;
+      Len            : access stddef_h.size_t)
+      return Interfaces.C.Strings.chars_ptr
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetInlineAsmAsmString";
+   function Get_Inline_Asm_Asm_String
+     (Inline_Asm_Val : LLVM.Types.Value_T;
+      Len            : access stddef_h.size_t)
+      return String
+   is
+      Return_Value : Interfaces.C.Strings.chars_ptr;
+   begin
+      Return_Value := Get_Inline_Asm_Asm_String (Inline_Asm_Val, Len);
+      if Return_Value /= Null_Ptr then
+         return Value (Return_Value);
+      else
+         return "";
+      end if;
+   end Get_Inline_Asm_Asm_String;
+
+   function Get_Inline_Asm_Constraint_String
+     (Inline_Asm_Val : LLVM.Types.Value_T;
+      Len            : access stddef_h.size_t)
+      return Interfaces.C.Strings.chars_ptr
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetInlineAsmConstraintString";
+   function Get_Inline_Asm_Constraint_String
+     (Inline_Asm_Val : LLVM.Types.Value_T;
+      Len            : access stddef_h.size_t)
+      return String
+   is
+      Return_Value : Interfaces.C.Strings.chars_ptr;
+   begin
+      Return_Value := Get_Inline_Asm_Constraint_String (Inline_Asm_Val, Len);
+      if Return_Value /= Null_Ptr then
+         return Value (Return_Value);
+      else
+         return "";
+      end if;
+   end Get_Inline_Asm_Constraint_String;
+
+   function Get_Inline_Asm_Has_Side_Effects
+     (Inline_Asm_Val : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetInlineAsmHasSideEffects";
+   function Get_Inline_Asm_Has_Side_Effects
+     (Inline_Asm_Val : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_Inline_Asm_Has_Side_Effects (Inline_Asm_Val);
+      return Return_Value /= 0;
+   end Get_Inline_Asm_Has_Side_Effects;
+
+   function Get_Inline_Asm_Needs_Aligned_Stack
+     (Inline_Asm_Val : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetInlineAsmNeedsAlignedStack";
+   function Get_Inline_Asm_Needs_Aligned_Stack
+     (Inline_Asm_Val : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_Inline_Asm_Needs_Aligned_Stack (Inline_Asm_Val);
+      return Return_Value /= 0;
+   end Get_Inline_Asm_Needs_Aligned_Stack;
+
+   function Get_Inline_Asm_Can_Unwind
+     (Inline_Asm_Val : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetInlineAsmCanUnwind";
+   function Get_Inline_Asm_Can_Unwind
+     (Inline_Asm_Val : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_Inline_Asm_Can_Unwind (Inline_Asm_Val);
+      return Return_Value /= 0;
+   end Get_Inline_Asm_Can_Unwind;
 
    function Get_Type_By_Name
      (M    : LLVM.Types.Module_T;
@@ -1273,6 +1381,26 @@ package body LLVM.Core is
       return Return_Value;
    end Target_Ext_Type_In_Context;
 
+   function Get_Target_Ext_Type_Name
+     (Target_Ext_Ty : LLVM.Types.Type_T)
+      return Interfaces.C.Strings.chars_ptr
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetTargetExtTypeName";
+   function Get_Target_Ext_Type_Name
+     (Target_Ext_Ty : LLVM.Types.Type_T)
+      return String
+   is
+      Return_Value : Interfaces.C.Strings.chars_ptr;
+   begin
+      Return_Value := Get_Target_Ext_Type_Name (Target_Ext_Ty);
+      if Return_Value /= Null_Ptr then
+         return Value (Return_Value);
+      else
+         return "";
+      end if;
+   end Get_Target_Ext_Type_Name;
+
    function Get_Value_Name_2
      (Val    : LLVM.Types.Value_T;
       Length : access stddef_h.size_t)
@@ -1332,6 +1460,26 @@ package body LLVM.Core is
          return "";
       end if;
    end Print_Value_To_String;
+
+   function Print_Dbg_Record_To_String
+     (C_Record : LLVM.Types.Dbg_Record_T)
+      return Interfaces.C.Strings.chars_ptr
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMPrintDbgRecordToString";
+   function Print_Dbg_Record_To_String
+     (C_Record : LLVM.Types.Dbg_Record_T)
+      return String
+   is
+      Return_Value : Interfaces.C.Strings.chars_ptr;
+   begin
+      Return_Value := Print_Dbg_Record_To_String (C_Record);
+      if Return_Value /= Null_Ptr then
+         return Value (Return_Value);
+      else
+         return "";
+      end if;
+   end Print_Dbg_Record_To_String;
 
    function Is_Constant
      (Val : LLVM.Types.Value_T)
@@ -1580,6 +1728,44 @@ package body LLVM.Core is
       return Return_Value;
    end Const_String_In_Context;
 
+   function Const_String_In_Context_2
+     (C                   : LLVM.Types.Context_T;
+      Str                 : Interfaces.C.Strings.chars_ptr;
+      Length              : stddef_h.size_t;
+      Dont_Null_Terminate : LLVM.Types.Bool_T)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMConstStringInContext2";
+   function Const_String_In_Context_2
+     (C                   : LLVM.Types.Context_T;
+      Str                 : String;
+      Length              : stddef_h.size_t;
+      Dont_Null_Terminate : LLVM.Types.Bool_T)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Str_Array    : aliased char_array := To_C (Str);
+      Str_String   : constant chars_ptr := To_Chars_Ptr (Str_Array'Unchecked_Access);
+   begin
+      Return_Value := Const_String_In_Context_2 (C, Str_String, Length, Dont_Null_Terminate);
+      return Return_Value;
+   end Const_String_In_Context_2;
+
+   function Const_String_In_Context_2
+     (C                   : LLVM.Types.Context_T;
+      Str                 : String;
+      Length              : stddef_h.size_t;
+      Dont_Null_Terminate : Boolean)
+      return LLVM.Types.Value_T
+   is
+      Return_Value             : LLVM.Types.Value_T;
+      Dont_Null_Terminate_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Dont_Null_Terminate);
+   begin
+      Return_Value := Const_String_In_Context_2 (C, Str, Length, Dont_Null_Terminate_Bool);
+      return Return_Value;
+   end Const_String_In_Context_2;
+
    function Const_String
      (Str                 : Interfaces.C.Strings.chars_ptr;
       Length              : unsigned;
@@ -1696,27 +1882,6 @@ package body LLVM.Core is
       Return_Value := Const_Struct (Constant_Vals, Count, Packed_Bool);
       return Return_Value;
    end Const_Struct;
-
-   function Const_Int_Cast
-     (Constant_Val : LLVM.Types.Value_T;
-      To_Type      : LLVM.Types.Type_T;
-      Is_Signed    : LLVM.Types.Bool_T)
-      return LLVM.Types.Value_T
-   with Import => True,
-        Convention => C,
-        External_Name => "LLVMConstIntCast";
-   function Const_Int_Cast
-     (Constant_Val : LLVM.Types.Value_T;
-      To_Type      : LLVM.Types.Type_T;
-      Is_Signed    : Boolean)
-      return LLVM.Types.Value_T
-   is
-      Return_Value   : LLVM.Types.Value_T;
-      Is_Signed_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Is_Signed);
-   begin
-      Return_Value := Const_Int_Cast (Constant_Val, To_Type, Is_Signed_Bool);
-      return Return_Value;
-   end Const_Int_Cast;
 
    function Const_Inline_Asm
      (Ty               : LLVM.Types.Type_T;
@@ -2216,6 +2381,38 @@ package body LLVM.Core is
       Set_GC (Fn, Name_String);
    end Set_GC;
 
+   function Has_Prefix_Data
+     (Fn : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMHasPrefixData";
+   function Has_Prefix_Data
+     (Fn : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Has_Prefix_Data (Fn);
+      return Return_Value /= 0;
+   end Has_Prefix_Data;
+
+   function Has_Prologue_Data
+     (Fn : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMHasPrologueData";
+   function Has_Prologue_Data
+     (Fn : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Has_Prologue_Data (Fn);
+      return Return_Value /= 0;
+   end Has_Prologue_Data;
+
    function Get_String_Attribute_At_Index
      (F     : LLVM.Types.Value_T;
       Idx   : Attribute_Index_T;
@@ -2415,6 +2612,52 @@ package body LLVM.Core is
       Return_Value := MD_String (Str_String, S_Len);
       return Return_Value;
    end MD_String;
+
+   function Create_Operand_Bundle
+     (Tag      : Interfaces.C.Strings.chars_ptr;
+      Tag_Len  : stddef_h.size_t;
+      Args     : System.Address;
+      Num_Args : unsigned)
+      return LLVM.Types.Operand_Bundle_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMCreateOperandBundle";
+   function Create_Operand_Bundle
+     (Tag      : String;
+      Tag_Len  : stddef_h.size_t;
+      Args     : System.Address;
+      Num_Args : unsigned)
+      return LLVM.Types.Operand_Bundle_T
+   is
+      Return_Value : LLVM.Types.Operand_Bundle_T;
+      Tag_Array    : aliased char_array := To_C (Tag);
+      Tag_String   : constant chars_ptr := To_Chars_Ptr (Tag_Array'Unchecked_Access);
+   begin
+      Return_Value := Create_Operand_Bundle (Tag_String, Tag_Len, Args, Num_Args);
+      return Return_Value;
+   end Create_Operand_Bundle;
+
+   function Get_Operand_Bundle_Tag
+     (Bundle : LLVM.Types.Operand_Bundle_T;
+      Len    : access stddef_h.size_t)
+      return Interfaces.C.Strings.chars_ptr
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetOperandBundleTag";
+   function Get_Operand_Bundle_Tag
+     (Bundle : LLVM.Types.Operand_Bundle_T;
+      Len    : access stddef_h.size_t)
+      return String
+   is
+      Return_Value : Interfaces.C.Strings.chars_ptr;
+   begin
+      Return_Value := Get_Operand_Bundle_Tag (Bundle, Len);
+      if Return_Value /= Null_Ptr then
+         return Value (Return_Value);
+      else
+         return "";
+      end if;
+   end Get_Operand_Bundle_Tag;
 
    function Value_Is_Basic_Block
      (Val : LLVM.Types.Value_T)
@@ -2696,6 +2939,44 @@ package body LLVM.Core is
       Insert_Into_Builder_With_Name (Builder, Instr, Name_String);
    end Insert_Into_With_Name;
 
+   function Build_Call_Br
+     (B                  : LLVM.Types.Builder_T;
+      Ty                 : LLVM.Types.Type_T;
+      Fn                 : LLVM.Types.Value_T;
+      Default_Dest       : LLVM.Types.Basic_Block_T;
+      Indirect_Dests     : System.Address;
+      Num_Indirect_Dests : unsigned;
+      Args               : System.Address;
+      Num_Args           : unsigned;
+      Bundles            : System.Address;
+      Num_Bundles        : unsigned;
+      Name               : Interfaces.C.Strings.chars_ptr)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMBuildCallBr";
+   function Call_Br
+     (B                  : LLVM.Types.Builder_T;
+      Ty                 : LLVM.Types.Type_T;
+      Fn                 : LLVM.Types.Value_T;
+      Default_Dest       : LLVM.Types.Basic_Block_T;
+      Indirect_Dests     : System.Address;
+      Num_Indirect_Dests : unsigned;
+      Args               : System.Address;
+      Num_Args           : unsigned;
+      Bundles            : System.Address;
+      Num_Bundles        : unsigned;
+      Name               : String)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Build_Call_Br (B, Ty, Fn, Default_Dest, Indirect_Dests, Num_Indirect_Dests, Args, Num_Args, Bundles, Num_Bundles, Name_String);
+      return Return_Value;
+   end Call_Br;
+
    function Build_Invoke_2
      (Arg_1    : LLVM.Types.Builder_T;
       Ty       : LLVM.Types.Type_T;
@@ -2727,6 +3008,42 @@ package body LLVM.Core is
       Return_Value := Build_Invoke_2 (Arg_1, Ty, Fn, Args, Num_Args, C_Then, Catch, Name_String);
       return Return_Value;
    end Invoke_2;
+
+   function Build_Invoke_With_Operand_Bundles
+     (Arg_1       : LLVM.Types.Builder_T;
+      Ty          : LLVM.Types.Type_T;
+      Fn          : LLVM.Types.Value_T;
+      Args        : System.Address;
+      Num_Args    : unsigned;
+      C_Then      : LLVM.Types.Basic_Block_T;
+      Catch       : LLVM.Types.Basic_Block_T;
+      Bundles     : System.Address;
+      Num_Bundles : unsigned;
+      Name        : Interfaces.C.Strings.chars_ptr)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMBuildInvokeWithOperandBundles";
+   function Invoke_With_Operand_Bundles
+     (Arg_1       : LLVM.Types.Builder_T;
+      Ty          : LLVM.Types.Type_T;
+      Fn          : LLVM.Types.Value_T;
+      Args        : System.Address;
+      Num_Args    : unsigned;
+      C_Then      : LLVM.Types.Basic_Block_T;
+      Catch       : LLVM.Types.Basic_Block_T;
+      Bundles     : System.Address;
+      Num_Bundles : unsigned;
+      Name        : String)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Build_Invoke_With_Operand_Bundles (Arg_1, Ty, Fn, Args, Num_Args, C_Then, Catch, Bundles, Num_Bundles, Name_String);
+      return Return_Value;
+   end Invoke_With_Operand_Bundles;
 
    function Build_Landing_Pad
      (B           : LLVM.Types.Builder_T;
@@ -3623,6 +3940,177 @@ package body LLVM.Core is
       return Return_Value;
    end Build_Not;
 
+   function Get_NUW
+     (Arith_Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetNUW";
+   function Get_NUW
+     (Arith_Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_NUW (Arith_Inst);
+      return Return_Value /= 0;
+   end Get_NUW;
+
+   procedure Set_NUW
+     (Arith_Inst : LLVM.Types.Value_T;
+      Has_NUW    : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetNUW";
+   procedure Set_NUW
+     (Arith_Inst : LLVM.Types.Value_T;
+      Has_NUW    : Boolean)
+   is
+      Has_NUW_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Has_NUW);
+   begin
+      Set_NUW (Arith_Inst, Has_NUW_Bool);
+   end Set_NUW;
+
+   function Get_NSW
+     (Arith_Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetNSW";
+   function Get_NSW
+     (Arith_Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_NSW (Arith_Inst);
+      return Return_Value /= 0;
+   end Get_NSW;
+
+   procedure Set_NSW
+     (Arith_Inst : LLVM.Types.Value_T;
+      Has_NSW    : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetNSW";
+   procedure Set_NSW
+     (Arith_Inst : LLVM.Types.Value_T;
+      Has_NSW    : Boolean)
+   is
+      Has_NSW_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Has_NSW);
+   begin
+      Set_NSW (Arith_Inst, Has_NSW_Bool);
+   end Set_NSW;
+
+   function Get_Exact
+     (Div_Or_Shr_Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetExact";
+   function Get_Exact
+     (Div_Or_Shr_Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_Exact (Div_Or_Shr_Inst);
+      return Return_Value /= 0;
+   end Get_Exact;
+
+   procedure Set_Exact
+     (Div_Or_Shr_Inst : LLVM.Types.Value_T;
+      Is_Exact        : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetExact";
+   procedure Set_Exact
+     (Div_Or_Shr_Inst : LLVM.Types.Value_T;
+      Is_Exact        : Boolean)
+   is
+      Is_Exact_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Is_Exact);
+   begin
+      Set_Exact (Div_Or_Shr_Inst, Is_Exact_Bool);
+   end Set_Exact;
+
+   function Get_N_Neg
+     (Non_Neg_Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetNNeg";
+   function Get_N_Neg
+     (Non_Neg_Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_N_Neg (Non_Neg_Inst);
+      return Return_Value /= 0;
+   end Get_N_Neg;
+
+   procedure Set_N_Neg
+     (Non_Neg_Inst : LLVM.Types.Value_T;
+      Is_Non_Neg   : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetNNeg";
+   procedure Set_N_Neg
+     (Non_Neg_Inst : LLVM.Types.Value_T;
+      Is_Non_Neg   : Boolean)
+   is
+      Is_Non_Neg_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Is_Non_Neg);
+   begin
+      Set_N_Neg (Non_Neg_Inst, Is_Non_Neg_Bool);
+   end Set_N_Neg;
+
+   function Can_Value_Use_Fast_Math_Flags
+     (Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMCanValueUseFastMathFlags";
+   function Can_Value_Use_Fast_Math_Flags
+     (Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Can_Value_Use_Fast_Math_Flags (Inst);
+      return Return_Value /= 0;
+   end Can_Value_Use_Fast_Math_Flags;
+
+   function Get_Is_Disjoint
+     (Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetIsDisjoint";
+   function Get_Is_Disjoint
+     (Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_Is_Disjoint (Inst);
+      return Return_Value /= 0;
+   end Get_Is_Disjoint;
+
+   procedure Set_Is_Disjoint
+     (Inst        : LLVM.Types.Value_T;
+      Is_Disjoint : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetIsDisjoint";
+   procedure Set_Is_Disjoint
+     (Inst        : LLVM.Types.Value_T;
+      Is_Disjoint : Boolean)
+   is
+      Is_Disjoint_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Is_Disjoint);
+   begin
+      Set_Is_Disjoint (Inst, Is_Disjoint_Bool);
+   end Set_Is_Disjoint;
+
    function Build_Malloc
      (Arg_1 : LLVM.Types.Builder_T;
       Ty    : LLVM.Types.Type_T;
@@ -3794,6 +4282,36 @@ package body LLVM.Core is
       Return_Value := Build_In_Bounds_GEP2 (B, Ty, Pointer, Indices, Num_Indices, Name_String);
       return Return_Value;
    end In_Bounds_GEP2;
+
+   function Build_GEP_With_No_Wrap_Flags
+     (B             : LLVM.Types.Builder_T;
+      Ty            : LLVM.Types.Type_T;
+      Pointer       : LLVM.Types.Value_T;
+      Indices       : System.Address;
+      Num_Indices   : unsigned;
+      Name          : Interfaces.C.Strings.chars_ptr;
+      No_Wrap_Flags : GEP_No_Wrap_Flags_T)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMBuildGEPWithNoWrapFlags";
+   function GEP_With_No_Wrap_Flags
+     (B             : LLVM.Types.Builder_T;
+      Ty            : LLVM.Types.Type_T;
+      Pointer       : LLVM.Types.Value_T;
+      Indices       : System.Address;
+      Num_Indices   : unsigned;
+      Name          : String;
+      No_Wrap_Flags : GEP_No_Wrap_Flags_T)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Build_GEP_With_No_Wrap_Flags (B, Ty, Pointer, Indices, Num_Indices, Name_String, No_Wrap_Flags);
+      return Return_Value;
+   end GEP_With_No_Wrap_Flags;
 
    function Build_Struct_GEP2
      (B       : LLVM.Types.Builder_T;
@@ -4579,6 +5097,38 @@ package body LLVM.Core is
       Return_Value := Build_Call_2 (Arg_1, Arg_2, Fn, Args, Num_Args, Name_String);
       return Return_Value;
    end Call_2;
+
+   function Build_Call_With_Operand_Bundles
+     (Arg_1       : LLVM.Types.Builder_T;
+      Arg_2       : LLVM.Types.Type_T;
+      Fn          : LLVM.Types.Value_T;
+      Args        : System.Address;
+      Num_Args    : unsigned;
+      Bundles     : System.Address;
+      Num_Bundles : unsigned;
+      Name        : Interfaces.C.Strings.chars_ptr)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMBuildCallWithOperandBundles";
+   function Call_With_Operand_Bundles
+     (Arg_1       : LLVM.Types.Builder_T;
+      Arg_2       : LLVM.Types.Type_T;
+      Fn          : LLVM.Types.Value_T;
+      Args        : System.Address;
+      Num_Args    : unsigned;
+      Bundles     : System.Address;
+      Num_Bundles : unsigned;
+      Name        : String)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Build_Call_With_Operand_Bundles (Arg_1, Arg_2, Fn, Args, Num_Args, Bundles, Num_Bundles, Name_String);
+      return Return_Value;
+   end Call_With_Operand_Bundles;
 
    function Build_Select
      (Arg_1  : LLVM.Types.Builder_T;

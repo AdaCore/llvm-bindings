@@ -41,10 +41,10 @@ package Clang.Documentation is
   --  
 
    type Comment_T is record
-      ASTNode : System.Address;  -- install/include/clang-c/Documentation.h:38
-      TranslationUnit : Clang.Index.Translation_Unit_T;  -- install/include/clang-c/Documentation.h:39
+      ASTNode : System.Address;  -- include/clang-c/Documentation.h:38
+      TranslationUnit : Clang.Index.Translation_Unit_T;  -- include/clang-c/Documentation.h:39
    end record
-   with Convention => C_Pass_By_Copy;  -- install/include/clang-c/Documentation.h:40
+   with Convention => C_Pass_By_Copy;  -- include/clang-c/Documentation.h:40
 
   --*
   -- * Given a cursor that represents a documentable entity (e.g.,
@@ -52,7 +52,7 @@ package Clang.Documentation is
   -- * \c CXComment_FullComment AST node.
   --  
 
-   function Cursor_Get_Parsed_Comment (C : Clang.Index.Cursor_T) return Comment_T  -- install/include/clang-c/Documentation.h:47
+   function Cursor_Get_Parsed_Comment (C : Clang.Index.Cursor_T) return Comment_T  -- include/clang-c/Documentation.h:47
    with Import => True, 
         Convention => C, 
         External_Name => "clang_Cursor_getParsedComment";
@@ -77,7 +77,7 @@ package Clang.Documentation is
       Comment_Verbatim_Block_Line,
       Comment_Verbatim_Line,
       Comment_Full_Comment)
-   with Convention => C;  -- install/include/clang-c/Documentation.h:54
+   with Convention => C;  -- include/clang-c/Documentation.h:54
 
   --*
   --   * Null comment.  No AST node is constructed at the requested location
@@ -182,7 +182,7 @@ package Clang.Documentation is
       Comment_Inline_Command_Render_Kind_Monospaced,
       Comment_Inline_Command_Render_Kind_Emphasized,
       Comment_Inline_Command_Render_Kind_Anchor)
-   with Convention => C;  -- install/include/clang-c/Documentation.h:165
+   with Convention => C;  -- include/clang-c/Documentation.h:165
 
   --*
   --   * Command argument should be rendered in a normal font.
@@ -213,7 +213,7 @@ package Clang.Documentation is
      (Comment_Param_Pass_Direction_In,
       Comment_Param_Pass_Direction_Out,
       Comment_Param_Pass_Direction_In_Out)
-   with Convention => C;  -- install/include/clang-c/Documentation.h:196
+   with Convention => C;  -- include/clang-c/Documentation.h:196
 
   --*
   --   * The parameter is an input parameter.
@@ -233,7 +233,7 @@ package Clang.Documentation is
   -- * \returns the type of the AST node.
   --  
 
-   function Comment_Get_Kind (Comment : Comment_T) return Comment_Kind_T  -- install/include/clang-c/Documentation.h:218
+   function Comment_Get_Kind (Comment : Comment_T) return Comment_Kind_T  -- include/clang-c/Documentation.h:218
    with Import => True, 
         Convention => C, 
         External_Name => "clang_Comment_getKind";
@@ -244,7 +244,7 @@ package Clang.Documentation is
   -- * \returns number of children of the AST node.
   --  
 
-   function Comment_Get_Num_Children (Comment : Comment_T) return unsigned  -- install/include/clang-c/Documentation.h:225
+   function Comment_Get_Num_Children (Comment : Comment_T) return unsigned  -- include/clang-c/Documentation.h:225
    with Import => True, 
         Convention => C, 
         External_Name => "clang_Comment_getNumChildren";
@@ -257,7 +257,7 @@ package Clang.Documentation is
   -- * \returns the specified child of the AST node.
   --  
 
-   function Comment_Get_Child (Comment : Comment_T; Child_Idx : unsigned) return Comment_T  -- install/include/clang-c/Documentation.h:235
+   function Comment_Get_Child (Comment : Comment_T; Child_Idx : unsigned) return Comment_T  -- include/clang-c/Documentation.h:235
    with Import => True, 
         Convention => C, 
         External_Name => "clang_Comment_getChild";
@@ -282,7 +282,7 @@ function Comment_Is_Whitespace
   -- * do not count.
   --  
 
-   function Inline_Content_Comment_Has_Trailing_Newline (Comment : Comment_T) return unsigned  -- install/include/clang-c/Documentation.h:254
+   function Inline_Content_Comment_Has_Trailing_Newline (Comment : Comment_T) return unsigned  -- include/clang-c/Documentation.h:254
    with Import => True, 
         Convention => C, 
         External_Name => "clang_InlineContentComment_hasTrailingNewline";
@@ -314,7 +314,7 @@ function Inline_Command_Comment_Get_Command_Name
   -- * semantics in Doxygen.
   --  
 
-   function Inline_Command_Comment_Get_Render_Kind (Comment : Comment_T) return Comment_Inline_Command_Render_Kind_T  -- install/include/clang-c/Documentation.h:278
+   function Inline_Command_Comment_Get_Render_Kind (Comment : Comment_T) return Comment_Inline_Command_Render_Kind_T  -- include/clang-c/Documentation.h:278
    with Import => True, 
         Convention => C, 
         External_Name => "clang_InlineCommandComment_getRenderKind";
@@ -325,7 +325,7 @@ function Inline_Command_Comment_Get_Command_Name
   -- * \returns number of command arguments.
   --  
 
-   function Inline_Command_Comment_Get_Num_Args (Comment : Comment_T) return unsigned  -- install/include/clang-c/Documentation.h:286
+   function Inline_Command_Comment_Get_Num_Args (Comment : Comment_T) return unsigned  -- include/clang-c/Documentation.h:286
    with Import => True, 
         Convention => C, 
         External_Name => "clang_InlineCommandComment_getNumArgs";
@@ -370,7 +370,7 @@ function HTML_Start_Tag_Comment_Is_Self_Closing
   -- * \returns number of attributes (name-value pairs) attached to the start tag.
   --  
 
-   function HTML_Start_Tag_Get_Num_Attrs (Comment : Comment_T) return unsigned  -- install/include/clang-c/Documentation.h:320
+   function HTML_Start_Tag_Get_Num_Attrs (Comment : Comment_T) return unsigned  -- include/clang-c/Documentation.h:320
    with Import => True, 
         Convention => C, 
         External_Name => "clang_HTMLStartTag_getNumAttrs";
@@ -417,7 +417,7 @@ function Block_Command_Comment_Get_Command_Name
   -- * \returns number of word-like arguments.
   --  
 
-   function Block_Command_Comment_Get_Num_Args (Comment : Comment_T) return unsigned  -- install/include/clang-c/Documentation.h:356
+   function Block_Command_Comment_Get_Num_Args (Comment : Comment_T) return unsigned  -- include/clang-c/Documentation.h:356
    with Import => True, 
         Convention => C, 
         External_Name => "clang_BlockCommandComment_getNumArgs";
@@ -442,7 +442,7 @@ function Block_Command_Comment_Get_Arg_Text
   -- * \returns paragraph argument of the block command.
   --  
 
-   function Block_Command_Comment_Get_Paragraph (Comment : Comment_T) return Comment_T  -- install/include/clang-c/Documentation.h:376
+   function Block_Command_Comment_Get_Paragraph (Comment : Comment_T) return Comment_T  -- include/clang-c/Documentation.h:376
    with Import => True, 
         Convention => C, 
         External_Name => "clang_BlockCommandComment_getParagraph";
@@ -475,7 +475,7 @@ function Param_Command_Comment_Is_Param_Index_Valid
   -- * \returns zero-based parameter index in function prototype.
   --  
 
-   function Param_Command_Comment_Get_Param_Index (Comment : Comment_T) return unsigned  -- install/include/clang-c/Documentation.h:402
+   function Param_Command_Comment_Get_Param_Index (Comment : Comment_T) return unsigned  -- include/clang-c/Documentation.h:402
    with Import => True, 
         Convention => C, 
         External_Name => "clang_ParamCommandComment_getParamIndex";
@@ -497,7 +497,7 @@ function Param_Command_Comment_Is_Direction_Explicit
   -- * \returns parameter passing direction.
   --  
 
-   function Param_Command_Comment_Get_Direction (Comment : Comment_T) return Comment_Param_Pass_Direction_T  -- install/include/clang-c/Documentation.h:419
+   function Param_Command_Comment_Get_Direction (Comment : Comment_T) return Comment_Param_Pass_Direction_T  -- include/clang-c/Documentation.h:419
    with Import => True, 
         Convention => C, 
         External_Name => "clang_ParamCommandComment_getDirection";
@@ -540,7 +540,7 @@ function T_Param_Command_Comment_Is_Param_Position_Valid
   -- * for T nesting depth is 1.
   --  
 
-   function T_Param_Command_Comment_Get_Depth (Comment : Comment_T) return unsigned  -- install/include/clang-c/Documentation.h:456
+   function T_Param_Command_Comment_Get_Depth (Comment : Comment_T) return unsigned  -- include/clang-c/Documentation.h:456
    with Import => True, 
         Convention => C, 
         External_Name => "clang_TParamCommandComment_getDepth";
@@ -564,7 +564,7 @@ function T_Param_Command_Comment_Is_Param_Position_Valid
   -- * at depth 1 T's index is 0.
   --  
 
-   function T_Param_Command_Comment_Get_Index (Comment : Comment_T; Depth : unsigned) return unsigned  -- install/include/clang-c/Documentation.h:477
+   function T_Param_Command_Comment_Get_Index (Comment : Comment_T; Depth : unsigned) return unsigned  -- include/clang-c/Documentation.h:477
    with Import => True, 
         Convention => C, 
         External_Name => "clang_TParamCommandComment_getIndex";
@@ -661,7 +661,7 @@ function Full_Comment_Get_As_XML
 
    type API_Set_Impl_T is null record;   -- incomplete struct
 
-   type API_Set_T is access all API_Set_Impl_T;  -- install/include/clang-c/Documentation.h:554
+   type API_Set_T is access all API_Set_Impl_T;  -- include/clang-c/Documentation.h:554
 
   --*
   -- * Traverses the translation unit to create a \c CXAPISet.
@@ -674,7 +674,7 @@ function Full_Comment_Get_As_XML
   -- * \returns Error code indicating success or failure of the APISet creation.
   --  
 
-   function Create_API_Set (Tu : Clang.Index.Translation_Unit_T; Out_Api : System.Address) return Clang.CX_Error_Code.Error_Code_T  -- install/include/clang-c/Documentation.h:566
+   function Create_API_Set (Tu : Clang.Index.Translation_Unit_T; Out_Api : System.Address) return Clang.CX_Error_Code.Error_Code_T  -- include/clang-c/Documentation.h:566
    with Import => True, 
         Convention => C, 
         External_Name => "clang_createAPISet";
@@ -685,7 +685,7 @@ function Full_Comment_Get_As_XML
   -- * The provided \c CXAPISet can not be used after this function is called.
   --  
 
-   procedure Dispose_API_Set (Api : API_Set_T)  -- install/include/clang-c/Documentation.h:574
+   procedure Dispose_API_Set (Api : API_Set_T)  -- include/clang-c/Documentation.h:574
    with Import => True, 
         Convention => C, 
         External_Name => "clang_disposeAPISet";

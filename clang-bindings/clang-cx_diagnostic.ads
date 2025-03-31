@@ -40,7 +40,7 @@ package Clang.CX_Diagnostic is
       Diagnostic_Warning,
       Diagnostic_Error,
       Diagnostic_Fatal)
-   with Convention => C;  -- install/include/clang-c/CXDiagnostic.h:33
+   with Convention => C;  -- include/clang-c/CXDiagnostic.h:33
 
   --*
   --   * A diagnostic that has been suppressed, e.g., by a command-line
@@ -72,19 +72,19 @@ package Clang.CX_Diagnostic is
   -- * location, text, source ranges, and fix-it hints.
   --  
 
-   type Diagnostic_T is new System.Address;  -- install/include/clang-c/CXDiagnostic.h:69
+   type Diagnostic_T is new System.Address;  -- include/clang-c/CXDiagnostic.h:69
 
   --*
   -- * A group of CXDiagnostics.
   --  
 
-   type Diagnostic_Set_T is new System.Address;  -- install/include/clang-c/CXDiagnostic.h:74
+   type Diagnostic_Set_T is new System.Address;  -- include/clang-c/CXDiagnostic.h:74
 
   --*
   -- * Determine the number of diagnostics in a CXDiagnosticSet.
   --  
 
-   function Get_Num_Diagnostics_In_Set (Diags : Diagnostic_Set_T) return unsigned  -- install/include/clang-c/CXDiagnostic.h:79
+   function Get_Num_Diagnostics_In_Set (Diags : Diagnostic_Set_T) return unsigned  -- include/clang-c/CXDiagnostic.h:79
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getNumDiagnosticsInSet";
@@ -99,7 +99,7 @@ package Clang.CX_Diagnostic is
   -- * via a call to \c clang_disposeDiagnostic().
   --  
 
-   function Get_Diagnostic_In_Set (Diags : Diagnostic_Set_T; Index : unsigned) return Diagnostic_T  -- install/include/clang-c/CXDiagnostic.h:90
+   function Get_Diagnostic_In_Set (Diags : Diagnostic_Set_T; Index : unsigned) return Diagnostic_T  -- include/clang-c/CXDiagnostic.h:90
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getDiagnosticInSet";
@@ -114,7 +114,7 @@ package Clang.CX_Diagnostic is
       Load_Diag_Unknown,
       Load_Diag_Cannot_Load,
       Load_Diag_Invalid_File)
-   with Convention => C;  -- install/include/clang-c/CXDiagnostic.h:97
+   with Convention => C;  -- include/clang-c/CXDiagnostic.h:97
 
   --*
   --   * Indicates that no error occurred.
@@ -159,7 +159,7 @@ function Load_Diagnostics
   -- * Release a CXDiagnosticSet and all of its contained diagnostics.
   --  
 
-   procedure Dispose_Diagnostic_Set (Diags : Diagnostic_Set_T)  -- install/include/clang-c/CXDiagnostic.h:141
+   procedure Dispose_Diagnostic_Set (Diags : Diagnostic_Set_T)  -- include/clang-c/CXDiagnostic.h:141
    with Import => True, 
         Convention => C, 
         External_Name => "clang_disposeDiagnosticSet";
@@ -171,7 +171,7 @@ function Load_Diagnostics
   -- * clang_disposeDiagnosticSet.
   --  
 
-   function Get_Child_Diagnostics (D : Diagnostic_T) return Diagnostic_Set_T  -- install/include/clang-c/CXDiagnostic.h:149
+   function Get_Child_Diagnostics (D : Diagnostic_T) return Diagnostic_Set_T  -- include/clang-c/CXDiagnostic.h:149
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getChildDiagnostics";
@@ -180,7 +180,7 @@ function Load_Diagnostics
   -- * Destroy a diagnostic.
   --  
 
-   procedure Dispose_Diagnostic (Diagnostic : Diagnostic_T)  -- install/include/clang-c/CXDiagnostic.h:154
+   procedure Dispose_Diagnostic (Diagnostic : Diagnostic_T)  -- include/clang-c/CXDiagnostic.h:154
    with Import => True, 
         Convention => C, 
         External_Name => "clang_disposeDiagnostic";
@@ -198,7 +198,7 @@ function Load_Diagnostics
    Diagnostic_Display_Source_Ranges : constant Diagnostic_Display_Options_T := 4;
    Diagnostic_Display_Option : constant Diagnostic_Display_Options_T := 8;
    Diagnostic_Display_Category_Id : constant Diagnostic_Display_Options_T := 16;
-   Diagnostic_Display_Category_Name : constant Diagnostic_Display_Options_T := 32;  -- install/include/clang-c/CXDiagnostic.h:162
+   Diagnostic_Display_Category_Name : constant Diagnostic_Display_Options_T := 32;  -- include/clang-c/CXDiagnostic.h:162
 
   --*
   --   * Display the source-location information where the
@@ -283,7 +283,7 @@ function Format_Diagnostic
   -- * clang_formatDiagnostic().
   --  
 
-   function Default_Diagnostic_Display_Options return unsigned  -- install/include/clang-c/CXDiagnostic.h:249
+   function Default_Diagnostic_Display_Options return unsigned  -- include/clang-c/CXDiagnostic.h:249
    with Import => True, 
         Convention => C, 
         External_Name => "clang_defaultDiagnosticDisplayOptions";
@@ -292,7 +292,7 @@ function Format_Diagnostic
   -- * Determine the severity of the given diagnostic.
   --  
 
-   function Get_Diagnostic_Severity (Arg_1 : Diagnostic_T) return Diagnostic_Severity_T  -- install/include/clang-c/CXDiagnostic.h:255
+   function Get_Diagnostic_Severity (Arg_1 : Diagnostic_T) return Diagnostic_Severity_T  -- include/clang-c/CXDiagnostic.h:255
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getDiagnosticSeverity";
@@ -304,7 +304,7 @@ function Format_Diagnostic
   -- * displaying the diagnostic on the command line.
   --  
 
-   function Get_Diagnostic_Location (Arg_1 : Diagnostic_T) return Clang.CX_Source_Location.Source_Location_T  -- install/include/clang-c/CXDiagnostic.h:263
+   function Get_Diagnostic_Location (Arg_1 : Diagnostic_T) return Clang.CX_Source_Location.Source_Location_T  -- include/clang-c/CXDiagnostic.h:263
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getDiagnosticLocation";
@@ -346,7 +346,7 @@ function Get_Diagnostic_Option
   -- * if this diagnostic is uncategorized.
   --  
 
-   function Get_Diagnostic_Category (Arg_1 : Diagnostic_T) return unsigned  -- install/include/clang-c/CXDiagnostic.h:295
+   function Get_Diagnostic_Category (Arg_1 : Diagnostic_T) return unsigned  -- include/clang-c/CXDiagnostic.h:295
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getDiagnosticCategory";
@@ -381,7 +381,7 @@ function Get_Diagnostic_Category_Text
   -- * diagnostic.
   --  
 
-   function Get_Diagnostic_Num_Ranges (Arg_1 : Diagnostic_T) return unsigned  -- install/include/clang-c/CXDiagnostic.h:321
+   function Get_Diagnostic_Num_Ranges (Arg_1 : Diagnostic_T) return unsigned  -- include/clang-c/CXDiagnostic.h:321
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getDiagnosticNumRanges";
@@ -400,7 +400,7 @@ function Get_Diagnostic_Category_Text
   -- * \returns the requested source range.
   --  
 
-   function Get_Diagnostic_Range (Diagnostic : Diagnostic_T; C_Range : unsigned) return Clang.CX_Source_Location.Source_Range_T  -- install/include/clang-c/CXDiagnostic.h:336
+   function Get_Diagnostic_Range (Diagnostic : Diagnostic_T; C_Range : unsigned) return Clang.CX_Source_Location.Source_Range_T  -- include/clang-c/CXDiagnostic.h:336
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getDiagnosticRange";
@@ -410,7 +410,7 @@ function Get_Diagnostic_Category_Text
   -- * given diagnostic.
   --  
 
-   function Get_Diagnostic_Num_Fix_Its (Diagnostic : Diagnostic_T) return unsigned  -- install/include/clang-c/CXDiagnostic.h:343
+   function Get_Diagnostic_Num_Fix_Its (Diagnostic : Diagnostic_T) return unsigned  -- include/clang-c/CXDiagnostic.h:343
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getDiagnosticNumFixIts";
