@@ -37,22 +37,22 @@ package LLVM.Target_Machine is
 
    type Opaque_Target_Machine_Options_Impl_T is null record;   -- incomplete struct
 
-   type Target_Machine_Options_T is access all Opaque_Target_Machine_Options_Impl_T;  -- include/llvm-c/TargetMachine.h:34
+   type Target_Machine_Options_T is access all Opaque_Target_Machine_Options_Impl_T;  -- include/llvm-c/TargetMachine.h:35
 
    type Opaque_Target_Machine_Impl_T is null record;   -- incomplete struct
 
-   type Target_Machine_T is access all Opaque_Target_Machine_Impl_T;  -- include/llvm-c/TargetMachine.h:35
+   type Target_Machine_T is access all Opaque_Target_Machine_Impl_T;  -- include/llvm-c/TargetMachine.h:36
 
    type Target_Impl_T is null record;   -- incomplete struct
 
-   type Target_T is access all Target_Impl_T;  -- include/llvm-c/TargetMachine.h:36
+   type Target_T is access all Target_Impl_T;  -- include/llvm-c/TargetMachine.h:37
 
    type Code_Gen_Opt_Level_T is 
      (Code_Gen_Level_None,
       Code_Gen_Level_Less,
       Code_Gen_Level_Default,
       Code_Gen_Level_Aggressive)
-   with Convention => C;  -- include/llvm-c/TargetMachine.h:43
+   with Convention => C;  -- include/llvm-c/TargetMachine.h:44
 
    type Reloc_Mode_T is 
      (Reloc_Default,
@@ -62,7 +62,7 @@ package LLVM.Target_Machine is
       Reloc_ROPI,
       Reloc_RWPI,
       Reloc_ROPI_RWPI)
-   with Convention => C;  -- include/llvm-c/TargetMachine.h:53
+   with Convention => C;  -- include/llvm-c/TargetMachine.h:54
 
    type Code_Model_T is 
      (Code_Model_Default,
@@ -72,27 +72,27 @@ package LLVM.Target_Machine is
       Code_Model_Kernel,
       Code_Model_Medium,
       Code_Model_Large)
-   with Convention => C;  -- include/llvm-c/TargetMachine.h:63
+   with Convention => C;  -- include/llvm-c/TargetMachine.h:64
 
    type Code_Gen_File_Type_T is 
      (Assembly_File,
       Object_File)
-   with Convention => C;  -- include/llvm-c/TargetMachine.h:68
+   with Convention => C;  -- include/llvm-c/TargetMachine.h:69
 
    type Global_I_Sel_Abort_Mode_T is 
      (Global_I_Sel_Abort_Enable,
       Global_I_Sel_Abort_Disable,
       Global_I_Sel_Abort_Disable_With_Diag)
-   with Convention => C;  -- include/llvm-c/TargetMachine.h:74
+   with Convention => C;  -- include/llvm-c/TargetMachine.h:75
 
   --* Returns the first llvm::Target in the registered targets list.  
-   function Get_First_Target return Target_T  -- include/llvm-c/TargetMachine.h:77
+   function Get_First_Target return Target_T  -- include/llvm-c/TargetMachine.h:78
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetFirstTarget";
 
   --* Returns the next llvm::Target given a previous one (or null if there's none)  
-   function Get_Next_Target (T : Target_T) return Target_T  -- include/llvm-c/TargetMachine.h:79
+   function Get_Next_Target (T : Target_T) return Target_T  -- include/llvm-c/TargetMachine.h:80
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetNextTarget";
@@ -149,7 +149,7 @@ function Target_Has_Asm_Backend
   -- * LLVMCreateTargetMachineWithOptions().
   --  
 
-   function Create_Target_Machine_Options return Target_Machine_Options_T  -- include/llvm-c/TargetMachine.h:115
+   function Create_Target_Machine_Options return Target_Machine_Options_T  -- include/llvm-c/TargetMachine.h:117
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateTargetMachineOptions";
@@ -158,7 +158,7 @@ function Target_Has_Asm_Backend
   -- * Dispose of an LLVMTargetMachineOptionsRef instance.
   --  
 
-   procedure Dispose_Target_Machine_Options (Options : Target_Machine_Options_T)  -- include/llvm-c/TargetMachine.h:120
+   procedure Dispose_Target_Machine_Options (Options : Target_Machine_Options_T)  -- include/llvm-c/TargetMachine.h:123
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMDisposeTargetMachineOptions";
@@ -181,17 +181,17 @@ procedure Target_Machine_Options_Set_ABI
      (Options : Target_Machine_Options_T;
       ABI     : String);
 
-   procedure Target_Machine_Options_Set_Code_Gen_Opt_Level (Options : Target_Machine_Options_T; Level : Code_Gen_Opt_Level_T)  -- include/llvm-c/TargetMachine.h:136
+   procedure Target_Machine_Options_Set_Code_Gen_Opt_Level (Options : Target_Machine_Options_T; Level : Code_Gen_Opt_Level_T)  -- include/llvm-c/TargetMachine.h:143
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMTargetMachineOptionsSetCodeGenOptLevel";
 
-   procedure Target_Machine_Options_Set_Reloc_Mode (Options : Target_Machine_Options_T; Reloc : Reloc_Mode_T)  -- include/llvm-c/TargetMachine.h:139
+   procedure Target_Machine_Options_Set_Reloc_Mode (Options : Target_Machine_Options_T; Reloc : Reloc_Mode_T)  -- include/llvm-c/TargetMachine.h:147
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMTargetMachineOptionsSetRelocMode";
 
-   procedure Target_Machine_Options_Set_Code_Model (Options : Target_Machine_Options_T; Code_Model : Code_Model_T)  -- include/llvm-c/TargetMachine.h:142
+   procedure Target_Machine_Options_Set_Code_Model (Options : Target_Machine_Options_T; Code_Model : Code_Model_T)  -- include/llvm-c/TargetMachine.h:151
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMTargetMachineOptionsSetCodeModel";
@@ -225,13 +225,13 @@ function Create_Target_Machine
   --* Dispose the LLVMTargetMachineRef instance generated by
   --  LLVMCreateTargetMachine.  
 
-   procedure Dispose_Target_Machine (T : Target_Machine_T)  -- include/llvm-c/TargetMachine.h:164
+   procedure Dispose_Target_Machine (T : Target_Machine_T)  -- include/llvm-c/TargetMachine.h:172
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMDisposeTargetMachine";
 
   --* Returns the Target used in a TargetMachine  
-   function Get_Target_Machine_Target (T : Target_Machine_T) return Target_T  -- include/llvm-c/TargetMachine.h:167
+   function Get_Target_Machine_Target (T : Target_Machine_T) return Target_T  -- include/llvm-c/TargetMachine.h:175
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetTargetMachineTarget";
@@ -261,7 +261,7 @@ function Get_Target_Machine_Feature_String
       return String;
 
   --* Create a DataLayout based on the targetMachine.  
-   function Create_Target_Data_Layout (T : Target_Machine_T) return LLVM.Target.Target_Data_T  -- include/llvm-c/TargetMachine.h:185
+   function Create_Target_Data_Layout (T : Target_Machine_T) return LLVM.Target.Target_Data_T  -- include/llvm-c/TargetMachine.h:193
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateTargetDataLayout";
@@ -284,7 +284,7 @@ procedure Set_Target_Machine_Global_I_Sel
   --* Set abort behaviour when global instruction selection fails to lower/select
   -- * an instruction.  
 
-   procedure Set_Target_Machine_Global_I_Sel_Abort (T : Target_Machine_T; Mode : Global_I_Sel_Abort_Mode_T)  -- include/llvm-c/TargetMachine.h:199
+   procedure Set_Target_Machine_Global_I_Sel_Abort (T : Target_Machine_T; Mode : Global_I_Sel_Abort_Mode_T)  -- include/llvm-c/TargetMachine.h:210
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMSetTargetMachineGlobalISelAbort";
@@ -342,7 +342,7 @@ function Get_Host_CPU_Features
       return String;
 
   --* Adds the target-specific analysis passes to the pass manager.  
-   procedure Add_Analysis_Passes (T : Target_Machine_T; PM : LLVM.Types.Pass_Manager_T)  -- include/llvm-c/TargetMachine.h:236
+   procedure Add_Analysis_Passes (T : Target_Machine_T; PM : LLVM.Types.Pass_Manager_T)  -- include/llvm-c/TargetMachine.h:249
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMAddAnalysisPasses";

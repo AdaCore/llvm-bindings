@@ -42,7 +42,7 @@ package LLVM.Transforms_Pass_Builder is
 
    type Opaque_Pass_Builder_Options_Impl_T is null record;   -- incomplete struct
 
-   type Pass_Builder_Options_T is access all Opaque_Pass_Builder_Options_Impl_T;  -- include/llvm-c/Transforms/PassBuilder.h:38
+   type Pass_Builder_Options_T is access all Opaque_Pass_Builder_Options_Impl_T;  -- include/llvm-c/Transforms/PassBuilder.h:39
 
   --*
   -- * Construct and run a set of passes over a module
@@ -62,6 +62,20 @@ function Run_Passes
       return LLVM.Error.Error_T;
 
   --*
+  -- * Construct and run a set of passes over a function.
+  -- *
+  -- * This function behaves the same as LLVMRunPasses, but operates on a single
+  -- * function instead of an entire module.
+  --  
+
+function Run_Passes_On_Function
+     (F       : LLVM.Types.Value_T;
+      Passes  : String;
+      TM      : LLVM.Target_Machine.Target_Machine_T;
+      Options : Pass_Builder_Options_T)
+      return LLVM.Error.Error_T;
+
+  --*
   -- * Create a new set of options for a PassBuilder
   -- *
   -- * Ownership of the returned instance is given to the client, and they are
@@ -69,7 +83,7 @@ function Run_Passes
   -- * to free the pass builder options.
   --  
 
-   function Create_Pass_Builder_Options return Pass_Builder_Options_T  -- include/llvm-c/Transforms/PassBuilder.h:60
+   function Create_Pass_Builder_Options return Pass_Builder_Options_T  -- include/llvm-c/Transforms/PassBuilder.h:71
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreatePassBuilderOptions";
@@ -91,6 +105,16 @@ procedure Pass_Options_Set_Debug_Logging
      (Options       : Pass_Builder_Options_T;
       Debug_Logging : Boolean);
 
+  --*
+  -- * Specify a custom alias analysis pipeline for the PassBuilder to be used
+  -- * instead of the default one. The string argument is not copied; the caller
+  -- * is responsible for ensuring it outlives the PassBuilderOptions instance.
+  --  
+
+procedure Pass_Options_Set_AA_Pipeline
+     (Options     : Pass_Builder_Options_T;
+      AA_Pipeline : String);
+
 procedure Pass_Options_Set_Loop_Interleaving
      (Options           : Pass_Builder_Options_T;
       Loop_Interleaving : Boolean);
@@ -111,12 +135,12 @@ procedure Pass_Options_Set_Forget_All_SCEV_In_Loop_Unroll
      (Options                        : Pass_Builder_Options_T;
       Forget_All_SCEV_In_Loop_Unroll : Boolean);
 
-   procedure Pass_Builder_Options_Set_Licm_Mssa_Opt_Cap (Options : Pass_Builder_Options_T; Licm_Mssa_Opt_Cap : unsigned)  -- include/llvm-c/Transforms/PassBuilder.h:90
+   procedure Pass_Builder_Options_Set_Licm_Mssa_Opt_Cap (Options : Pass_Builder_Options_T; Licm_Mssa_Opt_Cap : unsigned)  -- include/llvm-c/Transforms/PassBuilder.h:117
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMPassBuilderOptionsSetLicmMssaOptCap";
 
-   procedure Pass_Builder_Options_Set_Licm_Mssa_No_Acc_For_Promotion_Cap (Options : Pass_Builder_Options_T; Licm_Mssa_No_Acc_For_Promotion_Cap : unsigned)  -- include/llvm-c/Transforms/PassBuilder.h:93
+   procedure Pass_Builder_Options_Set_Licm_Mssa_No_Acc_For_Promotion_Cap (Options : Pass_Builder_Options_T; Licm_Mssa_No_Acc_For_Promotion_Cap : unsigned)  -- include/llvm-c/Transforms/PassBuilder.h:120
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMPassBuilderOptionsSetLicmMssaNoAccForPromotionCap";
@@ -129,7 +153,7 @@ procedure Pass_Options_Set_Merge_Functions
      (Options         : Pass_Builder_Options_T;
       Merge_Functions : Boolean);
 
-   procedure Pass_Builder_Options_Set_Inliner_Threshold (Options : Pass_Builder_Options_T; Threshold : int)  -- include/llvm-c/Transforms/PassBuilder.h:102
+   procedure Pass_Builder_Options_Set_Inliner_Threshold (Options : Pass_Builder_Options_T; Threshold : int)  -- include/llvm-c/Transforms/PassBuilder.h:132
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMPassBuilderOptionsSetInlinerThreshold";
@@ -138,7 +162,7 @@ procedure Pass_Options_Set_Merge_Functions
   -- * Dispose of a heap-allocated PassBuilderOptions instance
   --  
 
-   procedure Dispose_Pass_Builder_Options (Options : Pass_Builder_Options_T)  -- include/llvm-c/Transforms/PassBuilder.h:108
+   procedure Dispose_Pass_Builder_Options (Options : Pass_Builder_Options_T)  -- include/llvm-c/Transforms/PassBuilder.h:139
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMDisposePassBuilderOptions";

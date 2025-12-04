@@ -12,15 +12,17 @@ with stddef_h;
 
 package LLVM.Disassembler is
 
-   LLVMDisassembler_Option_UseMarkup : constant := 1;  --  include/llvm-c/Disassembler.h:75
+   LLVMDisassembler_Option_Color : constant := 32;  --  include/llvm-c/Disassembler.h:84
 
-   LLVMDisassembler_Option_PrintImmHex : constant := 2;  --  include/llvm-c/Disassembler.h:77
+   LLVMDisassembler_Option_UseMarkup : constant := 1;  --  include/llvm-c/Disassembler.h:74
 
-   LLVMDisassembler_Option_AsmPrinterVariant : constant := 4;  --  include/llvm-c/Disassembler.h:79
+   LLVMDisassembler_Option_PrintImmHex : constant := 2;  --  include/llvm-c/Disassembler.h:76
 
-   LLVMDisassembler_Option_SetInstrComments : constant := 8;  --  include/llvm-c/Disassembler.h:81
+   LLVMDisassembler_Option_AsmPrinterVariant : constant := 4;  --  include/llvm-c/Disassembler.h:78
 
-   LLVMDisassembler_Option_PrintLatency : constant := 16;  --  include/llvm-c/Disassembler.h:83
+   LLVMDisassembler_Option_SetInstrComments : constant := 8;  --  include/llvm-c/Disassembler.h:80
+
+   LLVMDisassembler_Option_PrintLatency : constant := 16;  --  include/llvm-c/Disassembler.h:82
 
   --===-- llvm-c/Disassembler.h - Disassembler Public C Interface ---*- C -*-===*|*                                                                            *|
   --|
@@ -101,7 +103,7 @@ function Create_Disasm_CPU_Features
   -- * otherwise.
   --  
 
-   function Set_Disasm_Options (DC : LLVM.Disassembler_Types.Disasm_Context_T; Options : stdint_h.uint64_t) return int  -- include/llvm-c/Disassembler.h:72
+   function Set_Disasm_Options (DC : LLVM.Disassembler_Types.Disasm_Context_T; Options : stdint_h.uint64_t) return int  -- include/llvm-c/Disassembler.h:71
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMSetDisasmOptions";
@@ -111,11 +113,12 @@ function Create_Disasm_CPU_Features
   -- The option use the other assembler printer variant  
   -- The option to set comment on instructions  
   -- The option to print latency information alongside instructions  
+  -- The option to print in color  
   --*
   -- * Dispose of a disassembler context.
   --  
 
-   procedure Disasm_Dispose (DC : LLVM.Disassembler_Types.Disasm_Context_T)  -- include/llvm-c/Disassembler.h:88
+   procedure Disasm_Dispose (DC : LLVM.Disassembler_Types.Disasm_Context_T)  -- include/llvm-c/Disassembler.h:89
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMDisasmDispose";

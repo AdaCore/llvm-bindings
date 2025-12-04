@@ -298,6 +298,28 @@ package body LLVM.Lto is
       end if;
    end Module_Get_Symbol_Name;
 
+   function Module_Get_Asm_Undef_Symbol_Name
+     (C_Mod : Module_T_T;
+      Index : unsigned)
+      return Interfaces.C.Strings.chars_ptr
+   with Import => True,
+        Convention => C,
+        External_Name => "lto_module_get_asm_undef_symbol_name";
+   function Module_Get_Asm_Undef_Symbol_Name
+     (C_Mod : Module_T_T;
+      Index : unsigned)
+      return String
+   is
+      Return_Value : Interfaces.C.Strings.chars_ptr;
+   begin
+      Return_Value := Module_Get_Asm_Undef_Symbol_Name (C_Mod, Index);
+      if Return_Value /= Null_Ptr then
+         return Value (Return_Value);
+      else
+         return "";
+      end if;
+   end Module_Get_Asm_Undef_Symbol_Name;
+
    function Module_Get_Linkeropts
      (C_Mod : Module_T_T)
       return Interfaces.C.Strings.chars_ptr

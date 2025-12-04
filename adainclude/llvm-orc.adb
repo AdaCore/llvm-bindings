@@ -169,28 +169,24 @@ package body LLVM.Orc is
    end Orc_Create_Dynamic_Library_Search_Generator_For_Path;
 
    function Orc_Create_Static_Library_Search_Generator_For_Path
-     (Result        : System.Address;
-      Obj_Layer     : Orc_Object_Layer_T;
-      File_Name     : Interfaces.C.Strings.chars_ptr;
-      Target_Triple : Interfaces.C.Strings.chars_ptr)
+     (Result    : System.Address;
+      Obj_Layer : Orc_Object_Layer_T;
+      File_Name : Interfaces.C.Strings.chars_ptr)
       return LLVM.Error.Error_T
    with Import => True,
         Convention => C,
         External_Name => "LLVMOrcCreateStaticLibrarySearchGeneratorForPath";
    function Orc_Create_Static_Library_Search_Generator_For_Path
-     (Result        : System.Address;
-      Obj_Layer     : Orc_Object_Layer_T;
-      File_Name     : String;
-      Target_Triple : String)
+     (Result    : System.Address;
+      Obj_Layer : Orc_Object_Layer_T;
+      File_Name : String)
       return LLVM.Error.Error_T
    is
-      Return_Value         : LLVM.Error.Error_T;
-      File_Name_Array      : aliased char_array := To_C (File_Name);
-      File_Name_String     : constant chars_ptr := To_Chars_Ptr (File_Name_Array'Unchecked_Access);
-      Target_Triple_Array  : aliased char_array := To_C (Target_Triple);
-      Target_Triple_String : constant chars_ptr := To_Chars_Ptr (Target_Triple_Array'Unchecked_Access);
+      Return_Value     : LLVM.Error.Error_T;
+      File_Name_Array  : aliased char_array := To_C (File_Name);
+      File_Name_String : constant chars_ptr := To_Chars_Ptr (File_Name_Array'Unchecked_Access);
    begin
-      Return_Value := Orc_Create_Static_Library_Search_Generator_For_Path (Result, Obj_Layer, File_Name_String, Target_Triple_String);
+      Return_Value := Orc_Create_Static_Library_Search_Generator_For_Path (Result, Obj_Layer, File_Name_String);
       return Return_Value;
    end Orc_Create_Static_Library_Search_Generator_For_Path;
 

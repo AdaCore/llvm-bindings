@@ -9,7 +9,7 @@ with Interfaces.C.Strings;
 
 package LLVM.Error is
 
-   LLVMErrorSuccess : constant := 0;  --  include/llvm-c/Error.h:28
+   LLVMErrorSuccess : constant := 0;  --  include/llvm-c/Error.h:29
 
   --===------- llvm-c/Error.h - llvm::Error class C Interface -------*- C -*-===*|*                                                                            *|
   --|
@@ -37,20 +37,20 @@ package LLVM.Error is
 
    type Opaque_Error_Impl_T is null record;   -- incomplete struct
 
-   type Error_T is access all Opaque_Error_Impl_T;  -- include/llvm-c/Error.h:33
+   type Error_T is access all Opaque_Error_Impl_T;  -- include/llvm-c/Error.h:34
 
   --*
   -- * Error type identifier.
   --  
 
-   type Error_Type_Id_T is new System.Address;  -- include/llvm-c/Error.h:38
+   type Error_Type_Id_T is new System.Address;  -- include/llvm-c/Error.h:39
 
   --*
   -- * Returns the type id for the given error instance, which must be a failure
   -- * value (i.e. non-null).
   --  
 
-   function Get_Error_Type_Id (Err : Error_T) return Error_Type_Id_T  -- include/llvm-c/Error.h:44
+   function Get_Error_Type_Id (Err : Error_T) return Error_Type_Id_T  -- include/llvm-c/Error.h:45
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetErrorTypeId";
@@ -62,10 +62,22 @@ package LLVM.Error is
   -- * to some other consuming operation, e.g. LLVMGetErrorMessage.
   --  
 
-   procedure Consume_Error (Err : Error_T)  -- include/llvm-c/Error.h:52
+   procedure Consume_Error (Err : Error_T)  -- include/llvm-c/Error.h:53
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMConsumeError";
+
+  --*
+  -- * Report a fatal error if Err is a failure value.
+  -- *
+  -- * This function can be used to wrap calls to fallible functions ONLY when it is
+  -- * known that the Error will always be a success value.
+  --  
+
+   procedure Cant_Fail (Err : Error_T)  -- include/llvm-c/Error.h:61
+   with Import => True, 
+        Convention => C, 
+        External_Name => "LLVMCantFail";
 
   --*
   -- * Returns the given string's error message. This operation consumes the error,
@@ -89,7 +101,7 @@ procedure Dispose_Error_Message
   -- * Returns the type id for llvm StringError.
   --  
 
-   function Get_String_Error_Type_Id return Error_Type_Id_T  -- include/llvm-c/Error.h:70
+   function Get_String_Error_Type_Id return Error_Type_Id_T  -- include/llvm-c/Error.h:79
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetStringErrorTypeId";
