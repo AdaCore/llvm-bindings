@@ -1,0 +1,5 @@
+stages:
+  - check
+
+include:
+  - component: $CI_SERVER_FQDN/eng/gitlab-templates/check-issue@~latest
