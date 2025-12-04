@@ -1,8 +1,5 @@
 # Build/test results directories
 gen
 out
-llvm-obj
-install
-
-# Imported sources
-llvm-*.src
+*.pyc
+__pycache__
