@@ -40,36 +40,46 @@ package LLVM.Execution_Engine is
   -- * @{
   --  
 
-   procedure Link_In_MCJIT  -- include/llvm-c/ExecutionEngine.h:36
+  --*
+  -- * Empty function used to force the linker to link MCJIT.
+  -- * Has no effect when called on a pre-built library (dylib interface).
+  --  
+
+   procedure Link_In_MCJIT  -- include/llvm-c/ExecutionEngine.h:41
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMLinkInMCJIT";
 
-   procedure Link_In_Interpreter  -- include/llvm-c/ExecutionEngine.h:37
+  --*
+  -- * Empty function used to force the linker to link the LLVM interpreter.
+  -- * Has no effect when called on a pre-built library (dylib interface).
+  --  
+
+   procedure Link_In_Interpreter  -- include/llvm-c/ExecutionEngine.h:46
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMLinkInInterpreter";
 
    type Opaque_Generic_Value_Impl_T is null record;   -- incomplete struct
 
-   type Generic_Value_T is access all Opaque_Generic_Value_Impl_T;  -- include/llvm-c/ExecutionEngine.h:39
+   type Generic_Value_T is access all Opaque_Generic_Value_Impl_T;  -- include/llvm-c/ExecutionEngine.h:48
 
    type Opaque_Execution_Engine_Impl_T is null record;   -- incomplete struct
 
-   type Execution_Engine_T is access all Opaque_Execution_Engine_Impl_T;  -- include/llvm-c/ExecutionEngine.h:40
+   type Execution_Engine_T is access all Opaque_Execution_Engine_Impl_T;  -- include/llvm-c/ExecutionEngine.h:49
 
    type Opaque_MCJIT_Memory_Manager_Impl_T is null record;   -- incomplete struct
 
-   type MCJIT_Memory_Manager_T is access all Opaque_MCJIT_Memory_Manager_Impl_T;  -- include/llvm-c/ExecutionEngine.h:41
+   type MCJIT_Memory_Manager_T is access all Opaque_MCJIT_Memory_Manager_Impl_T;  -- include/llvm-c/ExecutionEngine.h:50
 
    type MCJIT_Compiler_Options_T is record
-      OptLevel : aliased unsigned;  -- include/llvm-c/ExecutionEngine.h:44
-      CodeModel : aliased LLVM.Target_Machine.Code_Model_T;  -- include/llvm-c/ExecutionEngine.h:45
-      NoFramePointerElim : aliased LLVM.Types.Bool_T;  -- include/llvm-c/ExecutionEngine.h:46
-      EnableFastISel : aliased LLVM.Types.Bool_T;  -- include/llvm-c/ExecutionEngine.h:47
-      MCJMM : MCJIT_Memory_Manager_T;  -- include/llvm-c/ExecutionEngine.h:48
+      OptLevel : aliased unsigned;  -- include/llvm-c/ExecutionEngine.h:53
+      CodeModel : aliased LLVM.Target_Machine.Code_Model_T;  -- include/llvm-c/ExecutionEngine.h:54
+      NoFramePointerElim : aliased LLVM.Types.Bool_T;  -- include/llvm-c/ExecutionEngine.h:55
+      EnableFastISel : aliased LLVM.Types.Bool_T;  -- include/llvm-c/ExecutionEngine.h:56
+      MCJMM : MCJIT_Memory_Manager_T;  -- include/llvm-c/ExecutionEngine.h:57
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/ExecutionEngine.h:43
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/ExecutionEngine.h:52
 
   --===-- Operations on generic values --------------------------------------=== 
 function Create_Generic_Value_Of_Int
@@ -78,17 +88,17 @@ function Create_Generic_Value_Of_Int
       Is_Signed : Boolean)
       return Generic_Value_T;
 
-   function Create_Generic_Value_Of_Pointer (P : System.Address) return Generic_Value_T  -- include/llvm-c/ExecutionEngine.h:57
+   function Create_Generic_Value_Of_Pointer (P : System.Address) return Generic_Value_T  -- include/llvm-c/ExecutionEngine.h:66
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateGenericValueOfPointer";
 
-   function Create_Generic_Value_Of_Float (Ty : LLVM.Types.Type_T; N : double) return Generic_Value_T  -- include/llvm-c/ExecutionEngine.h:59
+   function Create_Generic_Value_Of_Float (Ty : LLVM.Types.Type_T; N : double) return Generic_Value_T  -- include/llvm-c/ExecutionEngine.h:68
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateGenericValueOfFloat";
 
-   function Generic_Value_Int_Width (Gen_Val_Ref : Generic_Value_T) return unsigned  -- include/llvm-c/ExecutionEngine.h:61
+   function Generic_Value_Int_Width (Gen_Val_Ref : Generic_Value_T) return unsigned  -- include/llvm-c/ExecutionEngine.h:71
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGenericValueIntWidth";
@@ -98,17 +108,17 @@ function Generic_Value_To_Int
       Is_Signed : Boolean)
       return Extensions.unsigned_long_long;
 
-   function Generic_Value_To_Pointer (Gen_Val : Generic_Value_T) return System.Address  -- include/llvm-c/ExecutionEngine.h:66
+   function Generic_Value_To_Pointer (Gen_Val : Generic_Value_T) return System.Address  -- include/llvm-c/ExecutionEngine.h:76
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGenericValueToPointer";
 
-   function Generic_Value_To_Float (Ty_Ref : LLVM.Types.Type_T; Gen_Val : Generic_Value_T) return double  -- include/llvm-c/ExecutionEngine.h:68
+   function Generic_Value_To_Float (Ty_Ref : LLVM.Types.Type_T; Gen_Val : Generic_Value_T) return double  -- include/llvm-c/ExecutionEngine.h:78
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGenericValueToFloat";
 
-   procedure Dispose_Generic_Value (Gen_Val : Generic_Value_T)  -- include/llvm-c/ExecutionEngine.h:70
+   procedure Dispose_Generic_Value (Gen_Val : Generic_Value_T)  -- include/llvm-c/ExecutionEngine.h:81
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMDisposeGenericValue";
@@ -133,7 +143,7 @@ function Create_JIT_Compiler_For_Module
       Out_Error : System.Address)
       return Boolean;
 
-   procedure Initialize_MCJIT_Compiler_Options (Options : access MCJIT_Compiler_Options_T; Size_Of_Options : stddef_h.size_t)  -- include/llvm-c/ExecutionEngine.h:87
+   procedure Initialize_MCJIT_Compiler_Options (Options : access MCJIT_Compiler_Options_T; Size_Of_Options : stddef_h.size_t)  -- include/llvm-c/ExecutionEngine.h:96
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMInitializeMCJITCompilerOptions";
@@ -164,17 +174,17 @@ function Create_MCJIT_Compiler_For_Module
       Out_Error       : System.Address)
       return Boolean;
 
-   procedure Dispose_Execution_Engine (EE : Execution_Engine_T)  -- include/llvm-c/ExecutionEngine.h:112
+   procedure Dispose_Execution_Engine (EE : Execution_Engine_T)  -- include/llvm-c/ExecutionEngine.h:121
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMDisposeExecutionEngine";
 
-   procedure Run_Static_Constructors (EE : Execution_Engine_T)  -- include/llvm-c/ExecutionEngine.h:114
+   procedure Run_Static_Constructors (EE : Execution_Engine_T)  -- include/llvm-c/ExecutionEngine.h:123
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMRunStaticConstructors";
 
-   procedure Run_Static_Destructors (EE : Execution_Engine_T)  -- include/llvm-c/ExecutionEngine.h:116
+   procedure Run_Static_Destructors (EE : Execution_Engine_T)  -- include/llvm-c/ExecutionEngine.h:125
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMRunStaticDestructors";
@@ -184,7 +194,7 @@ function Create_MCJIT_Compiler_For_Module
       F : LLVM.Types.Value_T;
       Arg_C : unsigned;
       Arg_V : System.Address;
-      Env_P : System.Address) return int  -- include/llvm-c/ExecutionEngine.h:118
+      Env_P : System.Address) return int  -- include/llvm-c/ExecutionEngine.h:127
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMRunFunctionAsMain";
@@ -193,17 +203,17 @@ function Create_MCJIT_Compiler_For_Module
      (EE : Execution_Engine_T;
       F : LLVM.Types.Value_T;
       Num_Args : unsigned;
-      Args : System.Address) return Generic_Value_T  -- include/llvm-c/ExecutionEngine.h:122
+      Args : System.Address) return Generic_Value_T  -- include/llvm-c/ExecutionEngine.h:131
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMRunFunction";
 
-   procedure Free_Machine_Code_For_Function (EE : Execution_Engine_T; F : LLVM.Types.Value_T)  -- include/llvm-c/ExecutionEngine.h:126
+   procedure Free_Machine_Code_For_Function (EE : Execution_Engine_T; F : LLVM.Types.Value_T)  -- include/llvm-c/ExecutionEngine.h:135
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMFreeMachineCodeForFunction";
 
-   procedure Add_Module (EE : Execution_Engine_T; M : LLVM.Types.Module_T)  -- include/llvm-c/ExecutionEngine.h:128
+   procedure Add_Module (EE : Execution_Engine_T; M : LLVM.Types.Module_T)  -- include/llvm-c/ExecutionEngine.h:138
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMAddModule";
@@ -221,17 +231,17 @@ function Find_Function
       Out_Fn : System.Address)
       return Boolean;
 
-   function Recompile_And_Relink_Function (EE : Execution_Engine_T; Fn : LLVM.Types.Value_T) return System.Address  -- include/llvm-c/ExecutionEngine.h:136
+   function Recompile_And_Relink_Function (EE : Execution_Engine_T; Fn : LLVM.Types.Value_T) return System.Address  -- include/llvm-c/ExecutionEngine.h:146
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMRecompileAndRelinkFunction";
 
-   function Get_Execution_Engine_Target_Data (EE : Execution_Engine_T) return LLVM.Target.Target_Data_T  -- include/llvm-c/ExecutionEngine.h:139
+   function Get_Execution_Engine_Target_Data (EE : Execution_Engine_T) return LLVM.Target.Target_Data_T  -- include/llvm-c/ExecutionEngine.h:150
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetExecutionEngineTargetData";
 
-   function Get_Execution_Engine_Target_Machine (EE : Execution_Engine_T) return LLVM.Target_Machine.Target_Machine_T  -- include/llvm-c/ExecutionEngine.h:141
+   function Get_Execution_Engine_Target_Machine (EE : Execution_Engine_T) return LLVM.Target_Machine.Target_Machine_T  -- include/llvm-c/ExecutionEngine.h:152
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetExecutionEngineTargetMachine";
@@ -239,12 +249,12 @@ function Find_Function
    procedure Add_Global_Mapping
      (EE : Execution_Engine_T;
       Global : LLVM.Types.Value_T;
-      Addr : System.Address)  -- include/llvm-c/ExecutionEngine.h:143
+      Addr : System.Address)  -- include/llvm-c/ExecutionEngine.h:154
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMAddGlobalMapping";
 
-   function Get_Pointer_To_Global (EE : Execution_Engine_T; Global : LLVM.Types.Value_T) return System.Address  -- include/llvm-c/ExecutionEngine.h:146
+   function Get_Pointer_To_Global (EE : Execution_Engine_T; Global : LLVM.Types.Value_T) return System.Address  -- include/llvm-c/ExecutionEngine.h:157
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMGetPointerToGlobal";
@@ -273,7 +283,7 @@ function Execution_Engine_Get_Err_Msg
          Arg_3 : unsigned;
          Arg_4 : unsigned;
          Arg_5 : Interfaces.C.Strings.chars_ptr) return access stdint_h.uint8_t
-   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:159
+   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:173
 
    type Memory_Manager_Allocate_Data_Section_Callback_T is access function
         (Arg_1 : System.Address;
@@ -282,13 +292,13 @@ function Execution_Engine_Get_Err_Msg
          Arg_4 : unsigned;
          Arg_5 : Interfaces.C.Strings.chars_ptr;
          Arg_6 : LLVM.Types.Bool_T) return access stdint_h.uint8_t
-   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:162
+   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:176
 
    type Memory_Manager_Finalize_Memory_Callback_T is access function (Arg_1 : System.Address; Arg_2 : System.Address) return LLVM.Types.Bool_T
-   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:165
+   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:179
 
    type Memory_Manager_Destroy_Callback_T is access procedure (Arg_1 : System.Address)
-   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:167
+   with Convention => C;  -- include/llvm-c/ExecutionEngine.h:181
 
   --*
   -- * Create a simple custom MCJIT memory manager. This memory manager can
@@ -307,33 +317,33 @@ function Execution_Engine_Get_Err_Msg
       Allocate_Code_Section : Memory_Manager_Allocate_Code_Section_Callback_T;
       Allocate_Data_Section : Memory_Manager_Allocate_Data_Section_Callback_T;
       Finalize_Memory : Memory_Manager_Finalize_Memory_Callback_T;
-      Destroy : Memory_Manager_Destroy_Callback_T) return MCJIT_Memory_Manager_T  -- include/llvm-c/ExecutionEngine.h:180
+      Destroy : Memory_Manager_Destroy_Callback_T) return MCJIT_Memory_Manager_T  -- include/llvm-c/ExecutionEngine.h:194
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateSimpleMCJITMemoryManager";
 
-   procedure Dispose_MCJIT_Memory_Manager (MM : MCJIT_Memory_Manager_T)  -- include/llvm-c/ExecutionEngine.h:187
+   procedure Dispose_MCJIT_Memory_Manager (MM : MCJIT_Memory_Manager_T)  -- include/llvm-c/ExecutionEngine.h:201
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMDisposeMCJITMemoryManager";
 
   --===-- JIT Event Listener functions -------------------------------------=== 
-   function Create_GDB_Registration_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:191
+   function Create_GDB_Registration_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:205
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateGDBRegistrationListener";
 
-   function Create_Intel_JIT_Event_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:192
+   function Create_Intel_JIT_Event_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:206
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateIntelJITEventListener";
 
-   function Create_O_Profile_JIT_Event_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:193
+   function Create_O_Profile_JIT_Event_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:207
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreateOProfileJITEventListener";
 
-   function Create_Perf_JIT_Event_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:194
+   function Create_Perf_JIT_Event_Listener return LLVM.Types.JIT_Event_Listener_T  -- include/llvm-c/ExecutionEngine.h:208
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMCreatePerfJITEventListener";

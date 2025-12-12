@@ -46,7 +46,7 @@ package LLVM.LLJIT_Utils is
   -- * expose the llvm_orc_registerJITLoaderGDBWrapper symbol.
   --  
 
-   function Orc_LLJIT_Enable_Debug_Support (J : LLVM.LLJIT.Orc_LLJIT_T) return LLVM.Error.Error_T  -- include/llvm-c/LLJITUtils.h:44
+   function Orc_LLJIT_Enable_Debug_Support (J : LLVM.LLJIT.Orc_LLJIT_T) return LLVM.Error.Error_T  -- include/llvm-c/LLJITUtils.h:45
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcLLJITEnableDebugSupport";

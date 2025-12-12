@@ -52,6 +52,10 @@ package Clang.CX_String is
 
   --*
   -- * Retrieve the character data associated with the given string.
+  -- *
+  -- * The returned data is a reference and not owned by the user. This data
+  -- * is only valid while the `CXString` is valid. This function is similar
+  -- * to `std::string::c_str()`.
   --  
 
 function Get_C_String
@@ -62,7 +66,7 @@ function Get_C_String
   -- * Free the given string.
   --  
 
-   procedure Dispose_String (Str : String_T)  -- include/clang-c/CXString.h:55
+   procedure Dispose_String (Str : String_T)  -- include/clang-c/CXString.h:59
    with Import => True, 
         Convention => C, 
         External_Name => "clang_disposeString";
@@ -71,7 +75,7 @@ function Get_C_String
   -- * Free the given string set.
   --  
 
-   procedure Dispose_String_Set (Set : access String_Set_T)  -- include/clang-c/CXString.h:60
+   procedure Dispose_String_Set (Set : access String_Set_T)  -- include/clang-c/CXString.h:64
    with Import => True, 
         Convention => C, 
         External_Name => "clang_disposeStringSet";

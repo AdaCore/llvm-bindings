@@ -28,7 +28,7 @@ package LLVM.Error_Handling is
   --  
 
    type Fatal_Error_Handler_T is access procedure (Arg_1 : Interfaces.C.Strings.chars_ptr)
-   with Convention => C;  -- include/llvm-c/ErrorHandling.h:27
+   with Convention => C;  -- include/llvm-c/ErrorHandling.h:28
 
   --*
   -- * Install a fatal error handler. By default, if LLVM detects a fatal error, it
@@ -38,7 +38,7 @@ package LLVM.Error_Handling is
   -- * call to exit(1).
   --  
 
-   procedure Install_Fatal_Error_Handler (Handler : Fatal_Error_Handler_T)  -- include/llvm-c/ErrorHandling.h:36
+   procedure Install_Fatal_Error_Handler (Handler : Fatal_Error_Handler_T)  -- include/llvm-c/ErrorHandling.h:37
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMInstallFatalErrorHandler";
@@ -48,7 +48,7 @@ package LLVM.Error_Handling is
   -- * behavior to the default.
   --  
 
-   procedure Reset_Fatal_Error_Handler  -- include/llvm-c/ErrorHandling.h:42
+   procedure Reset_Fatal_Error_Handler  -- include/llvm-c/ErrorHandling.h:43
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMResetFatalErrorHandler";
@@ -59,7 +59,7 @@ package LLVM.Error_Handling is
   -- * crash.
   --  
 
-   procedure Enable_Pretty_Stack_Trace  -- include/llvm-c/ErrorHandling.h:49
+   procedure Enable_Pretty_Stack_Trace  -- include/llvm-c/ErrorHandling.h:50
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMEnablePrettyStackTrace";

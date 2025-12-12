@@ -475,6 +475,50 @@ package body LLVM.Debug_Info is
       return Return_Value;
    end DI_Create_Enumerator;
 
+   function DI_Builder_Create_Enumerator_Of_Arbitrary_Precision
+     (Builder      : LLVM.Types.DI_Builder_T;
+      Name         : Interfaces.C.Strings.chars_ptr;
+      Name_Len     : stddef_h.size_t;
+      Size_In_Bits : stdint_h.uint64_t;
+      Words        : access stdint_h.uint64_t;
+      Is_Unsigned  : LLVM.Types.Bool_T)
+      return LLVM.Types.Metadata_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMDIBuilderCreateEnumeratorOfArbitraryPrecision";
+   function DI_Create_Enumerator_Of_Arbitrary_Precision
+     (Builder      : LLVM.Types.DI_Builder_T;
+      Name         : String;
+      Name_Len     : stddef_h.size_t;
+      Size_In_Bits : stdint_h.uint64_t;
+      Words        : access stdint_h.uint64_t;
+      Is_Unsigned  : LLVM.Types.Bool_T)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value : LLVM.Types.Metadata_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := DI_Builder_Create_Enumerator_Of_Arbitrary_Precision (Builder, Name_String, Name_Len, Size_In_Bits, Words, Is_Unsigned);
+      return Return_Value;
+   end DI_Create_Enumerator_Of_Arbitrary_Precision;
+
+   function DI_Create_Enumerator_Of_Arbitrary_Precision
+     (Builder      : LLVM.Types.DI_Builder_T;
+      Name         : String;
+      Name_Len     : stddef_h.size_t;
+      Size_In_Bits : stdint_h.uint64_t;
+      Words        : access stdint_h.uint64_t;
+      Is_Unsigned  : Boolean)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value     : LLVM.Types.Metadata_T;
+      Is_Unsigned_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Is_Unsigned);
+   begin
+      Return_Value := DI_Create_Enumerator_Of_Arbitrary_Precision (Builder, Name, Name_Len, Size_In_Bits, Words, Is_Unsigned_Bool);
+      return Return_Value;
+   end DI_Create_Enumerator_Of_Arbitrary_Precision;
+
    function DI_Builder_Create_Enumeration_Type
      (Builder       : LLVM.Types.DI_Builder_T;
       Scope         : LLVM.Types.Metadata_T;
@@ -558,6 +602,132 @@ package body LLVM.Debug_Info is
       Return_Value := DI_Builder_Create_Union_Type (Builder, Scope, Name_String, Name_Len, File, Line_Number, Size_In_Bits, Align_In_Bits, Flags, Elements, Num_Elements, Run_Time_Lang, Unique_Id_String, Unique_Id_Len);
       return Return_Value;
    end DI_Create_Union_Type;
+
+   function DI_Builder_Create_Set_Type
+     (Builder       : LLVM.Types.DI_Builder_T;
+      Scope         : LLVM.Types.Metadata_T;
+      Name          : Interfaces.C.Strings.chars_ptr;
+      Name_Len      : stddef_h.size_t;
+      File          : LLVM.Types.Metadata_T;
+      Line_Number   : unsigned;
+      Size_In_Bits  : stdint_h.uint64_t;
+      Align_In_Bits : stdint_h.uint32_t;
+      Base_Ty       : LLVM.Types.Metadata_T)
+      return LLVM.Types.Metadata_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMDIBuilderCreateSetType";
+   function DI_Create_Set_Type
+     (Builder       : LLVM.Types.DI_Builder_T;
+      Scope         : LLVM.Types.Metadata_T;
+      Name          : String;
+      Name_Len      : stddef_h.size_t;
+      File          : LLVM.Types.Metadata_T;
+      Line_Number   : unsigned;
+      Size_In_Bits  : stdint_h.uint64_t;
+      Align_In_Bits : stdint_h.uint32_t;
+      Base_Ty       : LLVM.Types.Metadata_T)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value : LLVM.Types.Metadata_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := DI_Builder_Create_Set_Type (Builder, Scope, Name_String, Name_Len, File, Line_Number, Size_In_Bits, Align_In_Bits, Base_Ty);
+      return Return_Value;
+   end DI_Create_Set_Type;
+
+   function DI_Builder_Create_Subrange_Type
+     (Builder       : LLVM.Types.DI_Builder_T;
+      Scope         : LLVM.Types.Metadata_T;
+      Name          : Interfaces.C.Strings.chars_ptr;
+      Name_Len      : stddef_h.size_t;
+      Line_No       : unsigned;
+      File          : LLVM.Types.Metadata_T;
+      Size_In_Bits  : stdint_h.uint64_t;
+      Align_In_Bits : stdint_h.uint32_t;
+      Flags         : DI_Flags_T;
+      Base_Ty       : LLVM.Types.Metadata_T;
+      Lower_Bound   : LLVM.Types.Metadata_T;
+      Upper_Bound   : LLVM.Types.Metadata_T;
+      Stride        : LLVM.Types.Metadata_T;
+      Bias          : LLVM.Types.Metadata_T)
+      return LLVM.Types.Metadata_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMDIBuilderCreateSubrangeType";
+   function DI_Create_Subrange_Type
+     (Builder       : LLVM.Types.DI_Builder_T;
+      Scope         : LLVM.Types.Metadata_T;
+      Name          : String;
+      Name_Len      : stddef_h.size_t;
+      Line_No       : unsigned;
+      File          : LLVM.Types.Metadata_T;
+      Size_In_Bits  : stdint_h.uint64_t;
+      Align_In_Bits : stdint_h.uint32_t;
+      Flags         : DI_Flags_T;
+      Base_Ty       : LLVM.Types.Metadata_T;
+      Lower_Bound   : LLVM.Types.Metadata_T;
+      Upper_Bound   : LLVM.Types.Metadata_T;
+      Stride        : LLVM.Types.Metadata_T;
+      Bias          : LLVM.Types.Metadata_T)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value : LLVM.Types.Metadata_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := DI_Builder_Create_Subrange_Type (Builder, Scope, Name_String, Name_Len, Line_No, File, Size_In_Bits, Align_In_Bits, Flags, Base_Ty, Lower_Bound, Upper_Bound, Stride, Bias);
+      return Return_Value;
+   end DI_Create_Subrange_Type;
+
+   function DI_Builder_Create_Dynamic_Array_Type
+     (Builder        : LLVM.Types.DI_Builder_T;
+      Scope          : LLVM.Types.Metadata_T;
+      Name           : Interfaces.C.Strings.chars_ptr;
+      Name_Len       : stddef_h.size_t;
+      Line_No        : unsigned;
+      File           : LLVM.Types.Metadata_T;
+      Size           : stdint_h.uint64_t;
+      Align_In_Bits  : stdint_h.uint32_t;
+      Ty             : LLVM.Types.Metadata_T;
+      Subscripts     : System.Address;
+      Num_Subscripts : unsigned;
+      Data_Location  : LLVM.Types.Metadata_T;
+      Associated     : LLVM.Types.Metadata_T;
+      Allocated      : LLVM.Types.Metadata_T;
+      Rank           : LLVM.Types.Metadata_T;
+      Bit_Stride     : LLVM.Types.Metadata_T)
+      return LLVM.Types.Metadata_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMDIBuilderCreateDynamicArrayType";
+   function DI_Create_Dynamic_Array_Type
+     (Builder        : LLVM.Types.DI_Builder_T;
+      Scope          : LLVM.Types.Metadata_T;
+      Name           : String;
+      Name_Len       : stddef_h.size_t;
+      Line_No        : unsigned;
+      File           : LLVM.Types.Metadata_T;
+      Size           : stdint_h.uint64_t;
+      Align_In_Bits  : stdint_h.uint32_t;
+      Ty             : LLVM.Types.Metadata_T;
+      Subscripts     : System.Address;
+      Num_Subscripts : unsigned;
+      Data_Location  : LLVM.Types.Metadata_T;
+      Associated     : LLVM.Types.Metadata_T;
+      Allocated      : LLVM.Types.Metadata_T;
+      Rank           : LLVM.Types.Metadata_T;
+      Bit_Stride     : LLVM.Types.Metadata_T)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value : LLVM.Types.Metadata_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := DI_Builder_Create_Dynamic_Array_Type (Builder, Scope, Name_String, Name_Len, Line_No, File, Size, Align_In_Bits, Ty, Subscripts, Num_Subscripts, Data_Location, Associated, Allocated, Rank, Bit_Stride);
+      return Return_Value;
+   end DI_Create_Dynamic_Array_Type;
 
    function DI_Builder_Create_Unspecified_Type
      (Builder  : LLVM.Types.DI_Builder_T;
@@ -842,6 +1012,27 @@ package body LLVM.Debug_Info is
       Return_Value := DI_Builder_Create_Obj_C_Property (Builder, Name_String, Name_Len, File, Line_No, Getter_Name_String, Getter_Name_Len, Setter_Name_String, Setter_Name_Len, Property_Attributes, Ty);
       return Return_Value;
    end DI_Create_Obj_C_Property;
+
+   function DI_Builder_Create_Object_Pointer_Type
+     (Builder  : LLVM.Types.DI_Builder_T;
+      C_Type   : LLVM.Types.Metadata_T;
+      Implicit : LLVM.Types.Bool_T)
+      return LLVM.Types.Metadata_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMDIBuilderCreateObjectPointerType";
+   function DI_Create_Object_Pointer_Type
+     (Builder  : LLVM.Types.DI_Builder_T;
+      C_Type   : LLVM.Types.Metadata_T;
+      Implicit : Boolean)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value  : LLVM.Types.Metadata_T;
+      Implicit_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Implicit);
+   begin
+      Return_Value := DI_Builder_Create_Object_Pointer_Type (Builder, C_Type, Implicit_Bool);
+      return Return_Value;
+   end DI_Create_Object_Pointer_Type;
 
    function DI_Builder_Create_Typedef
      (Builder       : LLVM.Types.DI_Builder_T;
@@ -1315,5 +1506,52 @@ package body LLVM.Debug_Info is
       Return_Value := DI_Create_Parameter_Variable (Builder, Scope, Name, Name_Len, Arg_No, File, Line_No, Ty, Always_Preserve_Bool, Flags);
       return Return_Value;
    end DI_Create_Parameter_Variable;
+
+   function DI_Builder_Create_Label
+     (Builder         : LLVM.Types.DI_Builder_T;
+      Context         : LLVM.Types.Metadata_T;
+      Name            : Interfaces.C.Strings.chars_ptr;
+      Name_Len        : stddef_h.size_t;
+      File            : LLVM.Types.Metadata_T;
+      Line_No         : unsigned;
+      Always_Preserve : LLVM.Types.Bool_T)
+      return LLVM.Types.Metadata_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMDIBuilderCreateLabel";
+   function DI_Create_Label
+     (Builder         : LLVM.Types.DI_Builder_T;
+      Context         : LLVM.Types.Metadata_T;
+      Name            : String;
+      Name_Len        : stddef_h.size_t;
+      File            : LLVM.Types.Metadata_T;
+      Line_No         : unsigned;
+      Always_Preserve : LLVM.Types.Bool_T)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value : LLVM.Types.Metadata_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := DI_Builder_Create_Label (Builder, Context, Name_String, Name_Len, File, Line_No, Always_Preserve);
+      return Return_Value;
+   end DI_Create_Label;
+
+   function DI_Create_Label
+     (Builder         : LLVM.Types.DI_Builder_T;
+      Context         : LLVM.Types.Metadata_T;
+      Name            : String;
+      Name_Len        : stddef_h.size_t;
+      File            : LLVM.Types.Metadata_T;
+      Line_No         : unsigned;
+      Always_Preserve : Boolean)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value         : LLVM.Types.Metadata_T;
+      Always_Preserve_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Always_Preserve);
+   begin
+      Return_Value := DI_Create_Label (Builder, Context, Name, Name_Len, File, Line_No, Always_Preserve_Bool);
+      return Return_Value;
+   end DI_Create_Label;
 
 end LLVM.Debug_Info;

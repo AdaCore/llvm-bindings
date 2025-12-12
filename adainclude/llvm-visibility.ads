@@ -5,11 +5,10 @@ pragma Warnings (Off, "-gnatwu");
 
 pragma Warnings (Off); with Interfaces.C; use Interfaces.C; pragma Warnings (On);
 
-package LLVM.Deprecated is
+package LLVM.Visibility is
 
-   --  arg-macro: procedure LLVM_ATTRIBUTE_C_DEPRECATED (decl, message)
-   --    decl __attribute__((deprecated(message)))
-  --===-- llvm-c/Deprecated.h - Deprecation macro -------------------*- C -*-===*|*                                                                            *|
+   --  unsupported macro: LLVM_C_ABI __attribute__((visibility("default")))
+  --===-- llvm-c/Visibility.h - Visibility macros for llvm-c ------*- C++ -*-===*|*                                                                            *|
   --|
   --|* Part of the LLVM Project, under the Apache License v2.0 with LLVM          *|
   --|* Exceptions.                                                                *|
@@ -18,14 +17,17 @@ package LLVM.Deprecated is
   --|*                                                                            *|
   --|*===----------------------------------------------------------------------===*|
   --|*                                                                            *|
-  --|* This header declares LLVM_ATTRIBUTE_C_DEPRECATED() macro, which can be     *|
-  --|* used to deprecate functions in the C interface.                            *|
+  --|* This header defines visibility macros used for the LLVM C interface. These *|
+  --|* macros are used to annotate C functions that should be exported as part of *|
+  --|* a shared library or DLL.                                                   *|
   --|*                                                                            *|
   --\*===----------------------------------------------------------------------=== 
 
-  -- This is a variant of LLVM_ATTRIBUTE_DEPRECATED() that is compatible with
-  -- C compilers.
-end LLVM.Deprecated;
+  --/ LLVM_C_ABI is the export/visibility macro used to mark symbols declared in
+  --/ llvm-c as exported when built as a shared library.
+  -- TODO(https://github.com/llvm/llvm-project/issues/145406): eliminate need for
+  -- two preprocessor definitions to gate LLVM_ABI macro definitions.
+end LLVM.Visibility;
 
 pragma Style_Checks (On);
 pragma Warnings (On, "-gnatwu");

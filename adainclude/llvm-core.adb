@@ -137,6 +137,28 @@ package body LLVM.Core is
       return Return_Value;
    end Get_MD_Kind_ID;
 
+   function Get_Sync_Scope_ID
+     (C     : LLVM.Types.Context_T;
+      Name  : Interfaces.C.Strings.chars_ptr;
+      S_Len : stddef_h.size_t)
+      return unsigned
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetSyncScopeID";
+   function Get_Sync_Scope_ID
+     (C     : LLVM.Types.Context_T;
+      Name  : String;
+      S_Len : stddef_h.size_t)
+      return unsigned
+   is
+      Return_Value : unsigned;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Get_Sync_Scope_ID (C, Name_String, S_Len);
+      return Return_Value;
+   end Get_Sync_Scope_ID;
+
    function Get_Enum_Attribute_Kind_For_Name
      (Name  : Interfaces.C.Strings.chars_ptr;
       S_Len : stddef_h.size_t)
@@ -1095,6 +1117,28 @@ package body LLVM.Core is
       return Return_Value;
    end Get_Named_Function;
 
+   function Get_Named_Function_With_Length
+     (M      : LLVM.Types.Module_T;
+      Name   : Interfaces.C.Strings.chars_ptr;
+      Length : stddef_h.size_t)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetNamedFunctionWithLength";
+   function Get_Named_Function_With_Length
+     (M      : LLVM.Types.Module_T;
+      Name   : String;
+      Length : stddef_h.size_t)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Get_Named_Function_With_Length (M, Name_String, Length);
+      return Return_Value;
+   end Get_Named_Function_With_Length;
+
    procedure Set_Module_Inline_Asm
      (M   : LLVM.Types.Module_T;
       Asm : Interfaces.C.Strings.chars_ptr)
@@ -1839,6 +1883,28 @@ package body LLVM.Core is
       end if;
    end Get_As_String;
 
+   function Get_Raw_Data_Values
+     (C             : LLVM.Types.Value_T;
+      Size_In_Bytes : access stddef_h.size_t)
+      return Interfaces.C.Strings.chars_ptr
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetRawDataValues";
+   function Get_Raw_Data_Values
+     (C             : LLVM.Types.Value_T;
+      Size_In_Bytes : access stddef_h.size_t)
+      return String
+   is
+      Return_Value : Interfaces.C.Strings.chars_ptr;
+   begin
+      Return_Value := Get_Raw_Data_Values (C, Size_In_Bytes);
+      if Return_Value /= Null_Ptr then
+         return Value (Return_Value);
+      else
+         return "";
+      end if;
+   end Get_Raw_Data_Values;
+
    function Const_Struct_In_Context
      (C             : LLVM.Types.Context_T;
       Constant_Vals : System.Address;
@@ -1882,6 +1948,28 @@ package body LLVM.Core is
       Return_Value := Const_Struct (Constant_Vals, Count, Packed_Bool);
       return Return_Value;
    end Const_Struct;
+
+   function Const_Data_Array
+     (Element_Ty    : LLVM.Types.Type_T;
+      Data          : Interfaces.C.Strings.chars_ptr;
+      Size_In_Bytes : stddef_h.size_t)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMConstDataArray";
+   function Const_Data_Array
+     (Element_Ty    : LLVM.Types.Type_T;
+      Data          : String;
+      Size_In_Bytes : stddef_h.size_t)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Data_Array   : aliased char_array := To_C (Data);
+      Data_String  : constant chars_ptr := To_Chars_Ptr (Data_Array'Unchecked_Access);
+   begin
+      Return_Value := Const_Data_Array (Element_Ty, Data_String, Size_In_Bytes);
+      return Return_Value;
+   end Const_Data_Array;
 
    function Const_Inline_Asm
      (Ty               : LLVM.Types.Type_T;
@@ -2075,6 +2163,28 @@ package body LLVM.Core is
       Return_Value := Get_Named_Global (M, Name_String);
       return Return_Value;
    end Get_Named_Global;
+
+   function Get_Named_Global_With_Length
+     (M      : LLVM.Types.Module_T;
+      Name   : Interfaces.C.Strings.chars_ptr;
+      Length : stddef_h.size_t)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetNamedGlobalWithLength";
+   function Get_Named_Global_With_Length
+     (M      : LLVM.Types.Module_T;
+      Name   : String;
+      Length : stddef_h.size_t)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Get_Named_Global_With_Length (M, Name_String, Length);
+      return Return_Value;
+   end Get_Named_Global_With_Length;
 
    function Is_Thread_Local
      (Global_Var : LLVM.Types.Value_T)
@@ -2798,6 +2908,37 @@ package body LLVM.Core is
       Return_Value := Insert_Basic_Block (Insert_Before_BB, Name_String);
       return Return_Value;
    end Insert_Basic_Block;
+
+   function Get_I_Cmp_Same_Sign
+     (Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetICmpSameSign";
+   function Get_I_Cmp_Same_Sign
+     (Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Get_I_Cmp_Same_Sign (Inst);
+      return Return_Value /= 0;
+   end Get_I_Cmp_Same_Sign;
+
+   procedure Set_I_Cmp_Same_Sign
+     (Inst      : LLVM.Types.Value_T;
+      Same_Sign : LLVM.Types.Bool_T)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMSetICmpSameSign";
+   procedure Set_I_Cmp_Same_Sign
+     (Inst      : LLVM.Types.Value_T;
+      Same_Sign : Boolean)
+   is
+      Same_Sign_Bool : constant LLVM.Types.Bool_T := Boolean'Pos (Same_Sign);
+   begin
+      Set_I_Cmp_Same_Sign (Inst, Same_Sign_Bool);
+   end Set_I_Cmp_Same_Sign;
 
    function Get_Call_Site_String_Attribute
      (C     : LLVM.Types.Value_T;
@@ -5436,6 +5577,30 @@ package body LLVM.Core is
       return Return_Value;
    end Fence;
 
+   function Build_Fence_Sync_Scope
+     (B        : LLVM.Types.Builder_T;
+      Ordering : Atomic_Ordering_T;
+      SSID     : unsigned;
+      Name     : Interfaces.C.Strings.chars_ptr)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMBuildFenceSyncScope";
+   function Fence_Sync_Scope
+     (B        : LLVM.Types.Builder_T;
+      Ordering : Atomic_Ordering_T;
+      SSID     : unsigned;
+      Name     : String)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Build_Fence_Sync_Scope (B, Ordering, SSID, Name_String);
+      return Return_Value;
+   end Fence_Sync_Scope;
+
    function Build_Atomic_RMW
      (B             : LLVM.Types.Builder_T;
       Op            : Atomic_RMW_Bin_Op_T;
@@ -5522,6 +5687,22 @@ package body LLVM.Core is
    begin
       Set_Atomic_Single_Thread (Atomic_Inst, Single_Thread_Bool);
    end Set_Atomic_Single_Thread;
+
+   function Is_Atomic
+     (Inst : LLVM.Types.Value_T)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMIsAtomic";
+   function Is_Atomic
+     (Inst : LLVM.Types.Value_T)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Is_Atomic (Inst);
+      return Return_Value /= 0;
+   end Is_Atomic;
 
    function Create_Memory_Buffer_With_Contents_Of_File
      (Path        : Interfaces.C.Strings.chars_ptr;

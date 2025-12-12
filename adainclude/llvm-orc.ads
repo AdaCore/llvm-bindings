@@ -51,13 +51,13 @@ package LLVM.Orc is
   -- * Represents an address in the executor process.
   --  
 
-   subtype Orc_JIT_Target_Address_T is stdint_h.uint64_t;  -- include/llvm-c/Orc.h:46
+   subtype Orc_JIT_Target_Address_T is stdint_h.uint64_t;  -- include/llvm-c/Orc.h:47
 
   --*
   -- * Represents an address in the executor process.
   --  
 
-   subtype Orc_Executor_Address_T is stdint_h.uint64_t;  -- include/llvm-c/Orc.h:51
+   subtype Orc_Executor_Address_T is stdint_h.uint64_t;  -- include/llvm-c/Orc.h:52
 
   --*
   -- * Represents generic linkage flags for a symbol definition.
@@ -68,33 +68,33 @@ package LLVM.Orc is
    JIT_Symbol_Generic_Flags_Exported : constant JIT_Symbol_Generic_Flags_T := 1;
    JIT_Symbol_Generic_Flags_Weak : constant JIT_Symbol_Generic_Flags_T := 2;
    JIT_Symbol_Generic_Flags_Callable : constant JIT_Symbol_Generic_Flags_T := 4;
-   JIT_Symbol_Generic_Flags_Materialization_Side_Effects_Only : constant JIT_Symbol_Generic_Flags_T := 8;  -- include/llvm-c/Orc.h:62
+   JIT_Symbol_Generic_Flags_Materialization_Side_Effects_Only : constant JIT_Symbol_Generic_Flags_T := 8;  -- include/llvm-c/Orc.h:63
 
   --*
   -- * Represents target specific flags for a symbol definition.
   --  
 
-   subtype JIT_Symbol_Target_Flags_T is stdint_h.uint8_t;  -- include/llvm-c/Orc.h:67
+   subtype JIT_Symbol_Target_Flags_T is stdint_h.uint8_t;  -- include/llvm-c/Orc.h:68
 
   --*
   -- * Represents the linkage flags for a symbol definition.
   --  
 
    type JIT_Symbol_Flags_T is record
-      GenericFlags : aliased stdint_h.uint8_t;  -- include/llvm-c/Orc.h:73
-      TargetFlags : aliased stdint_h.uint8_t;  -- include/llvm-c/Orc.h:74
+      GenericFlags : aliased stdint_h.uint8_t;  -- include/llvm-c/Orc.h:74
+      TargetFlags : aliased stdint_h.uint8_t;  -- include/llvm-c/Orc.h:75
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:75
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:76
 
   --*
   -- * Represents an evaluated symbol address and flags.
   --  
 
    type JIT_Evaluated_Symbol_T is record
-      Address : aliased Orc_Executor_Address_T;  -- include/llvm-c/Orc.h:81
-      Flags : aliased JIT_Symbol_Flags_T;  -- include/llvm-c/Orc.h:82
+      Address : aliased Orc_Executor_Address_T;  -- include/llvm-c/Orc.h:82
+      Flags : aliased JIT_Symbol_Flags_T;  -- include/llvm-c/Orc.h:83
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:83
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:84
 
   --*
   -- * A reference to an orc::ExecutionSession instance.
@@ -102,14 +102,14 @@ package LLVM.Orc is
 
    type Orc_Opaque_Execution_Session_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Execution_Session_T is access all Orc_Opaque_Execution_Session_Impl_T;  -- include/llvm-c/Orc.h:88
+   type Orc_Execution_Session_T is access all Orc_Opaque_Execution_Session_Impl_T;  -- include/llvm-c/Orc.h:89
 
   --*
   -- * Error reporter function.
   --  
 
    type Orc_Error_Reporter_Function_T is access procedure (Arg_1 : System.Address; Arg_2 : LLVM.Error.Error_T)
-   with Convention => C;  -- include/llvm-c/Orc.h:93
+   with Convention => C;  -- include/llvm-c/Orc.h:94
 
   --*
   -- * A reference to an orc::SymbolStringPool.
@@ -117,7 +117,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Symbol_String_Pool_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Symbol_String_Pool_T is access all Orc_Opaque_Symbol_String_Pool_Impl_T;  -- include/llvm-c/Orc.h:98
+   type Orc_Symbol_String_Pool_T is access all Orc_Opaque_Symbol_String_Pool_Impl_T;  -- include/llvm-c/Orc.h:99
 
   --*
   -- * A reference to an orc::SymbolStringPool table entry.
@@ -125,68 +125,68 @@ package LLVM.Orc is
 
    type Orc_Opaque_Symbol_String_Pool_Entry_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Symbol_String_Pool_Entry_T is access all Orc_Opaque_Symbol_String_Pool_Entry_Impl_T;  -- include/llvm-c/Orc.h:104
+   type Orc_Symbol_String_Pool_Entry_T is access all Orc_Opaque_Symbol_String_Pool_Entry_Impl_T;  -- include/llvm-c/Orc.h:105
 
   --*
   -- * Represents a pair of a symbol name and LLVMJITSymbolFlags.
   --  
 
    type Orc_C_Symbol_Flags_Map_Pair_T is record
-      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:110
-      Flags : aliased JIT_Symbol_Flags_T;  -- include/llvm-c/Orc.h:111
+      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:111
+      Flags : aliased JIT_Symbol_Flags_T;  -- include/llvm-c/Orc.h:112
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:112
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:113
 
   --*
   -- * Represents a list of (SymbolStringPtr, JITSymbolFlags) pairs that can be used
   -- * to construct a SymbolFlagsMap.
   --  
 
-   type Orc_C_Symbol_Flags_Map_Pairs_T is access all Orc_C_Symbol_Flags_Map_Pair_T;  -- include/llvm-c/Orc.h:118
+   type Orc_C_Symbol_Flags_Map_Pairs_T is access all Orc_C_Symbol_Flags_Map_Pair_T;  -- include/llvm-c/Orc.h:119
 
   --*
   -- * Represents a pair of a symbol name and an evaluated symbol.
   --  
 
    type Orc_C_Symbol_Map_Pair_T is record
-      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:124
-      Sym : aliased JIT_Evaluated_Symbol_T;  -- include/llvm-c/Orc.h:125
+      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:125
+      Sym : aliased JIT_Evaluated_Symbol_T;  -- include/llvm-c/Orc.h:126
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:126
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:127
 
   --*
   -- * Represents a list of (SymbolStringPtr, JITEvaluatedSymbol) pairs that can be
   -- * used to construct a SymbolMap.
   --  
 
-   type Orc_C_Symbol_Map_Pairs_T is access all Orc_C_Symbol_Map_Pair_T;  -- include/llvm-c/Orc.h:132
+   type Orc_C_Symbol_Map_Pairs_T is access all Orc_C_Symbol_Map_Pair_T;  -- include/llvm-c/Orc.h:133
 
   --*
   -- * Represents a SymbolAliasMapEntry
   --  
 
    type Orc_C_Symbol_Alias_Map_Entry_T is record
-      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:138
-      Flags : aliased JIT_Symbol_Flags_T;  -- include/llvm-c/Orc.h:139
+      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:139
+      Flags : aliased JIT_Symbol_Flags_T;  -- include/llvm-c/Orc.h:140
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:140
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:141
 
   --*
   -- * Represents a pair of a symbol name and SymbolAliasMapEntry.
   --  
 
    type Orc_C_Symbol_Alias_Map_Pair_T is record
-      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:146
-      c_Entry : aliased Orc_C_Symbol_Alias_Map_Entry_T;  -- include/llvm-c/Orc.h:147
+      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:147
+      c_Entry : aliased Orc_C_Symbol_Alias_Map_Entry_T;  -- include/llvm-c/Orc.h:148
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:148
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:149
 
   --*
   -- * Represents a list of (SymbolStringPtr, (SymbolStringPtr, JITSymbolFlags))
   -- * pairs that can be used to construct a SymbolFlagsMap.
   --  
 
-   type Orc_C_Symbol_Alias_Map_Pairs_T is access all Orc_C_Symbol_Alias_Map_Pair_T;  -- include/llvm-c/Orc.h:154
+   type Orc_C_Symbol_Alias_Map_Pairs_T is access all Orc_C_Symbol_Alias_Map_Pair_T;  -- include/llvm-c/Orc.h:155
 
   --*
   -- * A reference to an orc::JITDylib instance.
@@ -194,7 +194,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_JIT_Dylib_Impl_T is null record;   -- incomplete struct
 
-   type Orc_JIT_Dylib_T is access all Orc_Opaque_JIT_Dylib_Impl_T;  -- include/llvm-c/Orc.h:159
+   type Orc_JIT_Dylib_T is access all Orc_Opaque_JIT_Dylib_Impl_T;  -- include/llvm-c/Orc.h:160
 
   --*
   -- * Represents a list of LLVMOrcSymbolStringPoolEntryRef and the associated
@@ -202,38 +202,38 @@ package LLVM.Orc is
   --  
 
    type Orc_C_Symbols_List_T is record
-      Symbols : System.Address;  -- include/llvm-c/Orc.h:166
-      Length : aliased stddef_h.size_t;  -- include/llvm-c/Orc.h:167
+      Symbols : System.Address;  -- include/llvm-c/Orc.h:167
+      Length : aliased stddef_h.size_t;  -- include/llvm-c/Orc.h:168
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:168
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:169
 
   --*
   -- * Represents a pair of a JITDylib and LLVMOrcCSymbolsList.
   --  
 
    type Orc_C_Dependence_Map_Pair_T is record
-      JD : Orc_JIT_Dylib_T;  -- include/llvm-c/Orc.h:174
-      Names : aliased Orc_C_Symbols_List_T;  -- include/llvm-c/Orc.h:175
+      JD : Orc_JIT_Dylib_T;  -- include/llvm-c/Orc.h:175
+      Names : aliased Orc_C_Symbols_List_T;  -- include/llvm-c/Orc.h:176
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:176
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:177
 
   --*
   -- * Represents a list of (JITDylibRef, (LLVMOrcSymbolStringPoolEntryRef*,
   -- * size_t)) pairs that can be used to construct a SymbolDependenceMap.
   --  
 
-   type Orc_C_Dependence_Map_Pairs_T is access all Orc_C_Dependence_Map_Pair_T;  -- include/llvm-c/Orc.h:182
+   type Orc_C_Dependence_Map_Pairs_T is access all Orc_C_Dependence_Map_Pair_T;  -- include/llvm-c/Orc.h:183
 
   --*
   -- * A set of symbols that share dependencies.
   --  
 
    type Orc_C_Symbol_Dependence_Group_T is record
-      Symbols : aliased Orc_C_Symbols_List_T;  -- include/llvm-c/Orc.h:188
-      Dependencies : Orc_C_Dependence_Map_Pairs_T;  -- include/llvm-c/Orc.h:189
-      NumDependencies : aliased stddef_h.size_t;  -- include/llvm-c/Orc.h:190
+      Symbols : aliased Orc_C_Symbols_List_T;  -- include/llvm-c/Orc.h:189
+      Dependencies : Orc_C_Dependence_Map_Pairs_T;  -- include/llvm-c/Orc.h:190
+      NumDependencies : aliased stddef_h.size_t;  -- include/llvm-c/Orc.h:191
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:191
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:192
 
   --*
   -- * Lookup kind. This can be used by definition generators when deciding whether
@@ -245,7 +245,7 @@ package LLVM.Orc is
    type Orc_Lookup_Kind_T is 
      (Orc_Lookup_Kind_Static,
       Orc_Lookup_Kind_DL_Sym)
-   with Convention => C;  -- include/llvm-c/Orc.h:202
+   with Convention => C;  -- include/llvm-c/Orc.h:203
 
   --*
   -- * JITDylib lookup flags. This can be used by definition generators when
@@ -257,17 +257,17 @@ package LLVM.Orc is
    type Orc_JIT_Dylib_Lookup_Flags_T is 
      (Orc_JIT_Dylib_Lookup_Flags_Match_Exported_Symbols_Only,
       Orc_JIT_Dylib_Lookup_Flags_Match_All_Symbols)
-   with Convention => C;  -- include/llvm-c/Orc.h:213
+   with Convention => C;  -- include/llvm-c/Orc.h:214
 
   --*
   -- * An element type for a JITDylib search order.
   --  
 
    type Orc_CJIT_Dylib_Search_Order_Element_T is record
-      JD : Orc_JIT_Dylib_T;  -- include/llvm-c/Orc.h:219
-      JDLookupFlags : aliased Orc_JIT_Dylib_Lookup_Flags_T;  -- include/llvm-c/Orc.h:220
+      JD : Orc_JIT_Dylib_T;  -- include/llvm-c/Orc.h:220
+      JDLookupFlags : aliased Orc_JIT_Dylib_Lookup_Flags_T;  -- include/llvm-c/Orc.h:221
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:221
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:222
 
   --*
   -- * A JITDylib search order.
@@ -276,7 +276,7 @@ package LLVM.Orc is
   -- * field.
   --  
 
-   type Orc_CJIT_Dylib_Search_Order_T is access all Orc_CJIT_Dylib_Search_Order_Element_T;  -- include/llvm-c/Orc.h:229
+   type Orc_CJIT_Dylib_Search_Order_T is access all Orc_CJIT_Dylib_Search_Order_Element_T;  -- include/llvm-c/Orc.h:230
 
   --*
   -- * Symbol lookup flags for lookup sets. This should be kept in sync with
@@ -286,17 +286,17 @@ package LLVM.Orc is
    type Orc_Symbol_Lookup_Flags_T is 
      (Orc_Symbol_Lookup_Flags_Required_Symbol,
       Orc_Symbol_Lookup_Flags_Weakly_Referenced_Symbol)
-   with Convention => C;  -- include/llvm-c/Orc.h:238
+   with Convention => C;  -- include/llvm-c/Orc.h:239
 
   --*
   -- * An element type for a symbol lookup set.
   --  
 
    type Orc_C_Lookup_Set_Element_T is record
-      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:244
-      LookupFlags : aliased Orc_Symbol_Lookup_Flags_T;  -- include/llvm-c/Orc.h:245
+      Name : Orc_Symbol_String_Pool_Entry_T;  -- include/llvm-c/Orc.h:245
+      LookupFlags : aliased Orc_Symbol_Lookup_Flags_T;  -- include/llvm-c/Orc.h:246
    end record
-   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:246
+   with Convention => C_Pass_By_Copy;  -- include/llvm-c/Orc.h:247
 
   --*
   -- * A set of symbols to look up / generate.
@@ -310,7 +310,7 @@ package LLVM.Orc is
   -- * responsible for managing lifetime or retain counts.
   --  
 
-   type Orc_C_Lookup_Set_T is access all Orc_C_Lookup_Set_Element_T;  -- include/llvm-c/Orc.h:259
+   type Orc_C_Lookup_Set_T is access all Orc_C_Lookup_Set_Element_T;  -- include/llvm-c/Orc.h:260
 
   --*
   -- * A reference to a uniquely owned orc::MaterializationUnit instance.
@@ -318,7 +318,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Materialization_Unit_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Materialization_Unit_T is access all Orc_Opaque_Materialization_Unit_Impl_T;  -- include/llvm-c/Orc.h:264
+   type Orc_Materialization_Unit_T is access all Orc_Opaque_Materialization_Unit_Impl_T;  -- include/llvm-c/Orc.h:265
 
   --*
   -- * A reference to a uniquely owned orc::MaterializationResponsibility instance.
@@ -328,7 +328,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Materialization_Responsibility_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Materialization_Responsibility_T is access all Orc_Opaque_Materialization_Responsibility_Impl_T;  -- include/llvm-c/Orc.h:272
+   type Orc_Materialization_Responsibility_T is access all Orc_Opaque_Materialization_Responsibility_Impl_T;  -- include/llvm-c/Orc.h:273
 
   --*
   -- * A MaterializationUnit materialize callback.
@@ -342,7 +342,7 @@ package LLVM.Orc is
   --  
 
    type Orc_Materialization_Unit_Materialize_Function_T is access procedure (Arg_1 : System.Address; Arg_2 : Orc_Materialization_Responsibility_T)
-   with Convention => C;  -- include/llvm-c/Orc.h:284
+   with Convention => C;  -- include/llvm-c/Orc.h:285
 
   --*
   -- * A MaterializationUnit discard callback.
@@ -355,7 +355,7 @@ package LLVM.Orc is
         (Arg_1 : System.Address;
          Arg_2 : Orc_JIT_Dylib_T;
          Arg_3 : Orc_Symbol_String_Pool_Entry_T)
-   with Convention => C;  -- include/llvm-c/Orc.h:293
+   with Convention => C;  -- include/llvm-c/Orc.h:294
 
   --*
   -- * A MaterializationUnit destruction callback.
@@ -366,7 +366,7 @@ package LLVM.Orc is
   --  
 
    type Orc_Materialization_Unit_Destroy_Function_T is access procedure (Arg_1 : System.Address)
-   with Convention => C;  -- include/llvm-c/Orc.h:303
+   with Convention => C;  -- include/llvm-c/Orc.h:304
 
   --*
   -- * A reference to an orc::ResourceTracker instance.
@@ -374,7 +374,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Resource_Tracker_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Resource_Tracker_T is access all Orc_Opaque_Resource_Tracker_Impl_T;  -- include/llvm-c/Orc.h:308
+   type Orc_Resource_Tracker_T is access all Orc_Opaque_Resource_Tracker_Impl_T;  -- include/llvm-c/Orc.h:309
 
   --*
   -- * A reference to an orc::DefinitionGenerator.
@@ -382,7 +382,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Definition_Generator_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Definition_Generator_T is access all Orc_Opaque_Definition_Generator_Impl_T;  -- include/llvm-c/Orc.h:314
+   type Orc_Definition_Generator_T is access all Orc_Opaque_Definition_Generator_Impl_T;  -- include/llvm-c/Orc.h:315
 
   --*
   -- * An opaque lookup state object. Instances of this type can be captured to
@@ -399,7 +399,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Lookup_State_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Lookup_State_T is access all Orc_Opaque_Lookup_State_Impl_T;  -- include/llvm-c/Orc.h:328
+   type Orc_Lookup_State_T is access all Orc_Opaque_Lookup_State_Impl_T;  -- include/llvm-c/Orc.h:329
 
   --*
   -- * A custom generator function. This can be used to create a custom generator
@@ -444,7 +444,7 @@ package LLVM.Orc is
          Arg_6 : Orc_JIT_Dylib_Lookup_Flags_T;
          Arg_7 : Orc_C_Lookup_Set_T;
          Arg_8 : stddef_h.size_t) return LLVM.Error.Error_T
-   with Convention => C;  -- include/llvm-c/Orc.h:363
+   with Convention => C;  -- include/llvm-c/Orc.h:364
 
   --*
   -- * Disposer for a custom generator.
@@ -454,14 +454,14 @@ package LLVM.Orc is
   --  
 
    type Orc_Dispose_CAPI_Definition_Generator_Function_T is access procedure (Arg_1 : System.Address)
-   with Convention => C;  -- include/llvm-c/Orc.h:375
+   with Convention => C;  -- include/llvm-c/Orc.h:376
 
   --*
   -- * Predicate function for SymbolStringPoolEntries.
   --  
 
    type Orc_Symbol_Predicate_T is access function (Arg_1 : System.Address; Arg_2 : Orc_Symbol_String_Pool_Entry_T) return int
-   with Convention => C;  -- include/llvm-c/Orc.h:380
+   with Convention => C;  -- include/llvm-c/Orc.h:381
 
   --*
   -- * A reference to an orc::ThreadSafeContext instance.
@@ -469,7 +469,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Thread_Safe_Context_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Thread_Safe_Context_T is access all Orc_Opaque_Thread_Safe_Context_Impl_T;  -- include/llvm-c/Orc.h:386
+   type Orc_Thread_Safe_Context_T is access all Orc_Opaque_Thread_Safe_Context_Impl_T;  -- include/llvm-c/Orc.h:387
 
   --*
   -- * A reference to an orc::ThreadSafeModule instance.
@@ -477,7 +477,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Thread_Safe_Module_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Thread_Safe_Module_T is access all Orc_Opaque_Thread_Safe_Module_Impl_T;  -- include/llvm-c/Orc.h:391
+   type Orc_Thread_Safe_Module_T is access all Orc_Opaque_Thread_Safe_Module_Impl_T;  -- include/llvm-c/Orc.h:392
 
   --*
   -- * A function for inspecting/mutating IR modules, suitable for use with
@@ -485,7 +485,7 @@ package LLVM.Orc is
   --  
 
    type Orc_Generic_IR_Module_Operation_Function_T is access function (Arg_1 : System.Address; Arg_2 : LLVM.Types.Module_T) return LLVM.Error.Error_T
-   with Convention => C;  -- include/llvm-c/Orc.h:397
+   with Convention => C;  -- include/llvm-c/Orc.h:398
 
   --*
   -- * A reference to an orc::JITTargetMachineBuilder instance.
@@ -493,7 +493,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_JIT_Target_Machine_Builder_Impl_T is null record;   -- incomplete struct
 
-   type Orc_JIT_Target_Machine_Builder_T is access all Orc_Opaque_JIT_Target_Machine_Builder_Impl_T;  -- include/llvm-c/Orc.h:404
+   type Orc_JIT_Target_Machine_Builder_T is access all Orc_Opaque_JIT_Target_Machine_Builder_Impl_T;  -- include/llvm-c/Orc.h:405
 
   --*
   -- * A reference to an orc::ObjectLayer instance.
@@ -501,7 +501,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Object_Layer_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Object_Layer_T is access all Orc_Opaque_Object_Layer_Impl_T;  -- include/llvm-c/Orc.h:409
+   type Orc_Object_Layer_T is access all Orc_Opaque_Object_Layer_Impl_T;  -- include/llvm-c/Orc.h:410
 
   --*
   -- * A reference to an orc::ObjectLinkingLayer instance.
@@ -509,7 +509,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Object_Linking_Layer_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Object_Linking_Layer_T is access all Orc_Opaque_Object_Linking_Layer_Impl_T;  -- include/llvm-c/Orc.h:414
+   type Orc_Object_Linking_Layer_T is access all Orc_Opaque_Object_Linking_Layer_Impl_T;  -- include/llvm-c/Orc.h:415
 
   --*
   -- * A reference to an orc::IRTransformLayer instance.
@@ -517,7 +517,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_IR_Transform_Layer_Impl_T is null record;   -- incomplete struct
 
-   type Orc_IR_Transform_Layer_T is access all Orc_Opaque_IR_Transform_Layer_Impl_T;  -- include/llvm-c/Orc.h:419
+   type Orc_IR_Transform_Layer_T is access all Orc_Opaque_IR_Transform_Layer_Impl_T;  -- include/llvm-c/Orc.h:420
 
   --*
   -- * A function for applying transformations as part of an transform layer.
@@ -539,7 +539,7 @@ package LLVM.Orc is
         (Arg_1 : System.Address;
          Arg_2 : System.Address;
          Arg_3 : Orc_Materialization_Responsibility_T) return LLVM.Error.Error_T
-   with Convention => C;  -- include/llvm-c/Orc.h:436
+   with Convention => C;  -- include/llvm-c/Orc.h:437
 
   --*
   -- * A reference to an orc::ObjectTransformLayer instance.
@@ -547,7 +547,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Object_Transform_Layer_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Object_Transform_Layer_T is access all Orc_Opaque_Object_Transform_Layer_Impl_T;  -- include/llvm-c/Orc.h:444
+   type Orc_Object_Transform_Layer_T is access all Orc_Opaque_Object_Transform_Layer_Impl_T;  -- include/llvm-c/Orc.h:445
 
   --*
   -- * A function for applying transformations to an object file buffer.
@@ -564,7 +564,7 @@ package LLVM.Orc is
   --  
 
    type Orc_Object_Transform_Layer_Transform_Function_T is access function (Arg_1 : System.Address; Arg_2 : System.Address) return LLVM.Error.Error_T
-   with Convention => C;  -- include/llvm-c/Orc.h:459
+   with Convention => C;  -- include/llvm-c/Orc.h:460
 
   --*
   -- * A reference to an orc::IndirectStubsManager instance.
@@ -572,7 +572,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Indirect_Stubs_Manager_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Indirect_Stubs_Manager_T is access all Orc_Opaque_Indirect_Stubs_Manager_Impl_T;  -- include/llvm-c/Orc.h:466
+   type Orc_Indirect_Stubs_Manager_T is access all Orc_Opaque_Indirect_Stubs_Manager_Impl_T;  -- include/llvm-c/Orc.h:467
 
   --*
   -- * A reference to an orc::LazyCallThroughManager instance.
@@ -580,7 +580,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Lazy_Call_Through_Manager_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Lazy_Call_Through_Manager_T is access all Orc_Opaque_Lazy_Call_Through_Manager_Impl_T;  -- include/llvm-c/Orc.h:472
+   type Orc_Lazy_Call_Through_Manager_T is access all Orc_Opaque_Lazy_Call_Through_Manager_Impl_T;  -- include/llvm-c/Orc.h:473
 
   --*
   -- * A reference to an orc::DumpObjects object.
@@ -591,7 +591,7 @@ package LLVM.Orc is
 
    type Orc_Opaque_Dump_Objects_Impl_T is null record;   -- incomplete struct
 
-   type Orc_Dump_Objects_T is access all Orc_Opaque_Dump_Objects_Impl_T;  -- include/llvm-c/Orc.h:480
+   type Orc_Dump_Objects_T is access all Orc_Opaque_Dump_Objects_Impl_T;  -- include/llvm-c/Orc.h:481
 
   --*
   -- * Attach a custom error reporter function to the ExecutionSession.
@@ -606,7 +606,7 @@ package LLVM.Orc is
    procedure Orc_Execution_Session_Set_Error_Reporter
      (ES : Orc_Execution_Session_T;
       Report_Error : Orc_Error_Reporter_Function_T;
-      Ctx : System.Address)  -- include/llvm-c/Orc.h:491
+      Ctx : System.Address)  -- include/llvm-c/Orc.h:492
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcExecutionSessionSetErrorReporter";
@@ -618,7 +618,7 @@ package LLVM.Orc is
   -- * not required to free the pool.
   --  
 
-   function Orc_Execution_Session_Get_Symbol_String_Pool (ES : Orc_Execution_Session_T) return Orc_Symbol_String_Pool_T  -- include/llvm-c/Orc.h:502
+   function Orc_Execution_Session_Get_Symbol_String_Pool (ES : Orc_Execution_Session_T) return Orc_Symbol_String_Pool_T  -- include/llvm-c/Orc.h:503
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcExecutionSessionGetSymbolStringPool";
@@ -634,7 +634,7 @@ package LLVM.Orc is
   -- * closing a JITDylib.
   --  
 
-   procedure Orc_Symbol_String_Pool_Clear_Dead_Entries (SSP : Orc_Symbol_String_Pool_T)  -- include/llvm-c/Orc.h:514
+   procedure Orc_Symbol_String_Pool_Clear_Dead_Entries (SSP : Orc_Symbol_String_Pool_T)  -- include/llvm-c/Orc.h:516
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcSymbolStringPoolClearDeadEntries";
@@ -677,7 +677,7 @@ function Orc_Execution_Session_Intern
          Arg_2 : Orc_C_Symbol_Map_Pairs_T;
          Arg_3 : stddef_h.size_t;
          Arg_4 : System.Address)
-   with Convention => C;  -- include/llvm-c/Orc.h:545
+   with Convention => C;  -- include/llvm-c/Orc.h:547
 
   --*
   -- * Look up symbols in an execution session.
@@ -716,7 +716,7 @@ function Orc_Execution_Session_Intern
       Symbols : Orc_C_Lookup_Set_T;
       Symbols_Size : stddef_h.size_t;
       Handle_Result : Orc_Execution_Session_Lookup_Handle_Result_Function_T;
-      Ctx : System.Address)  -- include/llvm-c/Orc.h:577
+      Ctx : System.Address)  -- include/llvm-c/Orc.h:579
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcExecutionSessionLookup";
@@ -725,7 +725,7 @@ function Orc_Execution_Session_Intern
   -- * Increments the ref-count for a SymbolStringPool entry.
   --  
 
-   procedure Orc_Retain_Symbol_String_Pool_Entry (S : Orc_Symbol_String_Pool_Entry_T)  -- include/llvm-c/Orc.h:586
+   procedure Orc_Retain_Symbol_String_Pool_Entry (S : Orc_Symbol_String_Pool_Entry_T)  -- include/llvm-c/Orc.h:589
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcRetainSymbolStringPoolEntry";
@@ -734,7 +734,7 @@ function Orc_Execution_Session_Intern
   -- * Reduces the ref-count for of a SymbolStringPool entry.
   --  
 
-   procedure Orc_Release_Symbol_String_Pool_Entry (S : Orc_Symbol_String_Pool_Entry_T)  -- include/llvm-c/Orc.h:591
+   procedure Orc_Release_Symbol_String_Pool_Entry (S : Orc_Symbol_String_Pool_Entry_T)  -- include/llvm-c/Orc.h:595
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcReleaseSymbolStringPoolEntry";
@@ -753,7 +753,7 @@ function Orc_Symbol_String_Pool_Entry_Str
   -- * Reduces the ref-count of a ResourceTracker.
   --  
 
-   procedure Orc_Release_Resource_Tracker (RT : Orc_Resource_Tracker_T)  -- include/llvm-c/Orc.h:603
+   procedure Orc_Release_Resource_Tracker (RT : Orc_Resource_Tracker_T)  -- include/llvm-c/Orc.h:608
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcReleaseResourceTracker";
@@ -763,7 +763,7 @@ function Orc_Symbol_String_Pool_Entry_Str
   -- * to resource tracker DstRT.
   --  
 
-   procedure Orc_Resource_Tracker_Transfer_To (Src_RT : Orc_Resource_Tracker_T; Dst_RT : Orc_Resource_Tracker_T)  -- include/llvm-c/Orc.h:609
+   procedure Orc_Resource_Tracker_Transfer_To (Src_RT : Orc_Resource_Tracker_T; Dst_RT : Orc_Resource_Tracker_T)  -- include/llvm-c/Orc.h:615
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcResourceTrackerTransferTo";
@@ -773,7 +773,7 @@ function Orc_Symbol_String_Pool_Entry_Str
   -- * ResourceTracker::remove().
   --  
 
-   function Orc_Resource_Tracker_Remove (RT : Orc_Resource_Tracker_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:616
+   function Orc_Resource_Tracker_Remove (RT : Orc_Resource_Tracker_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:623
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcResourceTrackerRemove";
@@ -784,7 +784,7 @@ function Orc_Symbol_String_Pool_Entry_Str
   -- * prevented the client from calling LLVMOrcJITDylibAddGenerator).
   --  
 
-   procedure Orc_Dispose_Definition_Generator (DG : Orc_Definition_Generator_T)  -- include/llvm-c/Orc.h:623
+   procedure Orc_Dispose_Definition_Generator (DG : Orc_Definition_Generator_T)  -- include/llvm-c/Orc.h:631
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeDefinitionGenerator";
@@ -793,7 +793,7 @@ function Orc_Symbol_String_Pool_Entry_Str
   -- * Dispose of a MaterializationUnit.
   --  
 
-   procedure Orc_Dispose_Materialization_Unit (MU : Orc_Materialization_Unit_T)  -- include/llvm-c/Orc.h:628
+   procedure Orc_Dispose_Materialization_Unit (MU : Orc_Materialization_Unit_T)  -- include/llvm-c/Orc.h:637
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeMaterializationUnit";
@@ -865,7 +865,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * must explicitly retain each of the elements for themselves.
   --  
 
-   function Orc_Absolute_Symbols (Syms : Orc_C_Symbol_Map_Pairs_T; Num_Pairs : stddef_h.size_t) return Orc_Materialization_Unit_T  -- include/llvm-c/Orc.h:692
+   function Orc_Absolute_Symbols (Syms : Orc_C_Symbol_Map_Pairs_T; Num_Pairs : stddef_h.size_t) return Orc_Materialization_Unit_T  -- include/llvm-c/Orc.h:701
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcAbsoluteSymbols";
@@ -897,7 +897,7 @@ function Orc_Create_Custom_Materialization_Unit
       ISM : Orc_Indirect_Stubs_Manager_T;
       Source_Ref : Orc_JIT_Dylib_T;
       Callable_Aliases : Orc_C_Symbol_Alias_Map_Pairs_T;
-      Num_Pairs : stddef_h.size_t) return Orc_Materialization_Unit_T  -- include/llvm-c/Orc.h:715
+      Num_Pairs : stddef_h.size_t) return Orc_Materialization_Unit_T  -- include/llvm-c/Orc.h:724
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcLazyReexports";
@@ -913,7 +913,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * LLVMOrcMaterializationResponsibilityFailMaterialization).
   --  
 
-   procedure Orc_Dispose_Materialization_Responsibility (MR : Orc_Materialization_Responsibility_T)  -- include/llvm-c/Orc.h:730
+   procedure Orc_Dispose_Materialization_Responsibility (MR : Orc_Materialization_Responsibility_T)  -- include/llvm-c/Orc.h:739
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeMaterializationResponsibility";
@@ -922,7 +922,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * Returns the target JITDylib that these symbols are being materialized into.
   --  
 
-   function Orc_Materialization_Responsibility_Get_Target_Dylib (MR : Orc_Materialization_Responsibility_T) return Orc_JIT_Dylib_T  -- include/llvm-c/Orc.h:736
+   function Orc_Materialization_Responsibility_Get_Target_Dylib (MR : Orc_Materialization_Responsibility_T) return Orc_JIT_Dylib_T  -- include/llvm-c/Orc.h:746
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityGetTargetDylib";
@@ -931,7 +931,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * Returns the ExecutionSession for this MaterializationResponsibility.
   --  
 
-   function Orc_Materialization_Responsibility_Get_Execution_Session (MR : Orc_Materialization_Responsibility_T) return Orc_Execution_Session_T  -- include/llvm-c/Orc.h:743
+   function Orc_Materialization_Responsibility_Get_Execution_Session (MR : Orc_Materialization_Responsibility_T) return Orc_Execution_Session_T  -- include/llvm-c/Orc.h:753
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityGetExecutionSession";
@@ -947,7 +947,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * explicitly.
   --  
 
-   function Orc_Materialization_Responsibility_Get_Symbols (MR : Orc_Materialization_Responsibility_T; Num_Pairs : access stddef_h.size_t) return Orc_C_Symbol_Flags_Map_Pairs_T  -- include/llvm-c/Orc.h:756
+   function Orc_Materialization_Responsibility_Get_Symbols (MR : Orc_Materialization_Responsibility_T; Num_Pairs : access stddef_h.size_t) return Orc_C_Symbol_Flags_Map_Pairs_T  -- include/llvm-c/Orc.h:767
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityGetSymbols";
@@ -958,7 +958,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * Does not release the entries themselves.
   --  
 
-   procedure Orc_Dispose_C_Symbol_Flags_Map (Pairs : Orc_C_Symbol_Flags_Map_Pairs_T)  -- include/llvm-c/Orc.h:764
+   procedure Orc_Dispose_C_Symbol_Flags_Map (Pairs : Orc_C_Symbol_Flags_Map_Pairs_T)  -- include/llvm-c/Orc.h:776
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeCSymbolFlagsMap";
@@ -972,7 +972,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * MaterializationResponsbility or beyond the lifetime thereof.
   --  
 
-   function Orc_Materialization_Responsibility_Get_Initializer_Symbol (MR : Orc_Materialization_Responsibility_T) return Orc_Symbol_String_Pool_Entry_T  -- include/llvm-c/Orc.h:775
+   function Orc_Materialization_Responsibility_Get_Initializer_Symbol (MR : Orc_Materialization_Responsibility_T) return Orc_Symbol_String_Pool_Entry_T  -- include/llvm-c/Orc.h:787
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityGetInitializerSymbol";
@@ -984,7 +984,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * back to the JITDylib via the delegate method.
   --  
 
-   function Orc_Materialization_Responsibility_Get_Requested_Symbols (MR : Orc_Materialization_Responsibility_T; Num_Symbols : access stddef_h.size_t) return System.Address  -- include/llvm-c/Orc.h:785
+   function Orc_Materialization_Responsibility_Get_Requested_Symbols (MR : Orc_Materialization_Responsibility_T; Num_Symbols : access stddef_h.size_t) return System.Address  -- include/llvm-c/Orc.h:797
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityGetRequestedSymbols";
@@ -995,7 +995,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * Does not release the symbols themselves.
   --  
 
-   procedure Orc_Dispose_Symbols (Symbols : System.Address)  -- include/llvm-c/Orc.h:793
+   procedure Orc_Dispose_Symbols (Symbols : System.Address)  -- include/llvm-c/Orc.h:805
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeSymbols";
@@ -1020,7 +1020,7 @@ function Orc_Create_Custom_Materialization_Unit
    function Orc_Materialization_Responsibility_Notify_Resolved
      (MR : Orc_Materialization_Responsibility_T;
       Symbols : Orc_C_Symbol_Map_Pairs_T;
-      Num_Pairs : stddef_h.size_t) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:811
+      Num_Pairs : stddef_h.size_t) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:823
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityNotifyResolved";
@@ -1055,7 +1055,7 @@ function Orc_Create_Custom_Materialization_Unit
    function Orc_Materialization_Responsibility_Notify_Emitted
      (MR : Orc_Materialization_Responsibility_T;
       Symbol_Dep_Groups : access Orc_C_Symbol_Dependence_Group_T;
-      Num_Symbol_Dep_Groups : stddef_h.size_t) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:841
+      Num_Symbol_Dep_Groups : stddef_h.size_t) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:853
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityNotifyEmitted";
@@ -1077,7 +1077,7 @@ function Orc_Create_Custom_Materialization_Unit
    function Orc_Materialization_Responsibility_Define_Materializing
      (MR : Orc_Materialization_Responsibility_T;
       Pairs : Orc_C_Symbol_Flags_Map_Pairs_T;
-      Num_Pairs : stddef_h.size_t) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:858
+      Num_Pairs : stddef_h.size_t) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:870
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityDefineMaterializing";
@@ -1090,7 +1090,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * these symbols.
   --  
 
-   procedure Orc_Materialization_Responsibility_Fail_Materialization (MR : Orc_Materialization_Responsibility_T)  -- include/llvm-c/Orc.h:869
+   procedure Orc_Materialization_Responsibility_Fail_Materialization (MR : Orc_Materialization_Responsibility_T)  -- include/llvm-c/Orc.h:881
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityFailMaterialization";
@@ -1103,7 +1103,7 @@ function Orc_Create_Custom_Materialization_Unit
   -- * materializing only those).
   --  
 
-   function Orc_Materialization_Responsibility_Replace (MR : Orc_Materialization_Responsibility_T; MU : Orc_Materialization_Unit_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:879
+   function Orc_Materialization_Responsibility_Replace (MR : Orc_Materialization_Responsibility_T; MU : Orc_Materialization_Unit_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:891
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityReplace";
@@ -1121,7 +1121,7 @@ function Orc_Create_Custom_Materialization_Unit
      (MR : Orc_Materialization_Responsibility_T;
       Symbols : System.Address;
       Num_Symbols : stddef_h.size_t;
-      Result : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:891
+      Result : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:903
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcMaterializationResponsibilityDelegate";
@@ -1176,7 +1176,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
   -- * with LLVMOrcReleaseResourceTracker when no longer needed.
   --  
 
-   function Orc_JIT_Dylib_Create_Resource_Tracker (JD : Orc_JIT_Dylib_T) return Orc_Resource_Tracker_T  -- include/llvm-c/Orc.h:940
+   function Orc_JIT_Dylib_Create_Resource_Tracker (JD : Orc_JIT_Dylib_T) return Orc_Resource_Tracker_T  -- include/llvm-c/Orc.h:949
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcJITDylibCreateResourceTracker";
@@ -1187,7 +1187,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
   -- * call LLVMOrcReleaseResourceTracker when the result is no longer needed.
   --  
 
-   function Orc_JIT_Dylib_Get_Default_Resource_Tracker (JD : Orc_JIT_Dylib_T) return Orc_Resource_Tracker_T  -- include/llvm-c/Orc.h:948
+   function Orc_JIT_Dylib_Get_Default_Resource_Tracker (JD : Orc_JIT_Dylib_T) return Orc_Resource_Tracker_T  -- include/llvm-c/Orc.h:957
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcJITDylibGetDefaultResourceTracker";
@@ -1200,7 +1200,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
   -- * call LLVMOrcDisposeMaterializationUnit to destroy it.
   --  
 
-   function Orc_JIT_Dylib_Define (JD : Orc_JIT_Dylib_T; MU : Orc_Materialization_Unit_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:957
+   function Orc_JIT_Dylib_Define (JD : Orc_JIT_Dylib_T; MU : Orc_Materialization_Unit_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:966
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcJITDylibDefine";
@@ -1210,7 +1210,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
   -- * JITDylib::clear().
   --  
 
-   function Orc_JIT_Dylib_Clear (JD : Orc_JIT_Dylib_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:964
+   function Orc_JIT_Dylib_Clear (JD : Orc_JIT_Dylib_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:973
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcJITDylibClear";
@@ -1222,7 +1222,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
   -- * longer responsible for managing its memory.
   --  
 
-   procedure Orc_JIT_Dylib_Add_Generator (JD : Orc_JIT_Dylib_T; DG : Orc_Definition_Generator_T)  -- include/llvm-c/Orc.h:972
+   procedure Orc_JIT_Dylib_Add_Generator (JD : Orc_JIT_Dylib_T; DG : Orc_Definition_Generator_T)  -- include/llvm-c/Orc.h:981
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcJITDylibAddGenerator";
@@ -1244,7 +1244,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
    function Orc_Create_Custom_CAPI_Definition_Generator
      (F : Orc_CAPI_Definition_Generator_Try_To_Generate_Function_T;
       Ctx : System.Address;
-      Dispose : Orc_Dispose_CAPI_Definition_Generator_Function_T) return Orc_Definition_Generator_T  -- include/llvm-c/Orc.h:988
+      Dispose : Orc_Dispose_CAPI_Definition_Generator_Function_T) return Orc_Definition_Generator_T  -- include/llvm-c/Orc.h:998
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateCustomCAPIDefinitionGenerator";
@@ -1254,7 +1254,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
   -- * LLVMOrcCAPIDefinitionGeneratorTryToGenerateFunction).
   --  
 
-   procedure Orc_Lookup_State_Continue_Lookup (S : Orc_Lookup_State_T; Err : LLVM.Error.Error_T)  -- include/llvm-c/Orc.h:996
+   procedure Orc_Lookup_State_Continue_Lookup (S : Orc_Lookup_State_T; Err : LLVM.Error.Error_T)  -- include/llvm-c/Orc.h:1006
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcLookupStateContinueLookup";
@@ -1282,7 +1282,7 @@ function Orc_Execution_Session_Get_JIT_Dylib_By_Name
      (Result : System.Address;
       Global_Prefx : char;
       Filter : Orc_Symbol_Predicate_T;
-      Filter_Ctx : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1017
+      Filter_Ctx : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1027
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateDynamicLibrarySearchGeneratorForProcess";
@@ -1333,40 +1333,51 @@ function Orc_Create_Dynamic_Library_Search_Generator_For_Path
   --  
 
 function Orc_Create_Static_Library_Search_Generator_For_Path
-     (Result        : System.Address;
-      Obj_Layer     : Orc_Object_Layer_T;
-      File_Name     : String;
-      Target_Triple : String)
+     (Result    : System.Address;
+      Obj_Layer : Orc_Object_Layer_T;
+      File_Name : String)
       return LLVM.Error.Error_T;
 
   --*
-  -- * Create a ThreadSafeContext containing a new LLVMContext.
+  -- * Create a ThreadSafeContextRef containing a new LLVMContext.
   -- *
   -- * Ownership of the underlying ThreadSafeContext data is shared: Clients
-  -- * can and should dispose of their ThreadSafeContext as soon as they no longer
-  -- * need to refer to it directly. Other references (e.g. from ThreadSafeModules)
-  -- * will keep the data alive as long as it is needed.
+  -- * can and should dispose of their ThreadSafeContextRef as soon as they no
+  -- * longer need to refer to it directly. Other references (e.g. from
+  -- * ThreadSafeModules) will keep the underlying data alive as long as it is
+  -- * needed.
   --  
 
-   function Orc_Create_New_Thread_Safe_Context return Orc_Thread_Safe_Context_T  -- include/llvm-c/Orc.h:1072
+   function Orc_Create_New_Thread_Safe_Context return Orc_Thread_Safe_Context_T  -- include/llvm-c/Orc.h:1083
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateNewThreadSafeContext";
 
   --*
-  -- * Get a reference to the wrapped LLVMContext.
+  -- * Create a ThreadSafeContextRef from a given LLVMContext, which must not be
+  -- * associated with any existing ThreadSafeContext.
+  -- *
+  -- * The underlying ThreadSafeContext will take ownership of the LLVMContext
+  -- * object, so clients should not free the LLVMContext passed to this
+  -- * function.
+  -- *
+  -- * Ownership of the underlying ThreadSafeContext data is shared: Clients
+  -- * can and should dispose of their ThreadSafeContextRef as soon as they no
+  -- * longer need to refer to it directly. Other references (e.g. from
+  -- * ThreadSafeModules) will keep the underlying data alive as long as it is
+  -- * needed.
   --  
 
-   function Orc_Thread_Safe_Context_Get_Context (TS_Ctx : Orc_Thread_Safe_Context_T) return LLVM.Types.Context_T  -- include/llvm-c/Orc.h:1078
+   function Orc_Create_New_Thread_Safe_Context_From_LLVM_Context (Ctx : LLVM.Types.Context_T) return Orc_Thread_Safe_Context_T  -- include/llvm-c/Orc.h:1100
    with Import => True, 
         Convention => C, 
-        External_Name => "LLVMOrcThreadSafeContextGetContext";
+        External_Name => "LLVMOrcCreateNewThreadSafeContextFromLLVMContext";
 
   --*
   -- * Dispose of a ThreadSafeContext.
   --  
 
-   procedure Orc_Dispose_Thread_Safe_Context (TS_Ctx : Orc_Thread_Safe_Context_T)  -- include/llvm-c/Orc.h:1083
+   procedure Orc_Dispose_Thread_Safe_Context (TS_Ctx : Orc_Thread_Safe_Context_T)  -- include/llvm-c/Orc.h:1106
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeThreadSafeContext";
@@ -1382,7 +1393,7 @@ function Orc_Create_Static_Library_Search_Generator_For_Path
   -- * should call LLVMOrcDisposeThreadSafeModule to dispose of it.
   --  
 
-   function Orc_Create_New_Thread_Safe_Module (M : LLVM.Types.Module_T; TS_Ctx : Orc_Thread_Safe_Context_T) return Orc_Thread_Safe_Module_T  -- include/llvm-c/Orc.h:1096
+   function Orc_Create_New_Thread_Safe_Module (M : LLVM.Types.Module_T; TS_Ctx : Orc_Thread_Safe_Context_T) return Orc_Thread_Safe_Module_T  -- include/llvm-c/Orc.h:1118
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateNewThreadSafeModule";
@@ -1393,7 +1404,7 @@ function Orc_Create_Static_Library_Search_Generator_For_Path
   -- * adding this to the JIT).
   --  
 
-   procedure Orc_Dispose_Thread_Safe_Module (TSM : Orc_Thread_Safe_Module_T)  -- include/llvm-c/Orc.h:1104
+   procedure Orc_Dispose_Thread_Safe_Module (TSM : Orc_Thread_Safe_Module_T)  -- include/llvm-c/Orc.h:1126
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeThreadSafeModule";
@@ -1405,7 +1416,7 @@ function Orc_Create_Static_Library_Search_Generator_For_Path
    function Orc_Thread_Safe_Module_With_Module_Do
      (TSM : Orc_Thread_Safe_Module_T;
       F : Orc_Generic_IR_Module_Operation_Function_T;
-      Ctx : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1110
+      Ctx : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1131
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcThreadSafeModuleWithModuleDo";
@@ -1419,7 +1430,7 @@ function Orc_Create_Static_Library_Search_Generator_For_Path
   -- * LLVMOrcDisposeJITTargetMachineBuilder.
   --  
 
-   function Orc_JIT_Target_Machine_Builder_Detect_Host (Result : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1122
+   function Orc_JIT_Target_Machine_Builder_Detect_Host (Result : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1143
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcJITTargetMachineBuilderDetectHost";
@@ -1434,7 +1445,7 @@ function Orc_Create_Static_Library_Search_Generator_For_Path
   -- * LLVMOrcDisposeJITTargetMachineBuilder.
   --  
 
-   function Orc_JIT_Target_Machine_Builder_Create_From_Target_Machine (TM : LLVM.Target_Machine.Target_Machine_T) return Orc_JIT_Target_Machine_Builder_T  -- include/llvm-c/Orc.h:1135
+   function Orc_JIT_Target_Machine_Builder_Create_From_Target_Machine (TM : LLVM.Target_Machine.Target_Machine_T) return Orc_JIT_Target_Machine_Builder_T  -- include/llvm-c/Orc.h:1156
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcJITTargetMachineBuilderCreateFromTargetMachine";
@@ -1443,7 +1454,7 @@ function Orc_Create_Static_Library_Search_Generator_For_Path
   -- * Dispose of a JITTargetMachineBuilder.
   --  
 
-   procedure Orc_Dispose_JIT_Target_Machine_Builder (JTMB : Orc_JIT_Target_Machine_Builder_T)  -- include/llvm-c/Orc.h:1140
+   procedure Orc_Dispose_JIT_Target_Machine_Builder (JTMB : Orc_JIT_Target_Machine_Builder_T)  -- include/llvm-c/Orc.h:1162
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeJITTargetMachineBuilder";
@@ -1483,7 +1494,7 @@ procedure Orc_JIT_Target_Machine_Set_Target_Triple
    function Orc_Object_Layer_Add_Object_File
      (Obj_Layer : Orc_Object_Layer_T;
       JD : Orc_JIT_Dylib_T;
-      Obj_Buffer : LLVM.Types.Memory_Buffer_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1170
+      Obj_Buffer : LLVM.Types.Memory_Buffer_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1191
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcObjectLayerAddObjectFile";
@@ -1503,7 +1514,7 @@ procedure Orc_JIT_Target_Machine_Set_Target_Triple
    function Orc_Object_Layer_Add_Object_File_With_RT
      (Obj_Layer : Orc_Object_Layer_T;
       RT : Orc_Resource_Tracker_T;
-      Obj_Buffer : LLVM.Types.Memory_Buffer_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1186
+      Obj_Buffer : LLVM.Types.Memory_Buffer_T) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1206
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcObjectLayerAddObjectFileWithRT";
@@ -1518,7 +1529,7 @@ procedure Orc_JIT_Target_Machine_Set_Target_Triple
    procedure Orc_Object_Layer_Emit
      (Obj_Layer : Orc_Object_Layer_T;
       R : Orc_Materialization_Responsibility_T;
-      Obj_Buffer : LLVM.Types.Memory_Buffer_T)  -- include/llvm-c/Orc.h:1196
+      Obj_Buffer : LLVM.Types.Memory_Buffer_T)  -- include/llvm-c/Orc.h:1217
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcObjectLayerEmit";
@@ -1527,7 +1538,7 @@ procedure Orc_JIT_Target_Machine_Set_Target_Triple
   -- * Dispose of an ObjectLayer.
   --  
 
-   procedure Orc_Dispose_Object_Layer (Obj_Layer : Orc_Object_Layer_T)  -- include/llvm-c/Orc.h:1203
+   procedure Orc_Dispose_Object_Layer (Obj_Layer : Orc_Object_Layer_T)  -- include/llvm-c/Orc.h:1224
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeObjectLayer";
@@ -1535,7 +1546,7 @@ procedure Orc_JIT_Target_Machine_Set_Target_Triple
    procedure Orc_IR_Transform_Layer_Emit
      (IR_Transform_Layer : Orc_IR_Transform_Layer_T;
       MR : Orc_Materialization_Responsibility_T;
-      TSM : Orc_Thread_Safe_Module_T)  -- include/llvm-c/Orc.h:1205
+      TSM : Orc_Thread_Safe_Module_T)  -- include/llvm-c/Orc.h:1227
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcIRTransformLayerEmit";
@@ -1548,7 +1559,7 @@ procedure Orc_JIT_Target_Machine_Set_Target_Triple
    procedure Orc_IR_Transform_Layer_Set_Transform
      (IR_Transform_Layer : Orc_IR_Transform_Layer_T;
       Transform_Function : Orc_IR_Transform_Layer_Transform_Function_T;
-      Ctx : System.Address)  -- include/llvm-c/Orc.h:1213
+      Ctx : System.Address)  -- include/llvm-c/Orc.h:1235
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcIRTransformLayerSetTransform";
@@ -1560,7 +1571,7 @@ procedure Orc_JIT_Target_Machine_Set_Target_Triple
    procedure Orc_Object_Transform_Layer_Set_Transform
      (Obj_Transform_Layer : Orc_Object_Transform_Layer_T;
       Transform_Function : Orc_Object_Transform_Layer_Transform_Function_T;
-      Ctx : System.Address)  -- include/llvm-c/Orc.h:1220
+      Ctx : System.Address)  -- include/llvm-c/Orc.h:1242
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcObjectTransformLayerSetTransform";
@@ -1580,7 +1591,7 @@ function Orc_Create_Local_Indirect_Stubs_Manager
   -- * Dispose of an IndirectStubsManager.
   --  
 
-   procedure Orc_Dispose_Indirect_Stubs_Manager (ISM : Orc_Indirect_Stubs_Manager_T)  -- include/llvm-c/Orc.h:1236
+   procedure Orc_Dispose_Indirect_Stubs_Manager (ISM : Orc_Indirect_Stubs_Manager_T)  -- include/llvm-c/Orc.h:1259
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeIndirectStubsManager";
@@ -1596,7 +1607,7 @@ function Orc_Create_Local_Lazy_Call_Through_Manager
   -- * Dispose of an LazyCallThroughManager.
   --  
 
-   procedure Orc_Dispose_Lazy_Call_Through_Manager (LCTM : Orc_Lazy_Call_Through_Manager_T)  -- include/llvm-c/Orc.h:1246
+   procedure Orc_Dispose_Lazy_Call_Through_Manager (LCTM : Orc_Lazy_Call_Through_Manager_T)  -- include/llvm-c/Orc.h:1270
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeLazyCallThroughManager";
@@ -1625,7 +1636,7 @@ function Orc_Create_Dump_Objects
   -- * Dispose of a DumpObjects instance.
   --  
 
-   procedure Orc_Dispose_Dump_Objects (Dump_Objects : Orc_Dump_Objects_T)  -- include/llvm-c/Orc.h:1269
+   procedure Orc_Dispose_Dump_Objects (Dump_Objects : Orc_Dump_Objects_T)  -- include/llvm-c/Orc.h:1292
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDisposeDumpObjects";
@@ -1634,7 +1645,7 @@ function Orc_Create_Dump_Objects
   -- * Dump the contents of the given MemoryBuffer.
   --  
 
-   function Orc_Dump_Objects_Call_Operator (Dump_Objects : Orc_Dump_Objects_T; Obj_Buffer : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1274
+   function Orc_Dump_Objects_Call_Operator (Dump_Objects : Orc_Dump_Objects_T; Obj_Buffer : System.Address) return LLVM.Error.Error_T  -- include/llvm-c/Orc.h:1297
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcDumpObjects_CallOperator";

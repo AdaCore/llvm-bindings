@@ -32,6 +32,30 @@ package body LLVM.Transforms_Pass_Builder is
       return Return_Value;
    end Run_Passes;
 
+   function Run_Passes_On_Function
+     (F       : LLVM.Types.Value_T;
+      Passes  : Interfaces.C.Strings.chars_ptr;
+      TM      : LLVM.Target_Machine.Target_Machine_T;
+      Options : Pass_Builder_Options_T)
+      return LLVM.Error.Error_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMRunPassesOnFunction";
+   function Run_Passes_On_Function
+     (F       : LLVM.Types.Value_T;
+      Passes  : String;
+      TM      : LLVM.Target_Machine.Target_Machine_T;
+      Options : Pass_Builder_Options_T)
+      return LLVM.Error.Error_T
+   is
+      Return_Value  : LLVM.Error.Error_T;
+      Passes_Array  : aliased char_array := To_C (Passes);
+      Passes_String : constant chars_ptr := To_Chars_Ptr (Passes_Array'Unchecked_Access);
+   begin
+      Return_Value := Run_Passes_On_Function (F, Passes_String, TM, Options);
+      return Return_Value;
+   end Run_Passes_On_Function;
+
    procedure Pass_Builder_Options_Set_Verify_Each
      (Options     : Pass_Builder_Options_T;
       Verify_Each : LLVM.Types.Bool_T)
@@ -61,6 +85,22 @@ package body LLVM.Transforms_Pass_Builder is
    begin
       Pass_Builder_Options_Set_Debug_Logging (Options, Debug_Logging_Bool);
    end Pass_Options_Set_Debug_Logging;
+
+   procedure Pass_Builder_Options_Set_AA_Pipeline
+     (Options     : Pass_Builder_Options_T;
+      AA_Pipeline : Interfaces.C.Strings.chars_ptr)
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMPassBuilderOptionsSetAAPipeline";
+   procedure Pass_Options_Set_AA_Pipeline
+     (Options     : Pass_Builder_Options_T;
+      AA_Pipeline : String)
+   is
+      AA_Pipeline_Array  : aliased char_array := To_C (AA_Pipeline);
+      AA_Pipeline_String : constant chars_ptr := To_Chars_Ptr (AA_Pipeline_Array'Unchecked_Access);
+   begin
+      Pass_Builder_Options_Set_AA_Pipeline (Options, AA_Pipeline_String);
+   end Pass_Options_Set_AA_Pipeline;
 
    procedure Pass_Builder_Options_Set_Loop_Interleaving
      (Options           : Pass_Builder_Options_T;

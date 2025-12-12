@@ -845,6 +845,25 @@ package body Clang.Index is
       return Return_Value /= 0;
    end Is_Virtual_Base;
 
+   function Cursor_Get_Binary_Opcode_Str
+     (Op : Binary_Operator_Kind_T)
+      return Clang.CX_String.String_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_Cursor_getBinaryOpcodeStr";
+   function Cursor_Get_Binary_Opcode_Str
+     (Op : Binary_Operator_Kind_T)
+      return String
+   is
+      Return_Value : Clang.CX_String.String_T;
+   begin
+      Return_Value := Cursor_Get_Binary_Opcode_Str (Op);
+      declare   Ada_String : String := Clang.CX_String.Get_C_String (Return_Value);
+      begin   Clang.CX_String.Dispose_String (Return_Value);
+      return Ada_String;
+      end;
+   end Cursor_Get_Binary_Opcode_Str;
+
    function Get_Cursor_USR
      (Arg_1 : Cursor_T)
       return Clang.CX_String.String_T
@@ -1107,6 +1126,50 @@ package body Clang.Index is
       end;
    end Get_Cursor_Pretty_Printed;
 
+   function Get_Type_Pretty_Printed
+     (CT     : Type_T;
+      Policy : Printing_Policy_T)
+      return Clang.CX_String.String_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_getTypePrettyPrinted";
+   function Get_Type_Pretty_Printed
+     (CT     : Type_T;
+      Policy : Printing_Policy_T)
+      return String
+   is
+      Return_Value : Clang.CX_String.String_T;
+   begin
+      Return_Value := Get_Type_Pretty_Printed (CT, Policy);
+      declare   Ada_String : String := Clang.CX_String.Get_C_String (Return_Value);
+      begin   Clang.CX_String.Dispose_String (Return_Value);
+      return Ada_String;
+      end;
+   end Get_Type_Pretty_Printed;
+
+   function Get_Fully_Qualified_Name
+     (CT                    : Type_T;
+      Policy                : Printing_Policy_T;
+      With_Global_Ns_Prefix : unsigned)
+      return Clang.CX_String.String_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_getFullyQualifiedName";
+   function Get_Fully_Qualified_Name
+     (CT                    : Type_T;
+      Policy                : Printing_Policy_T;
+      With_Global_Ns_Prefix : unsigned)
+      return String
+   is
+      Return_Value : Clang.CX_String.String_T;
+   begin
+      Return_Value := Get_Fully_Qualified_Name (CT, Policy, With_Global_Ns_Prefix);
+      declare   Ada_String : String := Clang.CX_String.Get_C_String (Return_Value);
+      begin   Clang.CX_String.Dispose_String (Return_Value);
+      return Ada_String;
+      end;
+   end Get_Fully_Qualified_Name;
+
    function Get_Cursor_Display_Name
      (Arg_1 : Cursor_T)
       return Clang.CX_String.String_T
@@ -1306,6 +1369,78 @@ package body Clang.Index is
       return Ada_String;
       end;
    end Cursor_Get_Mangling;
+
+   function Cursor_Get_GCC_Assembly_Template
+     (Arg_1 : Cursor_T)
+      return Clang.CX_String.String_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_Cursor_getGCCAssemblyTemplate";
+   function Cursor_Get_GCC_Assembly_Template
+     (Arg_1 : Cursor_T)
+      return String
+   is
+      Return_Value : Clang.CX_String.String_T;
+   begin
+      Return_Value := Cursor_Get_GCC_Assembly_Template (Arg_1);
+      declare   Ada_String : String := Clang.CX_String.Get_C_String (Return_Value);
+      begin   Clang.CX_String.Dispose_String (Return_Value);
+      return Ada_String;
+      end;
+   end Cursor_Get_GCC_Assembly_Template;
+
+   function Cursor_Is_GCC_Assembly_Has_Goto
+     (Arg_1 : Cursor_T)
+      return unsigned
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_Cursor_isGCCAssemblyHasGoto";
+   function Cursor_Is_GCC_Assembly_Has_Goto
+     (Arg_1 : Cursor_T)
+      return Boolean
+   is
+      Return_Value : unsigned;
+   begin
+      Return_Value := Cursor_Is_GCC_Assembly_Has_Goto (Arg_1);
+      return Return_Value /= 0;
+   end Cursor_Is_GCC_Assembly_Has_Goto;
+
+   function Cursor_Get_GCC_Assembly_Clobber
+     (Cursor : Cursor_T;
+      Index  : unsigned)
+      return Clang.CX_String.String_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_Cursor_getGCCAssemblyClobber";
+   function Cursor_Get_GCC_Assembly_Clobber
+     (Cursor : Cursor_T;
+      Index  : unsigned)
+      return String
+   is
+      Return_Value : Clang.CX_String.String_T;
+   begin
+      Return_Value := Cursor_Get_GCC_Assembly_Clobber (Cursor, Index);
+      declare   Ada_String : String := Clang.CX_String.Get_C_String (Return_Value);
+      begin   Clang.CX_String.Dispose_String (Return_Value);
+      return Ada_String;
+      end;
+   end Cursor_Get_GCC_Assembly_Clobber;
+
+   function Cursor_Is_GCC_Assembly_Volatile
+     (Cursor : Cursor_T)
+      return unsigned
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_Cursor_isGCCAssemblyVolatile";
+   function Cursor_Is_GCC_Assembly_Volatile
+     (Cursor : Cursor_T)
+      return Boolean
+   is
+      Return_Value : unsigned;
+   begin
+      Return_Value := Cursor_Is_GCC_Assembly_Volatile (Cursor);
+      return Return_Value /= 0;
+   end Cursor_Is_GCC_Assembly_Volatile;
 
    function Module_Get_Name
      (Module : Module_T)
@@ -1885,24 +2020,6 @@ package body Clang.Index is
       end if;
    end Eval_Result_Get_As_Str;
 
-   function Get_Remappings
-     (Path : Interfaces.C.Strings.chars_ptr)
-      return Remapping_T
-   with Import => True,
-        Convention => C,
-        External_Name => "clang_getRemappings";
-   function Get_Remappings
-     (Path : String)
-      return Remapping_T
-   is
-      Return_Value : Remapping_T;
-      Path_Array   : aliased char_array := To_C (Path);
-      Path_String  : constant chars_ptr := To_Chars_Ptr (Path_Array'Unchecked_Access);
-   begin
-      Return_Value := Get_Remappings (Path_String);
-      return Return_Value;
-   end Get_Remappings;
-
    function Index_Is_Entity_Obj_C_Container_Kind
      (Arg_1 : Idx_Entity_Kind_T)
       return int
@@ -2036,5 +2153,23 @@ package body Clang.Index is
       return Ada_String;
       end;
    end Get_Unary_Operator_Kind_Spelling;
+
+   function Get_Remappings
+     (Arg_1 : Interfaces.C.Strings.chars_ptr)
+      return Remapping_T
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_getRemappings";
+   function Get_Remappings
+     (Arg_1 : String)
+      return Remapping_T
+   is
+      Return_Value : Remapping_T;
+      Arg_1_Array  : aliased char_array := To_C (Arg_1);
+      Arg_1_String : constant chars_ptr := To_Chars_Ptr (Arg_1_Array'Unchecked_Access);
+   begin
+      Return_Value := Get_Remappings (Arg_1_String);
+      return Return_Value;
+   end Get_Remappings;
 
 end Clang.Index;
