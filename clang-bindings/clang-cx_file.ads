@@ -58,9 +58,9 @@ function Get_File_Name
   -- * across an indexing session.
   --  
 
-   type anon_array1257 is array (0 .. 2) of aliased Extensions.unsigned_long_long;
+   type anon_array1279 is array (0 .. 2) of aliased Extensions.unsigned_long_long;
    type File_Unique_ID_T is record
-      data : aliased anon_array1257;  -- include/clang-c/CXFile.h:51
+      data : aliased anon_array1279;  -- include/clang-c/CXFile.h:51
    end record
    with Convention => C_Pass_By_Copy;  -- include/clang-c/CXFile.h:52
 

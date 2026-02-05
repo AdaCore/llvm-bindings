@@ -392,7 +392,7 @@ package Clang.Index is
       ExcludeDeclarationsFromPCH : Extensions.Unsigned_1;  -- include/clang-c/Index.h:374
       DisplayDiagnostics : Extensions.Unsigned_1;  -- include/clang-c/Index.h:378
       StorePreamblesInMemory : Extensions.Unsigned_1;  -- include/clang-c/Index.h:382
-      anon3401 : Extensions.Unsigned_13;  -- include/clang-c/Index.h:383
+      anon3469 : Extensions.Unsigned_13;  -- include/clang-c/Index.h:383
       PreambleStoragePath : Interfaces.C.Strings.chars_ptr;  -- include/clang-c/Index.h:395
       InvocationEmissionPath : Interfaces.C.Strings.chars_ptr;  -- include/clang-c/Index.h:400
    end record
@@ -2511,11 +2511,11 @@ function Target_Info_Get_Triple
   -- * source code into the AST.
   --  
 
-   type anon_array1436 is array (0 .. 2) of System.Address;
+   type anon_array1458 is array (0 .. 2) of System.Address;
    type Cursor_T is record
       kind : aliased Cursor_Kind_T;  -- include/clang-c/Index.h:2338
       xdata : aliased int;  -- include/clang-c/Index.h:2339
-      data : anon_array1436;  -- include/clang-c/Index.h:2340
+      data : anon_array1458;  -- include/clang-c/Index.h:2340
    end record
    with Convention => C_Pass_By_Copy;  -- include/clang-c/Index.h:2341
 
@@ -3429,10 +3429,10 @@ function Is_Unexposed
   -- *
   --  
 
-   type anon_array1495 is array (0 .. 1) of System.Address;
+   type anon_array1517 is array (0 .. 1) of System.Address;
    type Type_T is record
       kind : aliased Type_Kind_T;  -- include/clang-c/Index.h:3091
-      data : anon_array1495;  -- include/clang-c/Index.h:3092
+      data : anon_array1517;  -- include/clang-c/Index.h:3092
    end record
    with Convention => C_Pass_By_Copy;  -- include/clang-c/Index.h:3093
 
@@ -4452,42 +4452,42 @@ function Is_Virtual_Base
   -- * Represents a specific kind of binary operator which can appear at a cursor.
   --  
 
-   subtype Binary_Operator_Kind_T is unsigned;
-   BO_Invalid : constant Binary_Operator_Kind_T := 0;
-   BO_Ptr_Mem_D : constant Binary_Operator_Kind_T := 1;
-   BO_Ptr_Mem_I : constant Binary_Operator_Kind_T := 2;
-   BO_Mul : constant Binary_Operator_Kind_T := 3;
-   BO_Div : constant Binary_Operator_Kind_T := 4;
-   BO_Rem : constant Binary_Operator_Kind_T := 5;
-   BO_Add : constant Binary_Operator_Kind_T := 6;
-   BO_Sub : constant Binary_Operator_Kind_T := 7;
-   BO_Shl : constant Binary_Operator_Kind_T := 8;
-   BO_Shr : constant Binary_Operator_Kind_T := 9;
-   BO_Cmp : constant Binary_Operator_Kind_T := 10;
-   BO_LT : constant Binary_Operator_Kind_T := 11;
-   BO_GT : constant Binary_Operator_Kind_T := 12;
-   BO_LE : constant Binary_Operator_Kind_T := 13;
-   BO_GE : constant Binary_Operator_Kind_T := 14;
-   BO_EQ : constant Binary_Operator_Kind_T := 15;
-   BO_NE : constant Binary_Operator_Kind_T := 16;
-   BO_And : constant Binary_Operator_Kind_T := 17;
-   BO_Xor : constant Binary_Operator_Kind_T := 18;
-   BO_Or : constant Binary_Operator_Kind_T := 19;
-   BO_L_And : constant Binary_Operator_Kind_T := 20;
-   BO_L_Or : constant Binary_Operator_Kind_T := 21;
-   BO_Assign : constant Binary_Operator_Kind_T := 22;
-   BO_Mul_Assign : constant Binary_Operator_Kind_T := 23;
-   BO_Div_Assign : constant Binary_Operator_Kind_T := 24;
-   BO_Rem_Assign : constant Binary_Operator_Kind_T := 25;
-   BO_Add_Assign : constant Binary_Operator_Kind_T := 26;
-   BO_Sub_Assign : constant Binary_Operator_Kind_T := 27;
-   BO_Shl_Assign : constant Binary_Operator_Kind_T := 28;
-   BO_Shr_Assign : constant Binary_Operator_Kind_T := 29;
-   BO_And_Assign : constant Binary_Operator_Kind_T := 30;
-   BO_Xor_Assign : constant Binary_Operator_Kind_T := 31;
-   BO_Or_Assign : constant Binary_Operator_Kind_T := 32;
-   BO_Comma : constant Binary_Operator_Kind_T := 33;
-   BO_LAST : constant Binary_Operator_Kind_T := 33;  -- include/clang-c/Index.h:3846
+   subtype CX_BinaryOperatorKind is unsigned;
+   BO_Invalid : constant CX_BinaryOperatorKind := 0;
+   BO_Ptr_Mem_D : constant CX_BinaryOperatorKind := 1;
+   BO_Ptr_Mem_I : constant CX_BinaryOperatorKind := 2;
+   BO_Mul : constant CX_BinaryOperatorKind := 3;
+   BO_Div : constant CX_BinaryOperatorKind := 4;
+   BO_Rem : constant CX_BinaryOperatorKind := 5;
+   BO_Add : constant CX_BinaryOperatorKind := 6;
+   BO_Sub : constant CX_BinaryOperatorKind := 7;
+   BO_Shl : constant CX_BinaryOperatorKind := 8;
+   BO_Shr : constant CX_BinaryOperatorKind := 9;
+   BO_Cmp : constant CX_BinaryOperatorKind := 10;
+   BO_LT : constant CX_BinaryOperatorKind := 11;
+   BO_GT : constant CX_BinaryOperatorKind := 12;
+   BO_LE : constant CX_BinaryOperatorKind := 13;
+   BO_GE : constant CX_BinaryOperatorKind := 14;
+   BO_EQ : constant CX_BinaryOperatorKind := 15;
+   BO_NE : constant CX_BinaryOperatorKind := 16;
+   BO_And : constant CX_BinaryOperatorKind := 17;
+   BO_Xor : constant CX_BinaryOperatorKind := 18;
+   BO_Or : constant CX_BinaryOperatorKind := 19;
+   BO_L_And : constant CX_BinaryOperatorKind := 20;
+   BO_L_Or : constant CX_BinaryOperatorKind := 21;
+   BO_Assign : constant CX_BinaryOperatorKind := 22;
+   BO_Mul_Assign : constant CX_BinaryOperatorKind := 23;
+   BO_Div_Assign : constant CX_BinaryOperatorKind := 24;
+   BO_Rem_Assign : constant CX_BinaryOperatorKind := 25;
+   BO_Add_Assign : constant CX_BinaryOperatorKind := 26;
+   BO_Sub_Assign : constant CX_BinaryOperatorKind := 27;
+   BO_Shl_Assign : constant CX_BinaryOperatorKind := 28;
+   BO_Shr_Assign : constant CX_BinaryOperatorKind := 29;
+   BO_And_Assign : constant CX_BinaryOperatorKind := 30;
+   BO_Xor_Assign : constant CX_BinaryOperatorKind := 31;
+   BO_Or_Assign : constant CX_BinaryOperatorKind := 32;
+   BO_Comma : constant CX_BinaryOperatorKind := 33;
+   BO_LAST : constant CX_BinaryOperatorKind := 33;  -- include/clang-c/Index.h:3846
 
   --*
   -- * \brief Returns the operator code for the binary operator.
@@ -4495,7 +4495,7 @@ function Is_Virtual_Base
   -- * @deprecated: use clang_getCursorBinaryOperatorKind instead.
   --  
 
-   function Cursor_Get_Binary_Opcode (C : Cursor_T) return Binary_Operator_Kind_T  -- include/clang-c/Index.h:3890
+   function Cursor_Get_Binary_Opcode (C : Cursor_T) return CX_BinaryOperatorKind  -- include/clang-c/Index.h:3890
    with Import => True, 
         Convention => C, 
         External_Name => "clang_Cursor_getBinaryOpcode";
@@ -4507,7 +4507,7 @@ function Is_Virtual_Base
   --  
 
 function Cursor_Get_Binary_Opcode_Str
-     (Op : Binary_Operator_Kind_T)
+     (Op : CX_BinaryOperatorKind)
       return String;
 
   --*
@@ -5911,9 +5911,9 @@ function CXX_Method_Is_Const
   -- * Describes a single preprocessing token.
   --  
 
-   type anon_array1600 is array (0 .. 3) of aliased unsigned;
+   type anon_array1622 is array (0 .. 3) of aliased unsigned;
    type Token_T is record
-      int_data : aliased anon_array1600;  -- include/clang-c/Index.h:5026
+      int_data : aliased anon_array1622;  -- include/clang-c/Index.h:5026
       ptr_data : System.Address;  -- include/clang-c/Index.h:5027
    end record
    with Convention => C_Pass_By_Copy;  -- include/clang-c/Index.h:5028
@@ -7309,7 +7309,7 @@ function Eval_Result_Get_As_Str
   --  
 
    type Idx_Loc_T is record
-      ptr_data : anon_array1495;  -- include/clang-c/Index.h:6178
+      ptr_data : anon_array1517;  -- include/clang-c/Index.h:6178
       int_data : aliased unsigned;  -- include/clang-c/Index.h:6179
    end record
    with Convention => C_Pass_By_Copy;  -- include/clang-c/Index.h:6180

@@ -292,6 +292,9 @@ def process_names_for(filenames, prefixes_for_filename, sanitize_unit_name):
         ident_modif[package_decl.p_defining_name.text] = new_package_name
 
         def get_type_name(tn):
+            blacklist = {"CX_BinaryOperatorKind"}
+            if tn in blacklist:
+                return tn
             return get_name(remove_suffix(tn, ["Ref"]), suffix="_T")
 
         # Process file

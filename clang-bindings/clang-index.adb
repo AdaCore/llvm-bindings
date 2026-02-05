@@ -846,13 +846,13 @@ package body Clang.Index is
    end Is_Virtual_Base;
 
    function Cursor_Get_Binary_Opcode_Str
-     (Op : Binary_Operator_Kind_T)
+     (Op : CX_BinaryOperatorKind)
       return Clang.CX_String.String_T
    with Import => True,
         Convention => C,
         External_Name => "clang_Cursor_getBinaryOpcodeStr";
    function Cursor_Get_Binary_Opcode_Str
-     (Op : Binary_Operator_Kind_T)
+     (Op : CX_BinaryOperatorKind)
       return String
    is
       Return_Value : Clang.CX_String.String_T;
