@@ -43,9 +43,9 @@ package Clang.CX_Source_Location is
   -- * to map a source location to a particular file, line, and column.
   --  
 
-   type anon_array1265 is array (0 .. 1) of System.Address;
+   type anon_array1287 is array (0 .. 1) of System.Address;
    type Source_Location_T is record
-      ptr_data : anon_array1265;  -- include/clang-c/CXSourceLocation.h:45
+      ptr_data : anon_array1287;  -- include/clang-c/CXSourceLocation.h:45
       int_data : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:46
    end record
    with Convention => C_Pass_By_Copy;  -- include/clang-c/CXSourceLocation.h:47
@@ -58,7 +58,7 @@ package Clang.CX_Source_Location is
   --  
 
    type Source_Range_T is record
-      ptr_data : anon_array1265;  -- include/clang-c/CXSourceLocation.h:56
+      ptr_data : anon_array1287;  -- include/clang-c/CXSourceLocation.h:56
       begin_int_data : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:57
       end_int_data : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:58
    end record
@@ -349,15 +349,15 @@ function Range_Is_Null
   --  
 
   --* The number of ranges in the \c ranges array.  
+  --*
+  --   * An array of \c CXSourceRanges.
+  --    
+
    type Source_Range_List_T is record
       count : aliased unsigned;  -- include/clang-c/CXSourceLocation.h:278
       ranges : access Source_Range_T;  -- include/clang-c/CXSourceLocation.h:282
    end record
    with Convention => C_Pass_By_Copy;  -- include/clang-c/CXSourceLocation.h:283
-
-  --*
-  --   * An array of \c CXSourceRanges.
-  --    
 
   --*
   -- * Destroy the given \c CXSourceRangeList.
