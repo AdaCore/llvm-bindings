@@ -1097,6 +1097,30 @@ package body LLVM.Core is
       return Return_Value;
    end Add_Function;
 
+   function Get_Or_Insert_Function
+     (M           : LLVM.Types.Module_T;
+      Name        : Interfaces.C.Strings.chars_ptr;
+      Name_Len    : stddef_h.size_t;
+      Function_Ty : LLVM.Types.Type_T)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMGetOrInsertFunction";
+   function Get_Or_Insert_Function
+     (M           : LLVM.Types.Module_T;
+      Name        : String;
+      Name_Len    : stddef_h.size_t;
+      Function_Ty : LLVM.Types.Type_T)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Name_Array   : aliased char_array := To_C (Name);
+      Name_String  : constant chars_ptr := To_Chars_Ptr (Name_Array'Unchecked_Access);
+   begin
+      Return_Value := Get_Or_Insert_Function (M, Name_String, Name_Len, Function_Ty);
+      return Return_Value;
+   end Get_Or_Insert_Function;
+
    function Get_Named_Function
      (M    : LLVM.Types.Module_T;
       Name : Interfaces.C.Strings.chars_ptr)
@@ -1691,6 +1715,30 @@ package body LLVM.Core is
       Return_Value := Const_Int_Of_String_And_Size (Int_Ty, Text_String, S_Len, Radix);
       return Return_Value;
    end Const_Int_Of_String_And_Size;
+
+   function Const_Byte_Of_String_And_Size
+     (Byte_Ty : LLVM.Types.Type_T;
+      Text    : Interfaces.C.Strings.chars_ptr;
+      S_Len   : stddef_h.size_t;
+      Radix   : stdint_h.uint8_t)
+      return LLVM.Types.Value_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMConstByteOfStringAndSize";
+   function Const_Byte_Of_String_And_Size
+     (Byte_Ty : LLVM.Types.Type_T;
+      Text    : String;
+      S_Len   : stddef_h.size_t;
+      Radix   : stdint_h.uint8_t)
+      return LLVM.Types.Value_T
+   is
+      Return_Value : LLVM.Types.Value_T;
+      Text_Array   : aliased char_array := To_C (Text);
+      Text_String  : constant chars_ptr := To_Chars_Ptr (Text_Array'Unchecked_Access);
+   begin
+      Return_Value := Const_Byte_Of_String_And_Size (Byte_Ty, Text_String, S_Len, Radix);
+      return Return_Value;
+   end Const_Byte_Of_String_And_Size;
 
    function Const_Real_Of_String
      (Real_Ty : LLVM.Types.Type_T;
@@ -2386,24 +2434,24 @@ package body LLVM.Core is
    end Intrinsic_Get_Name;
 
    function Intrinsic_Copy_Overloaded_Name
-     (ID          : unsigned;
-      Param_Types : System.Address;
-      Param_Count : stddef_h.size_t;
-      Name_Length : access stddef_h.size_t)
+     (ID             : unsigned;
+      Overload_Types : System.Address;
+      Overload_Count : stddef_h.size_t;
+      Name_Length    : access stddef_h.size_t)
       return Interfaces.C.Strings.chars_ptr
    with Import => True,
         Convention => C,
         External_Name => "LLVMIntrinsicCopyOverloadedName";
    function Intrinsic_Copy_Overloaded_Name
-     (ID          : unsigned;
-      Param_Types : System.Address;
-      Param_Count : stddef_h.size_t;
-      Name_Length : access stddef_h.size_t)
+     (ID             : unsigned;
+      Overload_Types : System.Address;
+      Overload_Count : stddef_h.size_t;
+      Name_Length    : access stddef_h.size_t)
       return String
    is
       Return_Value : Interfaces.C.Strings.chars_ptr;
    begin
-      Return_Value := Intrinsic_Copy_Overloaded_Name (ID, Param_Types, Param_Count, Name_Length);
+      Return_Value := Intrinsic_Copy_Overloaded_Name (ID, Overload_Types, Overload_Count, Name_Length);
       if Return_Value /= Null_Ptr then
          return Value (Return_Value);
       else
@@ -2412,26 +2460,26 @@ package body LLVM.Core is
    end Intrinsic_Copy_Overloaded_Name;
 
    function Intrinsic_Copy_Overloaded_Name_2
-     (C_Mod       : LLVM.Types.Module_T;
-      ID          : unsigned;
-      Param_Types : System.Address;
-      Param_Count : stddef_h.size_t;
-      Name_Length : access stddef_h.size_t)
+     (C_Mod          : LLVM.Types.Module_T;
+      ID             : unsigned;
+      Overload_Types : System.Address;
+      Overload_Count : stddef_h.size_t;
+      Name_Length    : access stddef_h.size_t)
       return Interfaces.C.Strings.chars_ptr
    with Import => True,
         Convention => C,
         External_Name => "LLVMIntrinsicCopyOverloadedName2";
    function Intrinsic_Copy_Overloaded_Name_2
-     (C_Mod       : LLVM.Types.Module_T;
-      ID          : unsigned;
-      Param_Types : System.Address;
-      Param_Count : stddef_h.size_t;
-      Name_Length : access stddef_h.size_t)
+     (C_Mod          : LLVM.Types.Module_T;
+      ID             : unsigned;
+      Overload_Types : System.Address;
+      Overload_Count : stddef_h.size_t;
+      Name_Length    : access stddef_h.size_t)
       return String
    is
       Return_Value : Interfaces.C.Strings.chars_ptr;
    begin
-      Return_Value := Intrinsic_Copy_Overloaded_Name_2 (C_Mod, ID, Param_Types, Param_Count, Name_Length);
+      Return_Value := Intrinsic_Copy_Overloaded_Name_2 (C_Mod, ID, Overload_Types, Overload_Count, Name_Length);
       if Return_Value /= Null_Ptr then
          return Value (Return_Value);
       else
@@ -4529,18 +4577,18 @@ package body LLVM.Core is
    end Global_String_Ptr;
 
    function Get_Volatile
-     (Memory_Access_Inst : LLVM.Types.Value_T)
+     (Inst : LLVM.Types.Value_T)
       return LLVM.Types.Bool_T
    with Import => True,
         Convention => C,
         External_Name => "LLVMGetVolatile";
    function Get_Volatile
-     (Memory_Access_Inst : LLVM.Types.Value_T)
+     (Inst : LLVM.Types.Value_T)
       return Boolean
    is
       Return_Value : LLVM.Types.Bool_T;
    begin
-      Return_Value := Get_Volatile (Memory_Access_Inst);
+      Return_Value := Get_Volatile (Inst);
       return Return_Value /= 0;
    end Get_Volatile;
 

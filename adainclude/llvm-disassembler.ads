@@ -12,8 +12,6 @@ with stddef_h;
 
 package LLVM.Disassembler is
 
-   LLVMDisassembler_Option_Color : constant := 32;  --  include/llvm-c/Disassembler.h:84
-
    LLVMDisassembler_Option_UseMarkup : constant := 1;  --  include/llvm-c/Disassembler.h:74
 
    LLVMDisassembler_Option_PrintImmHex : constant := 2;  --  include/llvm-c/Disassembler.h:76
@@ -23,6 +21,8 @@ package LLVM.Disassembler is
    LLVMDisassembler_Option_SetInstrComments : constant := 8;  --  include/llvm-c/Disassembler.h:80
 
    LLVMDisassembler_Option_PrintLatency : constant := 16;  --  include/llvm-c/Disassembler.h:82
+
+   LLVMDisassembler_Option_Color : constant := 32;  --  include/llvm-c/Disassembler.h:84
 
   --===-- llvm-c/Disassembler.h - Disassembler Public C Interface ---*- C -*-===*|*                                                                            *|
   --|

@@ -6,8 +6,9 @@ pragma Warnings (Off, "-gnatwu");
 pragma Warnings (Off); with Interfaces.C; use Interfaces.C; pragma Warnings (On);
 with System;
 with LLVM.Orc;
-with LLVM.Execution_Engine;
+with LLVM.Error;
 with LLVM.Types;
+with LLVM.Execution_Engine;
 
 package LLVM.Orc_EE is
 
@@ -48,14 +49,35 @@ package LLVM.Orc_EE is
   --  
 
   --*
+  -- * Create a ObjectLinkingLayer instance using the standard JITLink
+  -- * InProcessMemoryManager for memory management.
+  --  
+
+   function Orc_Create_Object_Linking_Layer_With_In_Process_Memory_Manager (Result : System.Address; ES : LLVM.Orc.Orc_Execution_Session_T) return LLVM.Error.Error_T  -- include/llvm-c/OrcEE.h:51
+   with Import => True, 
+        Convention => C, 
+        External_Name => "LLVMOrcCreateObjectLinkingLayerWithInProcessMemoryManager";
+
+  --*
   -- * Create a RTDyldObjectLinkingLayer instance using the standard
   -- * SectionMemoryManager for memory management.
   --  
 
-   function Orc_Create_RT_Dyld_Object_Linking_Layer_With_Section_Memory_Manager (ES : LLVM.Orc.Orc_Execution_Session_T) return LLVM.Orc.Orc_Object_Layer_T  -- include/llvm-c/OrcEE.h:51
+   function Orc_Create_RT_Dyld_Object_Linking_Layer_With_Section_Memory_Manager (ES : LLVM.Orc.Orc_Execution_Session_T) return LLVM.Orc.Orc_Object_Layer_T  -- include/llvm-c/OrcEE.h:59
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager";
+
+  --*
+  -- * Create a RTDyldObjectLinkingLayer instance using the standard
+  -- * SectionMemoryManager for memory management. If ReserveAlloc is true then
+  -- * a contiguous range of memory will be reserved for each object file.
+  --  
+
+function Orc_Create_RT_Dyld_Object_Linking_Layer_With_Section_Memory_Manager_Reserve_Alloc
+     (ES            : LLVM.Orc.Orc_Execution_Session_T;
+      Reserve_Alloc : Boolean)
+      return LLVM.Orc.Orc_Object_Layer_T;
 
   --*
   -- * Create a RTDyldObjectLinkingLayer instance using MCJIT-memory-manager-like
@@ -90,7 +112,7 @@ package LLVM.Orc_EE is
       Allocate_Code_Section : LLVM.Execution_Engine.Memory_Manager_Allocate_Code_Section_Callback_T;
       Allocate_Data_Section : LLVM.Execution_Engine.Memory_Manager_Allocate_Data_Section_Callback_T;
       Finalize_Memory : LLVM.Execution_Engine.Memory_Manager_Finalize_Memory_Callback_T;
-      Destroy : LLVM.Execution_Engine.Memory_Manager_Destroy_Callback_T) return LLVM.Orc.Orc_Object_Layer_T  -- include/llvm-c/OrcEE.h:79
+      Destroy : LLVM.Execution_Engine.Memory_Manager_Destroy_Callback_T) return LLVM.Orc.Orc_Object_Layer_T  -- include/llvm-c/OrcEE.h:96
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks";
@@ -102,7 +124,7 @@ package LLVM.Orc_EE is
   -- * behavior is undefined.
   --  
 
-   procedure Orc_RT_Dyld_Object_Linking_Layer_Register_JIT_Event_Listener (RT_Dyld_Obj_Linking_Layer : LLVM.Orc.Orc_Object_Layer_T; Listener : LLVM.Types.JIT_Event_Listener_T)  -- include/llvm-c/OrcEE.h:94
+   procedure Orc_RT_Dyld_Object_Linking_Layer_Register_JIT_Event_Listener (RT_Dyld_Obj_Linking_Layer : LLVM.Orc.Orc_Object_Layer_T; Listener : LLVM.Types.JIT_Event_Listener_T)  -- include/llvm-c/OrcEE.h:111
    with Import => True, 
         Convention => C, 
         External_Name => "LLVMOrcRTDyldObjectLinkingLayerRegisterJITEventListener";

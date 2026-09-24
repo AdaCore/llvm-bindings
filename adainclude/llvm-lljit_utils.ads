@@ -43,7 +43,7 @@ package LLVM.LLJIT_Utils is
 
   --*
   -- * Install the plugin that submits debug objects to the executor. Executors must
-  -- * expose the llvm_orc_registerJITLoaderGDBWrapper symbol.
+  -- * expose the llvm_orc_registerJITLoaderGDBAllocAction symbol.
   --  
 
    function Orc_LLJIT_Enable_Debug_Support (J : LLVM.LLJIT.Orc_LLJIT_T) return LLVM.Error.Error_T  -- include/llvm-c/LLJITUtils.h:45

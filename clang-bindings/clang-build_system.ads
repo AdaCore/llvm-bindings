@@ -8,6 +8,7 @@ with Interfaces.C.Extensions;
 with Interfaces.C.Strings;
 with Clang.CX_Error_Code;
 with System;
+with time_h;
 
 package Clang.Build_System is
 
@@ -34,7 +35,7 @@ package Clang.Build_System is
   -- * \c -fbuild-session-timestamp= option.
   --  
 
-   function Get_Build_Session_Timestamp return Extensions.unsigned_long_long  -- include/clang-c/BuildSystem.h:33
+   function Get_Build_Session_Timestamp return Extensions.unsigned_long_long  -- include/clang-c/BuildSystem.h:34
    with Import => True, 
         Convention => C, 
         External_Name => "clang_getBuildSessionTimestamp";
@@ -46,7 +47,7 @@ package Clang.Build_System is
 
    type Virtual_File_Overlay_Impl_T is null record;   -- incomplete struct
 
-   type Virtual_File_Overlay_T is access all Virtual_File_Overlay_Impl_T;  -- include/clang-c/BuildSystem.h:39
+   type Virtual_File_Overlay_T is access all Virtual_File_Overlay_Impl_T;  -- include/clang-c/BuildSystem.h:40
 
   --*
   -- * Create a \c CXVirtualFileOverlay object.
@@ -55,7 +56,7 @@ package Clang.Build_System is
   -- * \param options is reserved, always pass 0.
   --  
 
-   function Virtual_File_Overlay_Create (Options : unsigned) return Virtual_File_Overlay_T  -- include/clang-c/BuildSystem.h:48
+   function Virtual_File_Overlay_Create (Options : unsigned) return Virtual_File_Overlay_T  -- include/clang-c/BuildSystem.h:49
    with Import => True, 
         Convention => C, 
         External_Name => "clang_VirtualFileOverlay_create";
@@ -79,7 +80,7 @@ function Virtual_File_Overlay_Add_File_Mapping
   -- * \returns 0 for success, non-zero to indicate an error.
   --  
 
-   function Virtual_File_Overlay_Set_Case_Sensitivity (Arg_1 : Virtual_File_Overlay_T; Case_Sensitive : int) return Clang.CX_Error_Code.Error_Code_T  -- include/clang-c/BuildSystem.h:67
+   function Virtual_File_Overlay_Set_Case_Sensitivity (Arg_1 : Virtual_File_Overlay_T; Case_Sensitive : int) return Clang.CX_Error_Code.Error_Code_T  -- include/clang-c/BuildSystem.h:68
    with Import => True, 
         Convention => C, 
         External_Name => "clang_VirtualFileOverlay_setCaseSensitivity";
@@ -98,7 +99,7 @@ function Virtual_File_Overlay_Add_File_Mapping
      (Arg_1 : Virtual_File_Overlay_T;
       Options : unsigned;
       Out_Buffer_Ptr : System.Address;
-      Out_Buffer_Size : access unsigned) return Clang.CX_Error_Code.Error_Code_T  -- include/clang-c/BuildSystem.h:80
+      Out_Buffer_Size : access unsigned) return Clang.CX_Error_Code.Error_Code_T  -- include/clang-c/BuildSystem.h:81
    with Import => True, 
         Convention => C, 
         External_Name => "clang_VirtualFileOverlay_writeToBuffer";
@@ -110,7 +111,7 @@ function Virtual_File_Overlay_Add_File_Mapping
   -- * \param buffer memory pointer to free.
   --  
 
-   procedure Free (Buffer : System.Address)  -- include/clang-c/BuildSystem.h:90
+   procedure Free (Buffer : System.Address)  -- include/clang-c/BuildSystem.h:91
    with Import => True, 
         Convention => C, 
         External_Name => "clang_free";
@@ -119,7 +120,7 @@ function Virtual_File_Overlay_Add_File_Mapping
   -- * Dispose a \c CXVirtualFileOverlay object.
   --  
 
-   procedure Virtual_File_Overlay_Dispose (Arg_1 : Virtual_File_Overlay_T)  -- include/clang-c/BuildSystem.h:95
+   procedure Virtual_File_Overlay_Dispose (Arg_1 : Virtual_File_Overlay_T)  -- include/clang-c/BuildSystem.h:96
    with Import => True, 
         Convention => C, 
         External_Name => "clang_VirtualFileOverlay_dispose";
@@ -130,7 +131,7 @@ function Virtual_File_Overlay_Add_File_Mapping
 
    type Module_Map_Descriptor_Impl_T is null record;   -- incomplete struct
 
-   type Module_Map_Descriptor_T is access all Module_Map_Descriptor_Impl_T;  -- include/clang-c/BuildSystem.h:100
+   type Module_Map_Descriptor_T is access all Module_Map_Descriptor_Impl_T;  -- include/clang-c/BuildSystem.h:101
 
   --*
   -- * Create a \c CXModuleMapDescriptor object.
@@ -139,7 +140,7 @@ function Virtual_File_Overlay_Add_File_Mapping
   -- * \param options is reserved, always pass 0.
   --  
 
-   function Module_Map_Descriptor_Create (Options : unsigned) return Module_Map_Descriptor_T  -- include/clang-c/BuildSystem.h:109
+   function Module_Map_Descriptor_Create (Options : unsigned) return Module_Map_Descriptor_T  -- include/clang-c/BuildSystem.h:110
    with Import => True, 
         Convention => C, 
         External_Name => "clang_ModuleMapDescriptor_create";
@@ -178,7 +179,7 @@ function Module_Map_Descriptor_Set_Umbrella_Header
      (Arg_1 : Module_Map_Descriptor_T;
       Options : unsigned;
       Out_Buffer_Ptr : System.Address;
-      Out_Buffer_Size : access unsigned) return Clang.CX_Error_Code.Error_Code_T  -- include/clang-c/BuildSystem.h:137
+      Out_Buffer_Size : access unsigned) return Clang.CX_Error_Code.Error_Code_T  -- include/clang-c/BuildSystem.h:138
    with Import => True, 
         Convention => C, 
         External_Name => "clang_ModuleMapDescriptor_writeToBuffer";
@@ -187,10 +188,70 @@ function Module_Map_Descriptor_Set_Umbrella_Header
   -- * Dispose a \c CXModuleMapDescriptor object.
   --  
 
-   procedure Module_Map_Descriptor_Dispose (Arg_1 : Module_Map_Descriptor_T)  -- include/clang-c/BuildSystem.h:144
+   procedure Module_Map_Descriptor_Dispose (Arg_1 : Module_Map_Descriptor_T)  -- include/clang-c/BuildSystem.h:145
    with Import => True, 
         Convention => C, 
         External_Name => "clang_ModuleMapDescriptor_dispose";
+
+  --*
+  -- * Prune module files in the module cache directory that haven't been accessed
+  -- * in a long time.
+  -- *
+  -- * \param Path the path to the module cache directory.
+  -- *
+  -- * \param PruneInterval the minimum time in seconds between two prune
+  -- * operations. If the timestamp file is newer than this, pruning is skipped.
+  -- *
+  -- * \param PruneAfter the time in seconds after which unused module files are
+  -- * removed.
+  -- *
+  --  
+
+procedure Module_Cache_Prune
+     (Path           : String;
+      Prune_Interval : time_h.time_t;
+      Prune_After    : time_h.time_t);
+
+  --*
+  -- * Callback invoked by \c clang_ModuleCache_pruneWithCallback() once for each
+  -- * file or directory removed from the module cache.
+  -- *
+  -- * \param Path the absolute path of the file or directory that was pruned.
+  -- * The pointer is only valid for the duration of the callback.
+  -- *
+  -- * \param UserData the opaque pointer passed to
+  -- * \c clang_ModuleCache_pruneWithCallback().
+  --  
+
+   type Module_Cache_Prune_Callback_T is access procedure (Arg_1 : Interfaces.C.Strings.chars_ptr; Arg_2 : System.Address)
+   with Convention => C;  -- include/clang-c/BuildSystem.h:174
+
+  --*
+  -- * Variant of \c clang_ModuleCache_prune() that invokes \p Callback once for
+  -- * each absolute path removed from the cache. This includes pruned \c .pcm
+  -- * files, their companion \c .timestamp files, and any cache subdirectory that
+  -- * becomes empty as a result of pruning.
+  -- *
+  -- * \param Path the path to the module cache directory.
+  -- *
+  -- * \param PruneInterval the minimum time in seconds between two prune
+  -- * operations. If the timestamp file is newer than this, pruning is skipped.
+  -- *
+  -- * \param PruneAfter the time in seconds after which unused module files are
+  -- * removed.
+  -- *
+  -- * \param Callback invoked for each pruned absolute path. May be NULL, in
+  -- * which case this function behaves like \c clang_ModuleCache_prune().
+  -- *
+  -- * \param UserData opaque pointer passed through to \p Callback.
+  --  
+
+procedure Module_Cache_Prune_With_Callback
+     (Path           : String;
+      Prune_Interval : time_h.time_t;
+      Prune_After    : time_h.time_t;
+      Callback       : Module_Cache_Prune_Callback_T;
+      User_Data      : System.Address);
 
   --*
   -- * @}

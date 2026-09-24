@@ -8,7 +8,7 @@ pragma Warnings (Off); with Interfaces.C; use Interfaces.C; pragma Warnings (On)
 package LLVM.Deprecated is
 
    --  arg-macro: procedure LLVM_ATTRIBUTE_C_DEPRECATED (decl, message)
-   --    decl __attribute__((deprecated(message)))
+   --    decl __attribute__((deprecated))
   --===-- llvm-c/Deprecated.h - Deprecation macro -------------------*- C -*-===*|*                                                                            *|
   --|
   --|* Part of the LLVM Project, under the Apache License v2.0 with LLVM          *|

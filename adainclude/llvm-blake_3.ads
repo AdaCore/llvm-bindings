@@ -36,24 +36,24 @@ package LLVM.Blake_3 is
 
   -- This struct is a private implementation detail. It has to be here because
   -- it's part of llvm_blake3_hasher below.
-   type anon_array1129 is array (0 .. 7) of aliased stdint_h.uint32_t;
-   type anon_array1132 is array (0 .. 63) of aliased stdint_h.uint8_t;
+   type anon_array1116 is array (0 .. 7) of aliased stdint_h.uint32_t;
+   type anon_array1119 is array (0 .. 63) of aliased stdint_h.uint8_t;
    type Blake_3_Chunk_State_T is record
-      cv : aliased anon_array1129;  -- include/llvm-c/blake3.h:38
+      cv : aliased anon_array1116;  -- include/llvm-c/blake3.h:38
       chunk_counter : aliased stdint_h.uint64_t;  -- include/llvm-c/blake3.h:39
-      buf : aliased anon_array1132;  -- include/llvm-c/blake3.h:40
+      buf : aliased anon_array1119;  -- include/llvm-c/blake3.h:40
       buf_len : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:41
       blocks_compressed : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:42
       flags : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:43
    end record
    with Convention => C_Pass_By_Copy;  -- include/llvm-c/blake3.h:44
 
-   type anon_array1137 is array (0 .. 1759) of aliased stdint_h.uint8_t;
+   type anon_array1124 is array (0 .. 1759) of aliased stdint_h.uint8_t;
    type Blake_3_Hasher_T is record
-      key : aliased anon_array1129;  -- include/llvm-c/blake3.h:47
+      key : aliased anon_array1116;  -- include/llvm-c/blake3.h:47
       chunk : aliased Blake_3_Chunk_State_T;  -- include/llvm-c/blake3.h:48
       cv_stack_len : aliased stdint_h.uint8_t;  -- include/llvm-c/blake3.h:49
-      cv_stack : aliased anon_array1137;  -- include/llvm-c/blake3.h:55
+      cv_stack : aliased anon_array1124;  -- include/llvm-c/blake3.h:55
    end record
    with Convention => C_Pass_By_Copy;  -- include/llvm-c/blake3.h:56
 
