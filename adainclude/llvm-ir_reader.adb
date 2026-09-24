@@ -30,4 +30,26 @@ package body LLVM.IR_Reader is
       return Return_Value /= 0;
    end Parse_IR_In_Context;
 
+   function Parse_IR_In_Context_2
+     (Context_Ref : LLVM.Types.Context_T;
+      Mem_Buf     : LLVM.Types.Memory_Buffer_T;
+      Out_M       : System.Address;
+      Out_Message : System.Address)
+      return LLVM.Types.Bool_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMParseIRInContext2";
+   function Parse_IR_In_Context_2
+     (Context_Ref : LLVM.Types.Context_T;
+      Mem_Buf     : LLVM.Types.Memory_Buffer_T;
+      Out_M       : System.Address;
+      Out_Message : System.Address)
+      return Boolean
+   is
+      Return_Value : LLVM.Types.Bool_T;
+   begin
+      Return_Value := Parse_IR_In_Context_2 (Context_Ref, Mem_Buf, Out_M, Out_Message);
+      return Return_Value /= 0;
+   end Parse_IR_In_Context_2;
+
 end LLVM.IR_Reader;

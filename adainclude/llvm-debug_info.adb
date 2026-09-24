@@ -145,6 +145,48 @@ package body LLVM.Debug_Info is
       return Return_Value;
    end DI_Create_File;
 
+   function DI_Builder_Create_File_With_Checksum
+     (Builder       : LLVM.Types.DI_Builder_T;
+      Filename      : Interfaces.C.Strings.chars_ptr;
+      Filename_Len  : stddef_h.size_t;
+      Directory     : Interfaces.C.Strings.chars_ptr;
+      Directory_Len : stddef_h.size_t;
+      Checksum_Kind : Checksum_Kind_T;
+      Checksum      : Interfaces.C.Strings.chars_ptr;
+      Checksum_Len  : stddef_h.size_t;
+      Source        : Interfaces.C.Strings.chars_ptr;
+      Source_Len    : stddef_h.size_t)
+      return LLVM.Types.Metadata_T
+   with Import => True,
+        Convention => C,
+        External_Name => "LLVMDIBuilderCreateFileWithChecksum";
+   function DI_Create_File_With_Checksum
+     (Builder       : LLVM.Types.DI_Builder_T;
+      Filename      : String;
+      Filename_Len  : stddef_h.size_t;
+      Directory     : String;
+      Directory_Len : stddef_h.size_t;
+      Checksum_Kind : Checksum_Kind_T;
+      Checksum      : String;
+      Checksum_Len  : stddef_h.size_t;
+      Source        : String;
+      Source_Len    : stddef_h.size_t)
+      return LLVM.Types.Metadata_T
+   is
+      Return_Value     : LLVM.Types.Metadata_T;
+      Filename_Array   : aliased char_array := To_C (Filename);
+      Filename_String  : constant chars_ptr := To_Chars_Ptr (Filename_Array'Unchecked_Access);
+      Directory_Array  : aliased char_array := To_C (Directory);
+      Directory_String : constant chars_ptr := To_Chars_Ptr (Directory_Array'Unchecked_Access);
+      Checksum_Array   : aliased char_array := To_C (Checksum);
+      Checksum_String  : constant chars_ptr := To_Chars_Ptr (Checksum_Array'Unchecked_Access);
+      Source_Array     : aliased char_array := To_C (Source);
+      Source_String    : constant chars_ptr := To_Chars_Ptr (Source_Array'Unchecked_Access);
+   begin
+      Return_Value := DI_Builder_Create_File_With_Checksum (Builder, Filename_String, Filename_Len, Directory_String, Directory_Len, Checksum_Kind, Checksum_String, Checksum_Len, Source_String, Source_Len);
+      return Return_Value;
+   end DI_Create_File_With_Checksum;
+
    function DI_Builder_Create_Module
      (Builder            : LLVM.Types.DI_Builder_T;
       Parent_Scope       : LLVM.Types.Metadata_T;

@@ -72,4 +72,44 @@ package body Clang.Build_System is
       return Return_Value;
    end Module_Map_Descriptor_Set_Umbrella_Header;
 
+   procedure Module_Cache_Prune
+     (Path           : Interfaces.C.Strings.chars_ptr;
+      Prune_Interval : time_h.time_t;
+      Prune_After    : time_h.time_t)
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_ModuleCache_prune";
+   procedure Module_Cache_Prune
+     (Path           : String;
+      Prune_Interval : time_h.time_t;
+      Prune_After    : time_h.time_t)
+   is
+      Path_Array  : aliased char_array := To_C (Path);
+      Path_String : constant chars_ptr := To_Chars_Ptr (Path_Array'Unchecked_Access);
+   begin
+      Module_Cache_Prune (Path_String, Prune_Interval, Prune_After);
+   end Module_Cache_Prune;
+
+   procedure Module_Cache_Prune_With_Callback
+     (Path           : Interfaces.C.Strings.chars_ptr;
+      Prune_Interval : time_h.time_t;
+      Prune_After    : time_h.time_t;
+      Callback       : Module_Cache_Prune_Callback_T;
+      User_Data      : System.Address)
+   with Import => True,
+        Convention => C,
+        External_Name => "clang_ModuleCache_pruneWithCallback";
+   procedure Module_Cache_Prune_With_Callback
+     (Path           : String;
+      Prune_Interval : time_h.time_t;
+      Prune_After    : time_h.time_t;
+      Callback       : Module_Cache_Prune_Callback_T;
+      User_Data      : System.Address)
+   is
+      Path_Array  : aliased char_array := To_C (Path);
+      Path_String : constant chars_ptr := To_Chars_Ptr (Path_Array'Unchecked_Access);
+   begin
+      Module_Cache_Prune_With_Callback (Path_String, Prune_Interval, Prune_After, Callback, User_Data);
+   end Module_Cache_Prune_With_Callback;
+
 end Clang.Build_System;

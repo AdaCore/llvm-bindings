@@ -35,11 +35,32 @@ package LLVM.IR_Reader is
   -- * Optionally returns a human-readable description of any errors that
   -- * occurred during parsing IR. OutMessage must be disposed with
   -- * LLVMDisposeMessage.
+  -- * The memory buffer is consumed by this function.
+  -- * This is deprecated. Use LLVMParseIRInContext2 instead.
   -- *
   -- * @see llvm::ParseIR()
   --  
 
 function Parse_IR_In_Context
+     (Context_Ref : LLVM.Types.Context_T;
+      Mem_Buf     : LLVM.Types.Memory_Buffer_T;
+      Out_M       : System.Address;
+      Out_Message : System.Address)
+      return Boolean;
+
+  --*
+  -- * Read LLVM IR from a memory buffer and convert it into an in-memory Module
+  -- * object. Returns 0 on success.
+  -- * Optionally returns a human-readable description of any errors that
+  -- * occurred during parsing IR. OutMessage must be disposed with
+  -- * LLVMDisposeMessage.
+  -- * The memory buffer is not consumed by this function. It is the responsibility
+  -- * of the caller to free it with \c LLVMDisposeMemoryBuffer.
+  -- *
+  -- * @see llvm::ParseIR()
+  --  
+
+function Parse_IR_In_Context_2
      (Context_Ref : LLVM.Types.Context_T;
       Mem_Buf     : LLVM.Types.Memory_Buffer_T;
       Out_M       : System.Address;
